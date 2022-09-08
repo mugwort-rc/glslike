@@ -1,4 +1,6 @@
+#include <sstream>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 #define GLSLIKE_DISABLE_SWIZZLE
 #include "glslike.hpp"
@@ -57,6 +59,11 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__imul__", static_cast<vec2 &(vec2::*)(const vec2 &)>(&vec2::operator *=))
         .def("__idiv__", static_cast<vec2 &(vec2::*)(float)>(&vec2::operator /=))
         .def("__idiv__", static_cast<vec2 &(vec2::*)(const vec2& )>(&vec2::operator /=))
+        .def("__repr__", [](const vec2 &self) {
+            std::ostringstream oss;
+            oss << std::scientific << "<vec2: (" << self.x << ", " << self.y << ")>";
+            return oss.str();
+        })
         .def_property("x", [](const vec2 &self) {
             return self.x;
         }, [](vec2 &self, vec2::Type_t x) {
@@ -214,6 +221,11 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__imul__", static_cast<vec3 &(vec3::*)(const vec3 &)>(&vec3::operator *=))
         .def("__idiv__", static_cast<vec3 &(vec3::*)(float)>(&vec3::operator /=))
         .def("__idiv__", static_cast<vec3 &(vec3::*)(const vec3& )>(&vec3::operator /=))
+        .def("__repr__", [](const vec3 &self) {
+            std::ostringstream oss;
+            oss << std::scientific << "<vec3: (" << self.x << ", " << self.y << ", " << self.z << ")>";
+            return oss.str();
+        })
         .def_property("x", [](const vec3 &self) {
             return self.x;
         }, [](vec3 &self, vec3::Type_t x) {
@@ -402,6 +414,11 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__imul__", static_cast<vec4 &(vec4::*)(const vec4 &)>(&vec4::operator *=))
         .def("__idiv__", static_cast<vec4 &(vec4::*)(float)>(&vec4::operator /=))
         .def("__idiv__", static_cast<vec4 &(vec4::*)(const vec4& )>(&vec4::operator /=))
+        .def("__repr__", [](const vec4 &self) {
+            std::ostringstream oss;
+            oss << std::scientific << "<vec4: (" << self.x << ", " << self.y << ", " << self.z << ", " << self.w << ")>";
+            return oss.str();
+        })
         .def_property("x", [](const vec4 &self) {
             return self.x;
         }, [](vec4 &self, vec4::Type_t x) {
@@ -604,6 +621,14 @@ PYBIND11_MODULE(__glslike, module) {
         .def(pybind11::init<const vec2 &, const vec2 &>())
         .def("__mul__", static_cast<vec2 (mat2::*)(const vec2 &) const>(&mat2::operator *))
         .def("__mul__", static_cast<mat2 (mat2::*)(const mat2 &) const>(&mat2::operator *))
+        .def("__repr__", [](const mat2 &self) {
+            std::ostringstream oss;
+            oss << std::scientific << "<mat2: ("
+                << self.f11 << ", " << self.f21 << ", "
+                << self.f12 << ", " << self.f22
+                << ")>";
+            return oss.str();
+        })
         ;
 
     pybind11::class_<mat3>(module, "mat3")
@@ -615,6 +640,15 @@ PYBIND11_MODULE(__glslike, module) {
         .def(pybind11::init<const vec3 &, const vec3 &, const vec3 &>())
         .def("__mul__", static_cast<vec3 (mat3::*)(const vec3 &) const>(&mat3::operator *))
         .def("__mul__", static_cast<mat3 (mat3::*)(const mat3 &) const>(&mat3::operator *))
+        .def("__repr__", [](const mat3 &self) {
+            std::ostringstream oss;
+            oss << std::scientific << "<mat3: ("
+                << self.f11 << ", " << self.f21 << ", " << self.f31 << ", "
+                << self.f12 << ", " << self.f22 << ", " << self.f32 << ", "
+                << self.f13 << ", " << self.f23 << ", " << self.f33
+                << ")>";
+            return oss.str();
+        })
         ;
 
     pybind11::class_<mat4>(module, "mat4")
@@ -627,5 +661,15 @@ PYBIND11_MODULE(__glslike, module) {
         .def(pybind11::init<const vec4 &, const vec4 &, const vec4 &, const vec4 &>())
         .def("__mul__", static_cast<vec4 (mat4::*)(const vec4 &) const>(&mat4::operator *))
         .def("__mul__", static_cast<mat4 (mat4::*)(const mat4 &) const>(&mat4::operator *))
+        .def("__repr__", [](const mat4 &self) {
+            std::ostringstream oss;
+            oss << std::scientific << "<mat4: ("
+                << self.f11 << ", " << self.f21 << ", " << self.f31 << ", " << self.f41 << ", "
+                << self.f12 << ", " << self.f22 << ", " << self.f32 << ", " << self.f42 << ", "
+                << self.f13 << ", " << self.f23 << ", " << self.f33 << ", " << self.f43 << ", "
+                << self.f14 << ", " << self.f24 << ", " << self.f34 << ", " << self.f44
+                << ")>";
+            return oss.str();
+        })
         ;
 }
