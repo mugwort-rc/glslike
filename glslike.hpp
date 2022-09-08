@@ -276,6 +276,8 @@ public:
 };
 
 
+#ifndef GLSLIKE_DISABLE_SWIZZLE
+
 template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
 class Swizzle2 {
 public:
@@ -332,12 +334,18 @@ public:
     const SelfT *self;
 };
 
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
+
+#ifdef GLSLIKE_DISABLE_SWIZZLE
 #define GLSLIKE_VECTOR2_SWIZZLE() \
     r(this) \
     , g(this) \
     , s(this) \
-    , t(this) \
+    , t(this)
+#else
+#define GLSLIKE_VECTOR2_SWIZZLE() \
+    GLSLIKE_VECTOR2_ALIAS() \
     , xx(this) \
     , xy(this) \
     , yx(this) \
@@ -422,7 +430,7 @@ public:
     , ttst(this) \
     , ttts(this) \
     , tttt(this)
-
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
 template <typename T>
 class Vector2 : public Vector2Core<T> {
@@ -458,11 +466,14 @@ public:
         , GLSLIKE_VECTOR2_SWIZZLE()
     {}
 
+#ifndef GLSLIKE_DISABLE_SWIZZLE
     template <typename SwizzleT, typename std::enable_if<std::is_convertible<SwizzleT, Vector2Core<T>>::value>::type * = nullptr>
     Vector2(const SwizzleT &core)
         : Vector2Core<T>::Vector2Core(static_cast<Vector2Core<T>>(core))
+        , GLSLIKE_VECTOR2_ALIAS()
         , GLSLIKE_VECTOR2_SWIZZLE()
     {}
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
     T operator [](int i) const {
         switch (i) {
@@ -643,6 +654,7 @@ public:
     alias<T, Vector2<T>, &Vector2Core<T>::x> s;
     alias<T, Vector2<T>, &Vector2Core<T>::y> t;
 
+#ifndef GLSLIKE_DISABLE_SWIZZLE
 public:
     // >>> for v in itertools.product("xy", repeat=2): print("".join(v))
     // ...
@@ -772,12 +784,13 @@ public:
     Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> ttst;
     Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> ttts;
     Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> tttt;
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
 };
 
 
 template <typename T>
-Vector2<T> clamp(const Vector2<T> value, T min, T max) {
+Vector2<T> clamp(const Vector2<T> &value, T min, T max) {
     return Vector2<T>(
         math<T>::clamp(value.x, min, max),
         math<T>::clamp(value.y, min, max)
@@ -848,6 +861,15 @@ Vector2<T> operator /(T a, const Vector2<T> &b) {
 }
 
 
+#ifdef GLSLIKE_DISABLE_SWIZZLE
+#define GLSLIKE_VECTOR3_SWIZZLE() \
+    r(this) \
+    , g(this) \
+    , b(this) \
+    , s(this) \
+    , t(this) \
+    , p(this)
+#else
 #define GLSLIKE_VECTOR3_SWIZZLE() \
     r(this) \
     , g(this) \
@@ -1206,6 +1228,7 @@ Vector2<T> operator /(T a, const Vector2<T> &b) {
     , ppps(this) \
     , pppt(this) \
     , pppp(this)
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
 
 template <typename T>
@@ -1246,11 +1269,13 @@ public:
         , GLSLIKE_VECTOR3_SWIZZLE()
     {}
 
+#ifndef GLSLIKE_DISABLE_SWIZZLE
     template <typename SwizzleT, typename std::enable_if<std::is_convertible<SwizzleT, Vector3Core<T>>::value>::type * = nullptr>
     Vector3(const SwizzleT &core)
         : Vector3Core<T>::Vector3Core(static_cast<Vector3Core<T>>(core))
         , GLSLIKE_VECTOR3_SWIZZLE()
     {}
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
     T operator [](int i) const {
         switch (i) {
@@ -1459,6 +1484,7 @@ public:
     alias<T, Vector3<T>, &Vector3Core<T>::y> t;
     alias<T, Vector3<T>, &Vector3Core<T>::z> p;
 
+#ifndef GLSLIKE_DISABLE_SWIZZLE
 public:
     // >>> for v in itertools.product("xyz", repeat=2): print("".join(v))
     // ...
@@ -1944,11 +1970,12 @@ public:
     Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> ppps;
     Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> pppt;
     Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> pppp;
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
 };
 
 template <typename T>
-Vector3<T> clamp(const Vector3<T> value, T min, T max) {
+Vector3<T> clamp(const Vector3<T> &value, T min, T max) {
     return Vector3<T>(
         math<T>::clamp(value.x, min, max),
         math<T>::clamp(value.y, min, max),
@@ -2026,6 +2053,17 @@ Vector3<T> operator /(T a, const Vector3<T> &b) {
 }
 
 
+#ifdef GLSLIKE_DISABLE_SWIZZLE
+#define GLSLIKE_VECTOR4_SWIZZLE() \
+    r(this) \
+    , g(this) \
+    , b(this) \
+    , a(this) \
+    , s(this) \
+    , t(this) \
+    , p(this) \
+    , q(this)
+#else
 #define GLSLIKE_VECTOR4_SWIZZLE() \
     r(this) \
     , g(this) \
@@ -3043,6 +3081,7 @@ Vector3<T> operator /(T a, const Vector3<T> &b) {
     , qqqt(this) \
     , qqqp(this) \
     , qqqq(this)
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
 
 template <typename T>
@@ -3100,11 +3139,13 @@ public:
         , GLSLIKE_VECTOR4_SWIZZLE()
     {}
 
+#ifndef GLSLIKE_DISABLE_SWIZZLE
     template <typename SwizzleT, typename std::enable_if<std::is_convertible<SwizzleT, Vector4Core<T>>::value>::type * = nullptr>
     Vector4(const SwizzleT &core)
         : Vector4Core<T>::Vector4Core(static_cast<Vector4Core<T>>(core))
         , GLSLIKE_VECTOR4_SWIZZLE()
     {}
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
     T operator [](int i) const {
         switch (i) {
@@ -3211,7 +3252,7 @@ public:
         return *this;
     }
     Vector4<T> operator +(const Vector4<T> &rhs) const {
-        return Vector3<T>(
+        return Vector4<T>(
             x + rhs.x,
             y + rhs.y,
             z + rhs.z,
@@ -3241,7 +3282,7 @@ public:
         return *this;
     }
     Vector4<T> operator -(const Vector4<T> &rhs) const {
-        return Vector3<T>(
+        return Vector4<T>(
             x - rhs.x,
             y - rhs.y,
             z - rhs.z,
@@ -3341,6 +3382,7 @@ public:
     alias<T, Vector4<T>, &Vector4Core<T>::z> p;
     alias<T, Vector4<T>, &Vector4Core<T>::w> q;
 
+#ifndef GLSLIKE_DISABLE_SWIZZLE
 public:
     // >>> for v in itertools.product("xyzw", repeat=2): print("".join(v))
     // ...
@@ -4702,11 +4744,12 @@ public:
     Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> qqqt;
     Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> qqqp;
     Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> qqqq;
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
 };
 
 template <typename T>
-Vector4<T> clamp(const Vector4<T> value, T min, T max) {
+Vector4<T> clamp(const Vector4<T> &value, T min, T max) {
     return Vector4<T>(
         math<T>::clamp(value.x, min, max),
         math<T>::clamp(value.y, min, max),
@@ -4736,7 +4779,7 @@ Vector4<T> exp(const Vector4<T> &vec) {
 }
 
 template <typename T>
-Vector3<T> pow(const Vector4<T> &vec, T n) {
+Vector4<T> pow(const Vector4<T> &vec, T n) {
     return Vector4<T>(
         math<T>::pow(vec.x, n),
         math<T>::pow(vec.y, n),
