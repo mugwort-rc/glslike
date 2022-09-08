@@ -121,3 +121,17 @@ public:
 
 HALIDE_REGISTER_GENERATOR(GettingStartedHalide, getting_started_halide)
 ```
+
+## Swizzling
+
+```cpp
+vec3 v(1.0f, 2.0f, 3.0f);
+vec3 rgb = v.rgb;
+EXPECT_EQ(rgb.r, 1.0f);
+EXPECT_EQ(rgb.g, 2.0f);
+EXPECT_EQ(rgb.b, 3.0f);
+vec3 bgr = v.bgr;
+EXPECT_EQ(bgr.r, 3.0f);
+EXPECT_EQ(bgr.g, 2.0f);
+EXPECT_EQ(bgr.b, 1.0f);
+```
