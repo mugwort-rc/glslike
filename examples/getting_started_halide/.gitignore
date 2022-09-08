@@ -1,0 +1,4 @@
+generator
+getting_started_halide.h
+getting_started_halide.o
+getting_started_halide.schedule.h
