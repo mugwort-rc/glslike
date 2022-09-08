@@ -4790,14 +4790,236 @@ Vector4<T> operator /(T a, const Vector4<T> &b) {
     );
 }
 
+
+template <typename T>
+class Matrix2 {
+public:
+    Matrix2()
+        : f11(1.0f), f21(0.0f)
+        , f12(0.0f), f22(1.0f)
+    {}
+
+    // NOTE: column order (see GLSL 5.4.2 Vector and Matrix Constructors)
+    Matrix2(T f11, T f21,
+            T f12, T f22)
+        : f11(f11), f21(f21)
+        , f12(f12), f22(f22)
+    {}
+
+    // NOTE: column order (see GLSL 5.4.2 Vector and Matrix Constructors)
+    Matrix2(const Vector2<T> &col1,
+            const Vector2<T> &col2)
+        : f11(col1.x), f21(col1.y)
+        , f12(col2.x), f22(col2.y)
+    {}
+
+    Matrix2(const Matrix2<T> &copy)
+        : f11(copy.f11), f21(copy.f21)
+        , f12(copy.f12), f22(copy.f22)
+    {}
+
+    Matrix2(Matrix2<T> &move)
+        : f11(std::move(move.f11)), f21(std::move(move.f21))
+        , f12(std::move(move.f12)), f22(std::move(move.f22))
+    {}
+
+    Vector2<T> operator *(const Vector2<T> &rhs) const {
+        const T x = rhs.x, y = rhs.y;
+        return Vector2<T>(
+            f11 * x + f12 * y,
+            f21 * x + f22 * y
+        );
+    }
+
+    Matrix2<T> operator *(const Matrix2<T> &rhs) const {
+        // return this * rhs
+        const Matrix2<T> &a = *this;
+        const Matrix2<T> &b = rhs;
+        return Matrix2<T>(
+            a.f11 * b.f11 + a.f12 * b.f21,
+            a.f21 * b.f11 + a.f22 * b.f21,
+            a.f11 * b.f12 + a.f12 * b.f22,
+            a.f21 * b.f12 + a.f22 * b.f22
+        );
+    }
+
+    T f11, f21;
+    T f12, f22;
+};
+
+
+template <typename T>
+class Matrix3 {
+public:
+    Matrix3()
+        : f11(1.0f), f21(0.0f), f31(0.0f)
+        , f12(0.0f), f22(1.0f), f32(0.0f)
+        , f13(0.0f), f23(0.0f), f33(1.0f)
+    {}
+
+    // NOTE: column order (see GLSL 5.4.2 Vector and Matrix Constructors)
+    Matrix3(T f11, T f21, T f31,
+            T f12, T f22, T f32,
+            T f13, T f23, T f33)
+        : f11(f11), f21(f21), f31(f31)
+        , f12(f12), f22(f22), f32(f32)
+        , f13(f13), f23(f23), f33(f33)
+    {}
+
+    // NOTE: column order (see GLSL 5.4.2 Vector and Matrix Constructors)
+    Matrix3(const Vector3<T> &col1,
+            const Vector3<T> &col2,
+            const Vector3<T> &col3)
+        : f11(col1.x), f21(col1.y), f31(col1.z)
+        , f12(col2.x), f22(col2.y), f32(col2.z)
+        , f13(col3.x), f23(col3.y), f33(col3.z)
+    {}
+
+    Matrix3(const Matrix3<T> &copy)
+        : f11(copy.f11), f21(copy.f21), f31(copy.f31)
+        , f12(copy.f12), f22(copy.f22), f32(copy.f32)
+        , f13(copy.f13), f23(copy.f23), f33(copy.f33)
+    {}
+
+    Matrix3(Matrix3<T> &move)
+        : f11(std::move(move.f11)), f21(std::move(move.f21)), f31(std::move(move.f31))
+        , f12(std::move(move.f12)), f22(std::move(move.f22)), f32(std::move(move.f32))
+        , f13(std::move(move.f13)), f23(std::move(move.f23)), f33(std::move(move.f33))
+    {}
+
+    Vector3<T> operator *(const Vector3<T> &rhs) const {
+        const T x = rhs.x, y = rhs.y, z = rhs.z;
+        return Vector3<T>(
+            f11 * x + f12 * y + f13 * z,
+            f21 * x + f22 * y + f23 * z,
+            f31 * x + f32 * y + f33 * z
+        );
+    }
+
+    Matrix3<T> operator *(const Matrix3<T> &rhs) const {
+        // return this * rhs
+        const Matrix3<T> &a = *this;
+        const Matrix3<T> &b = rhs;
+        return Matrix3<T>(
+            a.f11 * b.f11 + a.f12 * b.f21 + a.f13 * b.f31,
+            a.f21 * b.f11 + a.f22 * b.f21 + a.f23 * b.f31,
+            a.f31 * b.f11 + a.f32 * b.f21 + a.f33 * b.f31,
+            a.f11 * b.f12 + a.f12 * b.f22 + a.f13 * b.f32,
+            a.f21 * b.f12 + a.f22 * b.f22 + a.f23 * b.f32,
+            a.f31 * b.f12 + a.f32 * b.f22 + a.f33 * b.f32,
+            a.f11 * b.f13 + a.f12 * b.f23 + a.f13 * b.f33,
+            a.f21 * b.f13 + a.f22 * b.f23 + a.f23 * b.f33,
+            a.f31 * b.f13 + a.f32 * b.f23 + a.f33 * b.f33
+        );
+    }
+
+    T f11, f21, f31;
+    T f12, f22, f32;
+    T f13, f23, f33;
+};
+
+
+template <typename T>
+class Matrix4 {
+public:
+    Matrix4()
+        : f11(1.0f), f21(0.0f), f31(0.0f), f41(0.0f)
+        , f12(0.0f), f22(1.0f), f32(0.0f), f42(0.0f)
+        , f13(0.0f), f23(0.0f), f33(1.0f), f43(0.0f)
+        , f14(0.0f), f24(0.0f), f34(0.0f), f44(1.0f)
+    {}
+
+    // NOTE: column order (see GLSL 5.4.2 Vector and Matrix Constructors)
+    Matrix4(T f11, T f21, T f31, T f41,
+            T f12, T f22, T f32, T f42,
+            T f13, T f23, T f33, T f43,
+            T f14, T f24, T f34, T f44)
+        : f11(f11), f21(f21), f31(f31), f41(f41)
+        , f12(f12), f22(f22), f32(f32), f42(f42)
+        , f13(f13), f23(f23), f33(f33), f43(f43)
+        , f14(f14), f24(f24), f34(f34), f44(f44)
+    {}
+
+    // NOTE: column order (see GLSL 5.4.2 Vector and Matrix Constructors)
+    Matrix4(const Vector4<T> &col1,
+            const Vector4<T> &col2,
+            const Vector4<T> &col3,
+            const Vector4<T> &col4)
+        : f11(col1.x), f21(col1.y), f31(col1.z), f41(col1.w)
+        , f12(col2.x), f22(col2.y), f32(col2.z), f42(col2.w)
+        , f13(col3.x), f23(col3.y), f33(col3.z), f43(col3.w)
+        , f14(col4.x), f24(col4.y), f34(col4.z), f44(col4.w)
+    {}
+
+    Matrix4(const Matrix4<T> &copy)
+        : f11(copy.f11), f21(copy.f21), f31(copy.f31), f41(copy.f41)
+        , f12(copy.f12), f22(copy.f22), f32(copy.f32), f42(copy.f42)
+        , f13(copy.f13), f23(copy.f23), f33(copy.f33), f43(copy.f43)
+        , f14(copy.f14), f24(copy.f24), f34(copy.f34), f44(copy.f44)
+    {}
+
+    Matrix4(Matrix4<T> &move)
+        : f11(std::move(move.f11)), f21(std::move(move.f21)), f31(std::move(move.f31)), f41(std::move(move.f41))
+        , f12(std::move(move.f12)), f22(std::move(move.f22)), f32(std::move(move.f32)), f42(std::move(move.f42))
+        , f13(std::move(move.f13)), f23(std::move(move.f23)), f33(std::move(move.f33)), f43(std::move(move.f43))
+        , f14(std::move(move.f14)), f24(std::move(move.f24)), f34(std::move(move.f34)), f44(std::move(move.f44))
+    {}
+
+    Vector4<T> operator *(const Vector4<T> &rhs) const {
+        const T x = rhs.x, y = rhs.y, z = rhs.z, w = rhs.w;
+        return Vector4<T>(
+            f11 * x + f12 * y + f13 * z + f14 * w,
+            f21 * x + f22 * y + f23 * z + f24 * w,
+            f31 * x + f32 * y + f33 * z + f34 * w,
+            f41 * x + f42 * y + f43 * z + f44 * w
+        );
+    }
+
+    Matrix4<T> operator *(const Matrix4<T> &rhs) const {
+        // return this * rhs
+        const Matrix4<T> &a = *this;
+        const Matrix4<T> &b = rhs;
+        return Matrix4<T>(
+            a.f11 * b.f11 + a.f12 * b.f21 + a.f13 * b.f31 + a.f14 * b.f41,
+            a.f21 * b.f11 + a.f22 * b.f21 + a.f23 * b.f31 + a.f24 * b.f41,
+            a.f31 * b.f11 + a.f32 * b.f21 + a.f33 * b.f31 + a.f34 * b.f41,
+            a.f41 * b.f11 + a.f42 * b.f21 + a.f43 * b.f31 + a.f44 * b.f41,
+            a.f11 * b.f12 + a.f12 * b.f22 + a.f13 * b.f32 + a.f14 * b.f42,
+            a.f21 * b.f12 + a.f22 * b.f22 + a.f23 * b.f32 + a.f24 * b.f42,
+            a.f31 * b.f12 + a.f32 * b.f22 + a.f33 * b.f32 + a.f34 * b.f42,
+            a.f41 * b.f12 + a.f42 * b.f22 + a.f43 * b.f32 + a.f44 * b.f42,
+            a.f11 * b.f13 + a.f12 * b.f23 + a.f13 * b.f33 + a.f14 * b.f43,
+            a.f21 * b.f13 + a.f22 * b.f23 + a.f23 * b.f33 + a.f24 * b.f43,
+            a.f31 * b.f13 + a.f32 * b.f23 + a.f33 * b.f33 + a.f34 * b.f43,
+            a.f41 * b.f13 + a.f42 * b.f23 + a.f43 * b.f33 + a.f44 * b.f43,
+            a.f11 * b.f14 + a.f12 * b.f24 + a.f13 * b.f34 + a.f14 * b.f44,
+            a.f21 * b.f14 + a.f22 * b.f24 + a.f23 * b.f34 + a.f24 * b.f44,
+            a.f31 * b.f14 + a.f32 * b.f24 + a.f33 * b.f34 + a.f34 * b.f44,
+            a.f41 * b.f14 + a.f42 * b.f24 + a.f43 * b.f34 + a.f44 * b.f44
+        );
+    }
+
+    T f11, f21, f31, f41;
+    T f12, f22, f32, f42;
+    T f13, f23, f33, f43;
+    T f14, f24, f34, f44;
+};
+
+
 #ifdef GLSLIKE_USE_HALIDE
 typedef Vector2<Halide::Expr> vec2;
 typedef Vector3<Halide::Expr> vec3;
 typedef Vector4<Halide::Expr> vec4;
+typedef Matrix2<Halide::Expr> mat2;
+typedef Matrix3<Halide::Expr> mat3;
+typedef Matrix4<Halide::Expr> mat4;
 #else
 typedef Vector2<float> vec2;
 typedef Vector3<float> vec3;
 typedef Vector4<float> vec4;
+typedef Matrix2<float> mat2;
+typedef Matrix3<float> mat3;
+typedef Matrix4<float> mat4;
 #endif  // GLSLIKE_USE_HALIDE
 
 }  // namespace glslike

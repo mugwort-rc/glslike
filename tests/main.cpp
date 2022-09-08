@@ -11317,3 +11317,33 @@ TEST(GlslikeVector4, Swizzle4Stpq) {
         EXPECT_EQ(v2.w, 4.0f);
     }
 }
+
+
+TEST(GlslikeMatrix2, Identity) {
+    vec2 vec(1.0f, 2.0f);
+    mat2 mat;
+    vec2 result = mat * vec;
+    EXPECT_EQ(result.x, vec.x);
+    EXPECT_EQ(result.y, vec.y);
+}
+
+
+TEST(GlslikeMatrix3, Identity) {
+    vec3 vec(1.0f, 2.0f, 3.0f);
+    mat3 mat;
+    vec3 result = mat * vec;
+    EXPECT_EQ(result.x, vec.x);
+    EXPECT_EQ(result.y, vec.y);
+    EXPECT_EQ(result.z, vec.z);
+}
+
+
+TEST(GlslikeMatrix4, Identity) {
+    vec4 vec(1.0f, 2.0f, 3.0f, 4.0f);
+    mat4 mat;
+    vec4 result = mat * vec;
+    EXPECT_EQ(result.x, vec.x);
+    EXPECT_EQ(result.y, vec.y);
+    EXPECT_EQ(result.z, vec.z);
+    EXPECT_EQ(result.w, vec.w);
+}
