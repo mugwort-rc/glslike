@@ -45,13 +45,19 @@ private:
     math();
     math(const math &);
     math(math &&);
+
+public:
+    static constexpr C pi = M_PI;
+
 public:
     static C min(C a, C b) {
         return std::min(a, b);
     }
+
     static C max(C a, C b) {
         return std::max(a, b);
     }
+
     static C clamp(C value, C min, C max) {
         return std::clamp(value, min, max);
     }
@@ -526,18 +532,24 @@ public:
         return *this;
     }
 
-    Vector2<T> normalize() {
-        const auto len = length();
-        //assert(len != 0.0f);
-        return divideScalar(len);
-    }
+    // 8.5 Geometric Functions
 
     T length() const {
         return glslike::math<T>::sqrt(x * x + y * y);
     }
 
+    T distance(const Vector2<T> &v) const {
+        return (*this - v).length();
+    }
+
     T dot(const Vector2<T> &vec) const {
         return x * vec.x + y * vec.y;
+    }
+
+    Vector2<T> normalize() {
+        const auto len = length();
+        //assert(len != 0.0f);
+        return divideScalar(len);
     }
 
     std::array<T, 2> toArray() const {
@@ -788,24 +800,7 @@ public:
 
 };
 
-
-template <typename T>
-Vector2<T> clamp(const Vector2<T> &value, T min, T max) {
-    return Vector2<T>(
-        math<T>::clamp(value.x, min, max),
-        math<T>::clamp(value.y, min, max)
-    );
-}
-
-template <typename T>
-T length(const Vector2<T> &vec) {
-    return vec.length();
-}
-
-template <typename T>
-Vector2<T> normalize(const Vector2<T> &vec) {
-    return vec.clone().normalize();
-}
+// 8.2 Exponential Functions
 
 template <typename T>
 Vector2<T> exp(const Vector2<T> &vec) {
@@ -823,9 +818,14 @@ Vector2<T> pow(const Vector2<T> &vec, T n) {
     );
 }
 
+// 8.3 Common Functions
+
 template <typename T>
-T dot(const Vector2<T> &a, const Vector2<T> &b) {
-    return a.dot(b);
+Vector2<T> clamp(const Vector2<T> &value, T min, T max) {
+    return Vector2<T>(
+        math<T>::clamp(value.x, min, max),
+        math<T>::clamp(value.y, min, max)
+    );
 }
 
 template <typename T>
@@ -1336,18 +1336,32 @@ public:
         return *this;
     }
 
-    Vector3<T> normalize() {
-        const auto len = length();
-        //assert(len != 0.0f);
-        return divideScalar(len);
-    }
+    // 8.5 Geometric Functions
 
     T length() const {
         return glslike::math<T>::sqrt(x * x + y * y + z * z);
     }
 
+    T distance(const Vector3<T> &v) const {
+        return (*this - v).length();
+    }
+
     T dot(const Vector3<T> &vec) const {
         return x * vec.x + y * vec.y + z * vec.z;
+    }
+
+    Vector3<T> cross(const Vector3<T> &vec) const {
+        return Vector3<T>(
+            y * vec.z - vec.y * z,
+            z * vec.x - vec.z * x,
+            x * vec.y - vec.x * y
+        );
+    }
+
+    Vector3<T> normalize() {
+        const auto len = length();
+        //assert(len != 0.0f);
+        return divideScalar(len);
     }
 
     std::array<T, 3> toArray() const {
@@ -1984,16 +1998,6 @@ Vector3<T> clamp(const Vector3<T> &value, T min, T max) {
 }
 
 template <typename T>
-T length(const Vector3<T> &vec) {
-    return vec.length();
-}
-
-template <typename T>
-Vector3<T> normalize(const Vector3<T> &vec) {
-    return vec.clone().normalize();
-}
-
-template <typename T>
 Vector3<T> exp(const Vector3<T> &vec) {
     return Vector3<T>(
         math<T>::exp(vec.x),
@@ -2012,8 +2016,8 @@ Vector3<T> pow(const Vector3<T> &vec, T n) {
 }
 
 template <typename T>
-T dot(const Vector3<T> &a, const Vector3<T> &b) {
-    return a.dot(b);
+Vector3<T> cross(const Vector3<T> &x, const Vector3<T> &y) {
+    return x.cross(y);
 }
 
 template <typename T>
@@ -4759,16 +4763,6 @@ Vector4<T> clamp(const Vector4<T> &value, T min, T max) {
 }
 
 template <typename T>
-T length(const Vector4<T> &vec) {
-    return vec.length();
-}
-
-template <typename T>
-Vector4<T> normalize(const Vector4<T> &vec) {
-    return vec.clone().normalize();
-}
-
-template <typename T>
 Vector4<T> exp(const Vector4<T> &vec) {
     return Vector4<T>(
         math<T>::exp(vec.x),
@@ -4786,11 +4780,6 @@ Vector4<T> pow(const Vector4<T> &vec, T n) {
         math<T>::pow(vec.z, n),
         math<T>::pow(vec.w, n)
     );
-}
-
-template <typename T>
-T dot(const Vector4<T> &a, const Vector4<T> &b) {
-    return a.dot(b);
 }
 
 template <typename T>
@@ -4831,6 +4820,28 @@ Vector4<T> operator /(T a, const Vector4<T> &b) {
         a / b.z,
         a / b.w
     );
+}
+
+
+
+template <typename VectorT>
+typename VectorT::Type_t length(const VectorT &vec) {
+    return vec.length();
+}
+
+template <typename VectorT>
+typename VectorT::Type_t distance(const VectorT &p0, const VectorT &p1) {
+    return length(p0 - p1);
+}
+
+template <typename VectorT>
+VectorT normalize(const VectorT &vec) {
+    return vec.clone().normalize();
+}
+
+template <typename VectorT>
+typename VectorT::Type_t dot(const VectorT &a, const VectorT &b) {
+    return a.dot(b);
 }
 
 
