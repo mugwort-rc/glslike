@@ -157,3 +157,25 @@ TypeError: __mul__(): incompatible function arguments. The following argument ty
 
 Invoked with: <vec3: (1.000000e+00, 2.000000e+00, 3.000000e+00)>, <mat3: (1.000000e+00, 0.000000e+00, 0.000000e+00, 0.000000e+00, 1.000000e+00, 0.000000e+00, 0.000000e+00, 0.000000e+00, 1.000000e+00)>
 ```
+
+## Jupyter Notebook
+
+```
+import matplotlib.pyplot as plt
+from glslike import *
+
+def calc(position):
+    distance = length(position)
+    if distance == 0:
+        return vec3(1.0, 1.0, 0.0)
+    distanceSqrd = distance * distance
+    return vec3(
+        0.2f / distanceSqrd,
+        0.1f / distanceSqrd,
+        0.0f
+    )
+
+plt.imshow(realize3(calc), 128)
+```
+
+![result of jupyter notebook](./docs/img/jupyter-notebook.png)
