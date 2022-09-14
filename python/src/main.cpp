@@ -1,5 +1,6 @@
 #include <sstream>
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 
 #define GLSLIKE_DISABLE_SWIZZLE
@@ -7,6 +8,36 @@
 #include "glslike_io.hpp"
 
 using namespace glslike;
+
+// for realizeNd
+std::uint8_t to256(float value) {
+    return static_cast<std::uint8_t>(std::clamp(value, 0.0f, 1.0f) * 255.0f);
+}
+
+template <typename T, int Dim>
+pybind11::array_t<std::uint8_t> realize(const pybind11::object &func, int size) {
+    const float half = size / 2.0f;
+    pybind11::array_t<std::uint8_t> arr({size, size, Dim});
+    auto req = arr.request();
+    auto *raw = static_cast<std::uint8_t *>(req.ptr);
+    for (int y = 0; y < size; ++y) {
+        const auto x0 = y * size;
+        for (int x = 0; x < size; ++x) {
+            // create position
+            const auto vx = (x - half) / half;
+            const auto vy = (y - half) / half;
+            const vec2 coordinate(vx, vy);
+            const auto result = func(coordinate);
+            const T v = pybind11::cast<T>(result);
+
+            const auto c0 = (x0 + x) * Dim;
+            for (int c = 0; c < Dim; ++c) {
+                raw[c0 + c] = to256(v[c]);
+            }
+        }
+    }
+    return arr;
+}
 
 
 PYBIND11_MODULE(__glslike, module) {
@@ -676,4 +707,7 @@ PYBIND11_MODULE(__glslike, module) {
             return oss.str();
         })
         ;
+
+    module.def("realize4", &realize<vec4, 4>);
+    module.def("realize3", &realize<vec3, 3>);
 }
