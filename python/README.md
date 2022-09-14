@@ -42,7 +42,7 @@ Invoked with: <vec3: (1.000000e+00, 2.000000e+00, 3.000000e+00)>, <mat3: (1.0000
 
 ## Jupyter Notebook
 
-```
+```python
 import matplotlib.pyplot as plt
 from glslike import *
 
