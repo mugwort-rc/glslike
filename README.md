@@ -175,7 +175,7 @@ def calc(position):
         0.0f
     )
 
-plt.imshow(realize3(calc), 128)
+plt.imshow(realize3(calc, 128))
 ```
 
 ![result of jupyter notebook](./docs/img/jupyter-notebook.png)
