@@ -53,16 +53,16 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__sub__", static_cast<vec2(vec2::*)(const vec2 &)const>(&vec2::operator -))
         .def("__mul__", static_cast<vec2(vec2::*)(float)const>(&vec2::operator *))
         .def("__mul__", static_cast<vec2(vec2::*)(const vec2 &)const>(&vec2::operator *))
-        .def("__div__", static_cast<vec2(vec2::*)(float)const>(&vec2::operator /))
-        .def("__div__", static_cast<vec2(vec2::*)(const vec2 &)const>(&vec2::operator /))
+        .def("__truediv__", static_cast<vec2(vec2::*)(float)const>(&vec2::operator /))
+        .def("__truediv__", static_cast<vec2(vec2::*)(const vec2 &)const>(&vec2::operator /))
         .def("__iadd__", static_cast<vec2 &(vec2::*)(float)>(&vec2::operator +=))
         .def("__iadd__", static_cast<vec2 &(vec2::*)(const vec2 &)>(&vec2::operator +=))
         .def("__isub__", static_cast<vec2 &(vec2::*)(float)>(&vec2::operator -=))
         .def("__isub__", static_cast<vec2 &(vec2::*)(const vec2 &)>(&vec2::operator -=))
         .def("__imul__", static_cast<vec2 &(vec2::*)(float)>(&vec2::operator *=))
         .def("__imul__", static_cast<vec2 &(vec2::*)(const vec2 &)>(&vec2::operator *=))
-        .def("__idiv__", static_cast<vec2 &(vec2::*)(float)>(&vec2::operator /=))
-        .def("__idiv__", static_cast<vec2 &(vec2::*)(const vec2& )>(&vec2::operator /=))
+        .def("__itruediv__", static_cast<vec2 &(vec2::*)(float)>(&vec2::operator /=))
+        .def("__itruediv__", static_cast<vec2 &(vec2::*)(const vec2& )>(&vec2::operator /=))
         .def("__repr__", [](const vec2 &self) {
             std::ostringstream oss;
             oss << std::scientific << "<vec2: (" << self.x << ", " << self.y << ")>";
@@ -215,16 +215,16 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__sub__", static_cast<vec3(vec3::*)(const vec3 &)const>(&vec3::operator -))
         .def("__mul__", static_cast<vec3(vec3::*)(float)const>(&vec3::operator *))
         .def("__mul__", static_cast<vec3(vec3::*)(const vec3 &)const>(&vec3::operator *))
-        .def("__div__", static_cast<vec3(vec3::*)(float)const>(&vec3::operator /))
-        .def("__div__", static_cast<vec3(vec3::*)(const vec3 &)const>(&vec3::operator /))
+        .def("__truediv__", static_cast<vec3(vec3::*)(float)const>(&vec3::operator /))
+        .def("__truediv__", static_cast<vec3(vec3::*)(const vec3 &)const>(&vec3::operator /))
         .def("__iadd__", static_cast<vec3 &(vec3::*)(float)>(&vec3::operator +=))
         .def("__iadd__", static_cast<vec3 &(vec3::*)(const vec3 &)>(&vec3::operator +=))
         .def("__isub__", static_cast<vec3 &(vec3::*)(float)>(&vec3::operator -=))
         .def("__isub__", static_cast<vec3 &(vec3::*)(const vec3 &)>(&vec3::operator -=))
         .def("__imul__", static_cast<vec3 &(vec3::*)(float)>(&vec3::operator *=))
         .def("__imul__", static_cast<vec3 &(vec3::*)(const vec3 &)>(&vec3::operator *=))
-        .def("__idiv__", static_cast<vec3 &(vec3::*)(float)>(&vec3::operator /=))
-        .def("__idiv__", static_cast<vec3 &(vec3::*)(const vec3& )>(&vec3::operator /=))
+        .def("__itruediv__", static_cast<vec3 &(vec3::*)(float)>(&vec3::operator /=))
+        .def("__itruediv__", static_cast<vec3 &(vec3::*)(const vec3& )>(&vec3::operator /=))
         .def("__repr__", [](const vec3 &self) {
             std::ostringstream oss;
             oss << std::scientific << "<vec3: (" << self.x << ", " << self.y << ", " << self.z << ")>";
@@ -408,16 +408,16 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__sub__", static_cast<vec4(vec4::*)(const vec4 &)const>(&vec4::operator -))
         .def("__mul__", static_cast<vec4(vec4::*)(float)const>(&vec4::operator *))
         .def("__mul__", static_cast<vec4(vec4::*)(const vec4 &)const>(&vec4::operator *))
-        .def("__div__", static_cast<vec4(vec4::*)(float)const>(&vec4::operator /))
-        .def("__div__", static_cast<vec4(vec4::*)(const vec4 &)const>(&vec4::operator /))
+        .def("__truediv__", static_cast<vec4(vec4::*)(float)const>(&vec4::operator /))
+        .def("__truediv__", static_cast<vec4(vec4::*)(const vec4 &)const>(&vec4::operator /))
         .def("__iadd__", static_cast<vec4 &(vec4::*)(float)>(&vec4::operator +=))
         .def("__iadd__", static_cast<vec4 &(vec4::*)(const vec4 &)>(&vec4::operator +=))
         .def("__isub__", static_cast<vec4 &(vec4::*)(float)>(&vec4::operator -=))
         .def("__isub__", static_cast<vec4 &(vec4::*)(const vec4 &)>(&vec4::operator -=))
         .def("__imul__", static_cast<vec4 &(vec4::*)(float)>(&vec4::operator *=))
         .def("__imul__", static_cast<vec4 &(vec4::*)(const vec4 &)>(&vec4::operator *=))
-        .def("__idiv__", static_cast<vec4 &(vec4::*)(float)>(&vec4::operator /=))
-        .def("__idiv__", static_cast<vec4 &(vec4::*)(const vec4& )>(&vec4::operator /=))
+        .def("__itruediv__", static_cast<vec4 &(vec4::*)(float)>(&vec4::operator /=))
+        .def("__itruediv__", static_cast<vec4 &(vec4::*)(const vec4& )>(&vec4::operator /=))
         .def("__repr__", [](const vec4 &self) {
             std::ostringstream oss;
             oss << std::scientific << "<vec4: (" << self.x << ", " << self.y << ", " << self.z << ", " << self.w << ")>";
