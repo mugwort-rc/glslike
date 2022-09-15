@@ -107,11 +107,11 @@
 ### 8.5 Geometric Functions
 
 |Function|float|vec2|vec3|vec4|
-|length||✅|✅|✅|
-|distance||✅|✅|✅|
-|dot||✅|✅|✅|
+|length|✅|✅|✅|✅|
+|distance|✅|✅|✅|✅|
+|dot|✅|✅|✅|✅|
 |cross|-|-|✅|-|
-|normalize||✅|✅|✅|
+|normalize|✅|✅|✅|✅|
 |transform|||||
 |faceforward|✅|✅|✅|✅|
 |reflect|✅|✅|✅|✅|
