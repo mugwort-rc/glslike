@@ -24,6 +24,13 @@
 using namespace glslike;
 
 
+TEST(BuiltinFunctions, RoundEven) {
+    EXPECT_EQ(roundEven(1.4f), 1.0f);
+    EXPECT_EQ(roundEven(1.5f), 2.0f);
+    EXPECT_EQ(roundEven(2.5f), 2.0f);
+}
+
+
 TEST(GlslikeVector2, Attributes) {
     vec2 v(1.0f, 2.0f);
     EXPECT_EQ(v.x, 1.0f);

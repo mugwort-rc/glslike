@@ -34,6 +34,9 @@
 //#define GLSLIKE_USE_HALIDE
 #ifdef GLSLIKE_USE_HALIDE
 #include <Halide.h>
+typedef Halide::Expr Bool_t;
+#else
+typedef bool Bool_t;
 #endif  // GLSLIKE_USE_HALIDE
 
 
@@ -50,6 +53,141 @@ public:
     static constexpr C pi = M_PI;
 
 public:
+    // 8.1 Angle and Trigonometry Functions
+
+    static C radians(C degrees) {
+        return degrees * pi / 180.0f;
+    }
+
+    static C degrees(C radians) {
+        return radians * 180.0f / pi;
+    }
+
+    static C sin(C angle) {
+        return std::sin(angle);
+    }
+
+    static C cos(C angle) {
+        return std::cos(angle);
+    }
+
+    static C tan(C angle) {
+        return std::tan(angle);
+    }
+
+    static C asin(C x) {
+        return std::sin(x);
+    }
+
+    static C acos(C x) {
+        return std::cos(x);
+    }
+
+    static C atan(C y, C x) {
+        return std::atan2(y, x);
+    }
+
+    static C atan(C y_over_x) {
+        return std::atan(y_over_x);
+    }
+
+    static C sinh(C x) {
+        return std::sinh(x);
+    }
+
+    static C cosh(C x) {
+        return std::cosh(x);
+    }
+
+    static C tanh(C x) {
+        return std::tanh(x);
+    }
+
+    static C asinh(C x) {
+        return std::asinh(x);
+    }
+
+    static C acosh(C x) {
+        return std::acosh(x);
+    }
+
+    static C atanh(C x) {
+        return std::atanh(x);
+    }
+
+    // 8.2 Exponential Functions
+
+    template <typename ExpT>
+    static C pow(C base, ExpT exp) {
+        return std::pow(base, exp);
+    }
+
+    static C exp(C scalar) {
+        return std::exp(scalar);
+    }
+
+    static C log(C x) {
+        return std::log(x);
+    }
+
+    static C exp2(C scalar) {
+        return std::exp2(scalar);
+    }
+
+    static C log2(C x) {
+        return std::log2(x);
+    }
+
+    static C sqrt(C scalar) {
+        return std::sqrt(scalar);
+    }
+
+    static C inversesqrt(C scalar) {
+        return 1.0f / std::sqrt(scalar);
+    }
+
+    // 8.3 Common Functions
+
+    static C abs(C x) {
+        return std::abs(x);
+    }
+
+    static C sign(C x) {
+        return (x > 0.0f ? 1.0f : (x < 0.0f ? -1.0f : 0.0f));
+    }
+
+    static C floor(C x) {
+        return std::floor(x);
+    }
+
+    static C trunc(C x) {
+        return std::trunc(x);
+    }
+
+    static C round(C x) {
+        return std::round(x);
+    }
+
+    static C roundEven(C x) {
+        return round(x / 2.0f) * 2.0f;
+    }
+
+    static C ceil(C x) {
+        return std::ceil(x);
+    }
+
+    static C fract(C x) {
+        return x - floor(x);
+    }
+
+    static C mod(C x, C y) {
+        return x - y * floor(x / y);
+    }
+
+    static C modf(C x, C *i) {
+        return std::modf(x, i);
+    }
+
     static C min(C a, C b) {
         return std::min(a, b);
     }
@@ -62,18 +200,68 @@ public:
         return std::clamp(value, min, max);
     }
 
-    static C exp(C scalar) {
-        return std::exp(scalar);
-    }
-    template <typename ExpT>
-    static C pow(C base, ExpT exp) {
-        return std::pow(base, exp);
-    }
-    static C sqrt(C scalar) {
-        return std::sqrt(scalar);
+    static C mix(C x, C y, C a) {
+        return x * (1 - a) + y * a;
     }
 
+    static C mix(C x, C y, bool a) {
+        return a ? y : x;
+    }
+
+    static C step(C edge, C x) {
+        return x < edge ? 0.0f : 1.0f;
+    }
+
+    static C smoothstep(C edge0, C edge1, C x) {
+        //assert(edge0 < edge1)
+        C t = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+        return t * t * (3.0 - 2.0 * t);
+    }
+
+    static bool isnan(C x) {
+        return std::isnan(x);
+    }
+
+    static bool isinf(C x) {
+        return std::isinf(x);
+    }
+
+    //template <typename IntT>
+    //IntT floatBitsToInt(C value) {
+    //    //
+    //}
+    //template <typename IntT>
+    //IntT floatBitsToUint(C value) {
+    //    //
+    //}
+    //template <typename IntT>
+    //C intBitsToFloat(IntT value) {
+    //    //
+    //}
+    //template <typename IntT>
+    //C uintBitsToFloat(IntT value) {
+    //    //
+    //}
+
+    C fma(C a, C b, C c) {
+        return a * b + c;
+    }
+
+    //template <typename IntT>
+    //C frexp(C x, IntT *exp) {
+    //
+    //}
+    //template <typename IntT>
+    //C ldexp(C x, IntT exp) {
+    //
+    //}
+
 };
+
+template <typename T>
+inline static T select(bool cond, T true_value, T false_value) {
+    return cond ? true_value : false_value;
+}
 
 #ifdef GLSLIKE_USE_HALIDE
 
@@ -84,30 +272,425 @@ private:
     math(const math &);
     math(math &&);
 public:
-    static Halide::Expr min(Halide::Expr a, Halide::Expr b) {
+
+public:
+    // 8.1 Angle and Trigonometry Functions
+
+    static C radians(C degrees) {
+        return degrees * pi / 180.0f;
+    }
+
+    static C degrees(C radians) {
+        return radians * 180.0f / pi;
+    }
+
+    static C sin(C angle) {
+        return Halide::sin(angle);
+    }
+
+    static C cos(C angle) {
+        return Halide::cos(angle);
+    }
+
+    static C tan(C angle) {
+        return Halide::tan(angle);
+    }
+
+    static C asin(C x) {
+        return Halide::sin(x);
+    }
+
+    static C acos(C x) {
+        return Halide::cos(x);
+    }
+
+    static C atan(C y, C x) {
+        return Halide::atan2(y, x);
+    }
+
+    static C atan(C y_over_x) {
+        return Halide::atan(y_over_x);
+    }
+
+    static C sinh(C x) {
+        return Halide::sinh(x);
+    }
+
+    static C cosh(C x) {
+        return Halide::cosh(x);
+    }
+
+    static C tanh(C x) {
+        return Halide::tanh(x);
+    }
+
+    static C asinh(C x) {
+        return Halide::asinh(x);
+    }
+
+    static C acosh(C x) {
+        return Halide::acosh(x);
+    }
+
+    static C atanh(C x) {
+        return Halide::atanh(x);
+    }
+
+    // 8.2 Exponential Functions
+
+    template <typename ExpT>
+    static C pow(C base, ExpT exp) {
+        return Halide::pow(base, exp);
+    }
+
+    static C exp(C scalar) {
+        return Halide::exp(scalar);
+    }
+
+    static C log(C x) {
+        return Halide::log(x);
+    }
+
+    static C exp2(C scalar) {
+        return Halide::pow(2.0f, scalar);
+    }
+
+    static C log2(C x) {
+        return Halide::log(x) / Halide::log(2.0f);
+    }
+
+    static C sqrt(C scalar) {
+        return Halide::sqrt(scalar);
+    }
+
+    static C inversesqrt(C scalar) {
+        return 1.0f / Halide::sqrt(scalar);
+    }
+
+    // 8.3 Common Functions
+
+    static C abs(C x) {
+        return Halide::abs(x);
+    }
+
+    static C sign(C x) {
+        return Halide::select(
+            x > 0.0f,
+            1.0f,
+            Halide::select(
+                x < 0.0f,
+                -1.0f,
+                 0.0f
+            )
+        );
+    }
+
+    static C floor(C x) {
+        return Halide::floor(x);
+    }
+
+    static C trunc(C x) {
+        return Halide::trunc(x);
+    }
+
+    static C round(C x) {
+        return Halide::round(x);
+    }
+
+    static C roundEven(C x) {
+        return round(x / 2.0f) * 2.0f;
+    }
+
+    static C ceil(C x) {
+        return Halide::ceil(x);
+    }
+
+    static C fract(C x) {
+        return x - floor(x);
+    }
+
+    static C mod(C x, C y) {
+        return x - y * floor(x / y);
+    }
+
+    static C modf(C x, C *i) {
+        const auto int_part = Halide::cast<std::int64_t>(x);
+        if (i) {
+            *i = int_part;
+        }
+        return copysign(
+            Halide::select(
+                isinf(x),
+                0.0f,
+                value - int_part
+            ),
+            value
+        );
+    }
+
+    static C min(C a, C b) {
         return Halide::min(a, b);
     }
-    static Halide::Expr max(Halide::Expr a, Halide::Expr b) {
+
+    static C max(C a, C b) {
         return Halide::max(a, b);
     }
-    static Halide::Expr clamp(Halide::Expr value, Halide::Expr min, Halide::Expr max) {
+
+    static C clamp(C value, C min, C max) {
         return Halide::clamp(value, min, max);
     }
 
-    static Halide::Expr exp(Halide::Expr scalar) {
-        return Halide::exp(scalar);
+    static C mix(C x, C y, C a) {
+        return x * (1 - a) + y * a;
     }
-    template <typename ExpT>
-    static Halide::Expr pow(Halide::Expr base, ExpT exp) {
-        return Halide::pow(base, exp);
+
+    static C mix(C x, C y, Halide::Expr a) {
+        return Halide::select(a, y, x);
     }
-    static Halide::Expr sqrt(Halide::Expr scalar) {
-        return Halide::sqrt(scalar);
+
+    static C step(C edge, C x) {
+        return Halide::select(x < edge, 0.0f, 1.0f);
+    }
+
+    static C smoothstep(C edge0, C edge1, C x) {
+        //assert(edge0 < edge1)
+        C t = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+        return t * t * (3.0 - 2.0 * t);
+    }
+
+    static bool isnan(C x) {
+        return Halide::is_nan(x);
+    }
+
+    static bool isinf(C x) {
+        return Halide::is_inf(x);
+    }
+
+    //template <typename IntT>
+    //IntT floatBitsToInt(C value) {
+    //    //
+    //}
+    //template <typename IntT>
+    //IntT floatBitsToUint(C value) {
+    //    //
+    //}
+    //template <typename IntT>
+    //C intBitsToFloat(IntT value) {
+    //    //
+    //}
+    //template <typename IntT>
+    //C uintBitsToFloat(IntT value) {
+    //    //
+    //}
+
+    C fma(C a, C b, C c) {
+        return a * b + c;
+    }
+
+    //template <typename IntT>
+    //C frexp(C x, IntT *exp) {
+    //
+    //}
+    //template <typename IntT>
+    //C ldexp(C x, IntT exp) {
+    //
+    //}
+
+protected:
+    C copysign(C x, C y) {
+        const auto absolute_value = Halide::select(
+            isnan(x),
+            Halide::Expr(std::numeric_limits<float>::quiet_NaN()),
+            abs(x)
+        );
+        return Halide::select(
+            y >= 0.0f,
+            absolute_value,
+            -absolute_value
+        );
     }
 
 };
 
+template <typename T>
+inline static T select(Halide::Expr cond, T true_value, T false_value) {
+    return Halide::select(cond, true_value, false_value);
+}
+
 #endif
+
+//
+// 8.1 Angle and Trigonometry Functions
+// These all operate component-wise.
+//
+
+template <typename T>
+T radians(T degrees) {
+    return math<T>::radians(degrees);
+}
+
+template <typename T>
+T degrees(T radians) {
+    return math<T>::degrees(radians);
+}
+
+template <typename T>
+T sin(T angle) {
+    return math<T>::sin(angle);
+}
+
+template <typename T>
+T cos(T angle) {
+    return math<T>::cos(angle);
+}
+
+template <typename T>
+T tan(T angle) {
+    return math<T>::tan(angle);
+}
+
+template <typename T>
+T asin(T x) {
+    return math<T>::asin(x);
+}
+
+template <typename T>
+T acos(T x) {
+    return math<T>::acos(x);
+}
+
+template <typename T>
+T atan(T y, T x) {
+    return math<T>::atan(y, x);
+}
+
+template <typename T>
+T atan(T y_over_x) {
+    return math<T>::atan(y_over_x);
+}
+
+template <typename T>
+T sinh(T angle) {
+    return math<T>::sinh(angle);
+}
+
+template <typename T>
+T cosh(T angle) {
+    return math<T>::cosh(angle);
+}
+
+template <typename T>
+T tanh(T angle) {
+    return math<T>::tanh(angle);
+}
+
+template <typename T>
+T asinh(T x) {
+    return math<T>::asinh(x);
+}
+
+template <typename T>
+T acosh(T x) {
+    return math<T>::acosh(x);
+}
+
+template <typename T>
+T atanh(T x) {
+    return math<T>::atanh(x);
+}
+
+//
+// 8.2 Exponential Functions
+//
+
+template <typename T, typename ScalarT>
+T pow(T scalar, ScalarT n) {
+    return math<T>::pow(scalar, n);
+}
+
+template <typename T>
+T exp(T scalar) {
+    return math<T>::exp(scalar);
+}
+
+template <typename T>
+T log(T scalar) {
+    return math<T>::log(scalar);
+}
+
+template <typename T>
+T exp2(T scalar) {
+    return math<T>::exp2(scalar);
+}
+
+template <typename T>
+T log2(T scalar) {
+    return math<T>::log2(scalar);
+}
+
+template <typename T>
+T sqrt(T scalar) {
+    return math<T>::sqrt(scalar);
+}
+
+template <typename T>
+T inversesqrt(T scalar) {
+    return math<T>::inversesqrt(scalar);
+}
+
+//
+// 8.3 Common Functions
+//
+
+template <typename T>
+T abs(T x) {
+    return math<T>::abs(x);
+}
+
+template <typename T>
+T sign(T x) {
+    return math<T>::sign(x);
+}
+
+template <typename T>
+T floor(T x) {
+    return math<T>::floor(x);
+}
+
+template <typename T>
+T trunc(T x) {
+    return math<T>::trunc(x);
+}
+
+template <typename T>
+T round(T x) {
+    return math<T>::round(x);
+}
+
+template <typename T>
+T roundEven(T x) {
+    return math<T>::roundEven(x);
+}
+
+template <typename T>
+T ceil(T x) {
+    return math<T>::ceil(x);
+}
+
+template <typename T>
+T fract(T x) {
+    return math<T>::fract(x);
+}
+
+template <typename T>
+T mod(T x, T y) {
+    return math<T>::mod(x, y);
+}
+
+template <typename T>
+T modf(T x, T *i) {
+    return math<T>::modf(x, i);
+}
 
 template <typename T>
 T min(T a, T b) {
@@ -125,14 +708,130 @@ T clamp(T value, T min, T max) {
 }
 
 template <typename T>
-T exp(T scalar) {
-    return math<T>::exp(scalar);
+T mix(T x, T y, T a) {
+    return math<T>::mix(x, y, a);
 }
 
-template <typename T, typename ScalarT>
-T pow(T scalar, ScalarT n) {
-    return math<T>::pow(scalar, n);
+template <typename T>
+T step(T edge, T x) {
+    return math<T>::step(edge, x);
 }
+
+template <typename T>
+T smoothstep(T edge0, T edge1, T x) {
+    return math<T>::smoothstep(edge0, edge1, x);
+}
+
+template <typename T>
+bool isnan(T x) {
+    return math<T>::isnan(x);
+}
+
+template <typename T>
+bool isinf(T x) {
+    return math<T>::isinf(x);
+}
+
+//
+// TODO:
+// * floatBitToInt
+// * floatBitToUint
+// * intBitsToFloat
+// * fma
+// * frexp
+// * ldexp
+//
+
+// 8.4 Floating-Point Pack and Unpack Functions
+//
+// * packUnorm2x16
+// * packSnorm2x16
+// * packUnorm4x8
+// * packSnorm4x8
+// * unpackUnorm2x16
+// * unpackSnorm2x16
+// * unpackUnorm4x8
+// * unpackSnorm4x8
+// * packDouble2x32
+// * unpackDouble2x32
+// * packHalf2x16
+// * unpackHalf2x16
+//
+// 8.5 Geometric Functions
+//
+
+template <typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+T length(T x) {
+    return math<T>::abs(x);
+}
+
+template <typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+T distance(T p0, T p1) {
+    return length(p0 - p1);
+}
+
+template <typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+T dot(T x, T y) {
+    return x * y;
+}
+
+template <typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+T normalize(T x) {
+    return 1.0f;
+}
+
+template <typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+T faceforward(T n, T i, T nref) {
+    return select(dot(nref, i) < 0.0f, n, -n);
+}
+
+template <typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+T reflect(T i, T n) {
+    return i - 2 * dot(n, i) * n;
+}
+
+template <typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+T refract(T i, T n, float eta) {
+    const auto k = 1.0f - eta * eta * (1.0f - dot(n, i) * dot(n, i));
+    return select(
+        k < 0.0f,
+        0.0f,
+        eta * i - (eta * dot(n, i) + sqrt(k)) * n
+    );
+}
+
+// 8.6 Matrix Functions
+//
+// * matrixCompMult
+// * outerProduct
+// * transpose
+// * determinant
+// * inverse
+//
+// 8.7 Vector Relational Functions
+//
+// * lessThan
+// * lessThanEqual
+// * greaterThan
+// * greaterThanEqual
+// * equal
+// * notEqual
+// * any
+// * all
+// * not
+//
+// 8.8 Integer Functions
+//
+// * uaddCarry
+// * usubBorrow
+// * umulExtended
+// * imulExtended
+// * bitfieldExtract
+// * bitfieldInsert
+// * bitfieldReverse
+// * bitCount
+// * findLSB
+// * findMSB
 
 
 template <typename R, typename T, R T::Base_t::*pm>
@@ -448,7 +1147,7 @@ public:
     using Vector2Core<T>::y;
 
 public:
-    Vector2(T x)
+    explicit Vector2(T x)
         : Vector2Core<T>::Vector2Core(x)
         , GLSLIKE_VECTOR2_SWIZZLE()
     {}
@@ -559,6 +1258,20 @@ public:
     //
     // glsl-like interface
     //
+
+    Vector2<T> operator +() const {
+        return Vector2<T>(
+            +x,
+            +y
+        );
+    }
+
+    Vector2<T> operator -() const {
+        return Vector2<T>(
+            -x,
+            -y
+        );
+    }
 
     Vector2<T> operator +(T rhs) const {
         return Vector2<T>(
@@ -800,7 +1513,143 @@ public:
 
 };
 
+//
+// 8.1 Angle and Trigonometry Functions
+// These all operate component-wise.
+//
+
+template <typename T>
+Vector2<T> radians(const Vector2<T> &degrees) {
+    return Vector2<T>(
+        math<T>::radians(degrees.x),
+        math<T>::radians(degrees.y)
+    );
+}
+
+template <typename T>
+Vector2<T> degrees(const Vector2<T> &radians) {
+    return Vector2<T>(
+        math<T>::degrees(radians.x),
+        math<T>::degrees(radians.y)
+    );
+}
+
+template <typename T>
+Vector2<T> sin(const Vector2<T> &angle) {
+    return Vector2<T>(
+        math<T>::sin(angle.x),
+        math<T>::sin(angle.y)
+    );
+}
+
+template <typename T>
+Vector2<T> cos(const Vector2<T> &angle) {
+    return Vector2<T>(
+        math<T>::cos(angle.x),
+        math<T>::cos(angle.y)
+    );
+}
+
+template <typename T>
+Vector2<T> tan(const Vector2<T> & angle) {
+    return Vector2<T>(
+        math<T>::tan(angle.x),
+        math<T>::tan(angle.y)
+    );
+}
+
+template <typename T>
+Vector2<T> asin(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::asin(x.x),
+        math<T>::asin(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> acos(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::acos(x.x),
+        math<T>::acos(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> atan(const Vector2<T> &y, const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::atan(y.x, x.x),
+        math<T>::atan(y.y, x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> atan(const Vector2<T> &y_over_x) {
+    return Vector2<T>(
+        math<T>::atan(y_over_x.x),
+        math<T>::atan(y_over_x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> sinh(const Vector2<T> &angle) {
+    return Vector2<T>(
+        math<T>::sinh(angle.x),
+        math<T>::sinh(angle.y)
+    );
+}
+
+template <typename T>
+Vector2<T> cosh(const Vector2<T> &angle) {
+    return Vector2<T>(
+        math<T>::cosh(angle.x),
+        math<T>::cosh(angle.y)
+    );
+}
+
+template <typename T>
+Vector2<T> tanh(const Vector2<T> &angle) {
+    return Vector2<T>(
+        math<T>::tanh(angle.x),
+        math<T>::tanh(angle.y)
+    );
+}
+
+template <typename T>
+Vector2<T> asinh(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::asinh(x.x),
+        math<T>::asinh(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> acosh(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::acosh(x.x),
+        math<T>::acosh(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> atanh(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::atanh(x.x),
+        math<T>::atanh(x.y)
+    );
+}
+
+//
 // 8.2 Exponential Functions
+// These all operate component-wise.
+//
+
+template <typename T>
+Vector2<T> pow(const Vector2<T> &vec, T n) {
+    return Vector2<T>(
+        math<T>::pow(vec.x, n),
+        math<T>::pow(vec.y, n)
+    );
+}
 
 template <typename T>
 Vector2<T> exp(const Vector2<T> &vec) {
@@ -811,14 +1660,176 @@ Vector2<T> exp(const Vector2<T> &vec) {
 }
 
 template <typename T>
-Vector2<T> pow(const Vector2<T> &vec, T n) {
+Vector2<T> log(const Vector2<T> &vec) {
     return Vector2<T>(
-        math<T>::pow(vec.x, n),
-        math<T>::pow(vec.y, n)
+        math<T>::log(vec.x),
+        math<T>::log(vec.y)
     );
 }
 
+template <typename T>
+Vector2<T> exp2(const Vector2<T> &vec) {
+    return Vector2<T>(
+        math<T>::exp2(vec.x),
+        math<T>::exp2(vec.y)
+    );
+}
+
+template <typename T>
+Vector2<T> log2(const Vector2<T> &vec) {
+    return Vector2<T>(
+        math<T>::log2(vec.x),
+        math<T>::log2(vec.y)
+    );
+}
+
+template <typename T>
+Vector2<T> sqrt(const Vector2<T> &vec) {
+    return Vector2<T>(
+        math<T>::sqrt(vec.x),
+        math<T>::sqrt(vec.y)
+    );
+}
+
+template <typename T>
+Vector2<T> inversesqrt(const Vector2<T> &vec) {
+    return Vector2<T>(
+        math<T>::inversesqrt(vec.x),
+        math<T>::inversesqrt(vec.y)
+    );
+}
+
+//
 // 8.3 Common Functions
+//
+
+template <typename T>
+Vector2<T> abs(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::abs(x.x),
+        math<T>::abs(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> sign(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::sign(x.x),
+        math<T>::sign(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> floor(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::floor(x.x),
+        math<T>::floor(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> trunc(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::trunc(x.x),
+        math<T>::trunc(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> round(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::round(x.x),
+        math<T>::round(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> roundEven(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::roundEven(x.x),
+        math<T>::roundEven(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> ceil(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::ceil(x.x),
+        math<T>::ceil(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> fract(const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::fract(x.x),
+        math<T>::fract(x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> mod(const Vector2<T> &x, const Vector2<T> &y) {
+    return Vector2<T>(
+        math<T>::mod(x.x, y.x),
+        math<T>::mod(x.y, y.y)
+    );
+}
+
+template <typename T>
+Vector2<T> mod(const Vector2<T> &x, T y) {
+    return Vector2<T>(
+        math<T>::mod(x.x, y),
+        math<T>::mod(x.y, y)
+    );
+}
+
+template <typename T>
+Vector2<T> modf(const Vector2<T> &x, Vector2<T> *i) {
+    return Vector2<T>(
+        math<T>::modf(x.x, &i->x),
+        math<T>::modf(x.y, &i->y)
+    );
+}
+
+template <typename T>
+Vector2<T> min(const Vector2<T> &a, const Vector2<T> &b) {
+    return Vector2<T>(
+        math<T>::min(a.x, b.x),
+        math<T>::min(a.y, b.y)
+    );
+}
+
+template <typename T>
+Vector2<T> min(const Vector2<T> &a, T b) {
+    return Vector2<T>(
+        math<T>::min(a.x, b),
+        math<T>::min(a.y, b)
+    );
+}
+
+template <typename T>
+Vector2<T> max(const Vector2<T> &a, const Vector2<T> &b) {
+    return Vector2<T>(
+        math<T>::max(a.x, b.x),
+        math<T>::max(a.y, b.y)
+    );
+}
+
+template <typename T>
+Vector2<T> max(const Vector2<T> &a, T b) {
+    return Vector2<T>(
+        math<T>::max(a.x, b),
+        math<T>::max(a.y, b)
+    );
+}
+
+template <typename T>
+Vector2<T> clamp(const Vector2<T> &value, const Vector2<T> &min, const Vector2<T> &max) {
+    return Vector2<T>(
+        math<T>::clamp(value.x, min.x, max.x),
+        math<T>::clamp(value.y, min.y, max.y)
+    );
+}
 
 template <typename T>
 Vector2<T> clamp(const Vector2<T> &value, T min, T max) {
@@ -827,6 +1838,129 @@ Vector2<T> clamp(const Vector2<T> &value, T min, T max) {
         math<T>::clamp(value.y, min, max)
     );
 }
+
+template <typename T>
+Vector2<T> mix(const Vector2<T> &x, const Vector2<T> &y, const Vector2<T> &a) {
+    return Vector2<T>(
+        math<T>::mix(x.x, y.x, a.x),
+        math<T>::mix(x.y, y.y, a.y)
+    );
+}
+
+template <typename T>
+Vector2<T> mix(const Vector2<T> &x, const Vector2<T> &y, T a) {
+    return Vector2<T>(
+        math<T>::mix(x.x, y.x, a),
+        math<T>::mix(x.y, y.y, a)
+    );
+}
+
+template <typename T>
+Vector2<T> step(const Vector2<T> &edge, const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::step(edge.x, x.x),
+        math<T>::step(edge.y, x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> step(T edge, const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::step(edge, x.x),
+        math<T>::step(edge, x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> smoothstep(const Vector2<T> &edge0, const Vector2<T> &edge1, const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::smoothstep(edge0.x, edge1.x, x.x),
+        math<T>::smoothstep(edge0.y, edge1.y, x.y)
+    );
+}
+
+template <typename T>
+Vector2<T> smoothstep(T edge0, T edge1, const Vector2<T> &x) {
+    return Vector2<T>(
+        math<T>::smoothstep(edge0, edge1, x.x),
+        math<T>::smoothstep(edge0, edge1, x.y)
+    );
+}
+
+template <typename T>
+Vector2<Bool_t> isnan(const Vector2<T> &x) {
+    return Vector2<Bool_t>(
+        math<T>::isnan(x.x),
+        math<T>::isnan(x.y)
+    );
+}
+
+template <typename T>
+Vector2<Bool_t> isinf(const Vector2<T> &x) {
+    return Vector2<Bool_t>(
+        math<T>::isinf(x.x),
+        math<T>::isinf(x.y)
+    );
+}
+
+//
+// TODO:
+// * floatBitToInt
+// * floatBitToUint
+// * intBitsToFloat
+// * fma
+// * frexp
+// * ldexp
+//
+
+// 8.4 Floating-Point Pack and Unpack Functions
+//
+// * packUnorm2x16
+// * packSnorm2x16
+// * packUnorm4x8
+// * packSnorm4x8
+// * unpackUnorm2x16
+// * unpackSnorm2x16
+// * unpackUnorm4x8
+// * unpackSnorm4x8
+// * packDouble2x32
+// * unpackDouble2x32
+// * packHalf2x16
+// * unpackHalf2x16
+//
+// 8.6 Matrix Functions
+//
+// * matrixCompMult
+// * outerProduct
+// * transpose
+// * determinant
+// * inverse
+//
+// 8.7 Vector Relational Functions
+//
+// * lessThan
+// * lessThanEqual
+// * greaterThan
+// * greaterThanEqual
+// * equal
+// * notEqual
+// * any
+// * all
+// * not
+//
+// 8.8 Integer Functions
+//
+// * uaddCarry
+// * usubBorrow
+// * umulExtended
+// * imulExtended
+// * bitfieldExtract
+// * bitfieldInsert
+// * bitfieldReverse
+// * bitCount
+// * findLSB
+// * findMSB
+
 
 template <typename T>
 Vector2<T> operator +(T a, const Vector2<T> &b) {
@@ -1242,7 +2376,7 @@ public:
     using Vector3Core<T>::z;
 
 public:
-    Vector3(T x)
+    explicit Vector3(T x)
         : Vector3Core<T>::Vector3Core(x)
         , GLSLIKE_VECTOR3_SWIZZLE()
     {}
@@ -1371,6 +2505,22 @@ public:
     //
     // glsl-like interface
     //
+
+    Vector3<T> operator +() const {
+        return Vector3<T>(
+            +x,
+            +y,
+            +z
+        );
+    }
+
+    Vector3<T> operator -() const {
+        return Vector3<T>(
+            -x,
+            -y,
+            -z
+        );
+    }
 
     Vector3<T> operator +(T rhs) const {
         return Vector3<T>(
@@ -1988,12 +3138,157 @@ public:
 
 };
 
+//
+// 8.1 Angle and Trigonometry Functions
+// These all operate component-wise.
+//
+
 template <typename T>
-Vector3<T> clamp(const Vector3<T> &value, T min, T max) {
+Vector3<T> radians(const Vector3<T> &degrees) {
     return Vector3<T>(
-        math<T>::clamp(value.x, min, max),
-        math<T>::clamp(value.y, min, max),
-        math<T>::clamp(value.z, min, max)
+        math<T>::radians(degrees.x),
+        math<T>::radians(degrees.y),
+        math<T>::radians(degrees.z)
+    );
+}
+
+template <typename T>
+Vector3<T> degrees(const Vector3<T> &radians) {
+    return Vector3<T>(
+        math<T>::degrees(radians.x),
+        math<T>::degrees(radians.y),
+        math<T>::degrees(radians.z)
+    );
+}
+
+template <typename T>
+Vector3<T> sin(const Vector3<T> &angle) {
+    return Vector3<T>(
+        math<T>::sin(angle.x),
+        math<T>::sin(angle.y),
+        math<T>::sin(angle.z)
+    );
+}
+
+template <typename T>
+Vector3<T> cos(const Vector3<T> &angle) {
+    return Vector3<T>(
+        math<T>::cos(angle.x),
+        math<T>::cos(angle.y),
+        math<T>::cos(angle.z)
+    );
+}
+
+template <typename T>
+Vector3<T> tan(const Vector3<T> & angle) {
+    return Vector3<T>(
+        math<T>::tan(angle.x),
+        math<T>::tan(angle.y),
+        math<T>::tan(angle.z)
+    );
+}
+
+template <typename T>
+Vector3<T> asin(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::asin(x.x),
+        math<T>::asin(x.y),
+        math<T>::asin(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> acos(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::acos(x.x),
+        math<T>::acos(x.y),
+        math<T>::acos(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> atan(const Vector3<T> &y, const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::atan(y.x, x.x),
+        math<T>::atan(y.y, x.y),
+        math<T>::atan(y.z, x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> atan(const Vector3<T> &y_over_x) {
+    return Vector3<T>(
+        math<T>::atan(y_over_x.x),
+        math<T>::atan(y_over_x.y),
+        math<T>::atan(y_over_x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> sinh(const Vector3<T> &angle) {
+    return Vector3<T>(
+        math<T>::sinh(angle.x),
+        math<T>::sinh(angle.y),
+        math<T>::sinh(angle.z)
+    );
+}
+
+template <typename T>
+Vector3<T> cosh(const Vector3<T> &angle) {
+    return Vector3<T>(
+        math<T>::cosh(angle.x),
+        math<T>::cosh(angle.y),
+        math<T>::cosh(angle.z)
+    );
+}
+
+template <typename T>
+Vector3<T> tanh(const Vector3<T> &angle) {
+    return Vector3<T>(
+        math<T>::tanh(angle.x),
+        math<T>::tanh(angle.y),
+        math<T>::tanh(angle.z)
+    );
+}
+
+template <typename T>
+Vector3<T> asinh(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::asinh(x.x),
+        math<T>::asinh(x.y),
+        math<T>::asinh(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> acosh(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::acosh(x.x),
+        math<T>::acosh(x.y),
+        math<T>::acosh(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> atanh(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::atanh(x.x),
+        math<T>::atanh(x.y),
+        math<T>::atanh(x.z)
+    );
+}
+
+//
+// 8.2 Exponential Functions
+// These all operate component-wise.
+//
+
+template <typename T>
+Vector3<T> pow(const Vector3<T> &vec, T n) {
+    return Vector3<T>(
+        math<T>::pow(vec.x, n),
+        math<T>::pow(vec.y, n),
+        math<T>::pow(vec.z, n)
     );
 }
 
@@ -2007,18 +3302,344 @@ Vector3<T> exp(const Vector3<T> &vec) {
 }
 
 template <typename T>
-Vector3<T> pow(const Vector3<T> &vec, T n) {
+Vector3<T> log(const Vector3<T> &vec) {
     return Vector3<T>(
-        math<T>::pow(vec.x, n),
-        math<T>::pow(vec.y, n),
-        math<T>::pow(vec.z, n)
+        math<T>::log(vec.x),
+        math<T>::log(vec.y),
+        math<T>::log(vec.z)
     );
 }
+
+template <typename T>
+Vector3<T> exp2(const Vector3<T> &vec) {
+    return Vector3<T>(
+        math<T>::exp2(vec.x),
+        math<T>::exp2(vec.y),
+        math<T>::exp2(vec.z)
+    );
+}
+
+template <typename T>
+Vector3<T> log2(const Vector3<T> &vec) {
+    return Vector3<T>(
+        math<T>::log2(vec.x),
+        math<T>::log2(vec.y),
+        math<T>::log2(vec.z)
+    );
+}
+
+template <typename T>
+Vector3<T> sqrt(const Vector3<T> &vec) {
+    return Vector3<T>(
+        math<T>::sqrt(vec.x),
+        math<T>::sqrt(vec.y),
+        math<T>::sqrt(vec.z)
+    );
+}
+
+template <typename T>
+Vector3<T> inversesqrt(const Vector3<T> &vec) {
+    return Vector3<T>(
+        math<T>::inversesqrt(vec.x),
+        math<T>::inversesqrt(vec.y),
+        math<T>::inversesqrt(vec.z)
+    );
+}
+
+//
+// 8.3 Common Functions
+//
+
+template <typename T>
+Vector3<T> abs(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::abs(x.x),
+        math<T>::abs(x.y),
+        math<T>::abs(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> sign(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::sign(x.x),
+        math<T>::sign(x.y),
+        math<T>::sign(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> floor(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::floor(x.x),
+        math<T>::floor(x.y),
+        math<T>::floor(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> trunc(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::trunc(x.x),
+        math<T>::trunc(x.y),
+        math<T>::trunc(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> round(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::round(x.x),
+        math<T>::round(x.y),
+        math<T>::round(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> roundEven(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::roundEven(x.x),
+        math<T>::roundEven(x.y),
+        math<T>::roundEven(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> ceil(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::ceil(x.x),
+        math<T>::ceil(x.y),
+        math<T>::ceil(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> fract(const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::fract(x.x),
+        math<T>::fract(x.y),
+        math<T>::fract(x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> mod(const Vector3<T> &x, const Vector3<T> &y) {
+    return Vector3<T>(
+        math<T>::mod(x.x, y.x),
+        math<T>::mod(x.y, y.y),
+        math<T>::mod(x.z, y.z)
+    );
+}
+
+template <typename T>
+Vector3<T> mod(const Vector3<T> &x, T y) {
+    return Vector3<T>(
+        math<T>::mod(x.x, y),
+        math<T>::mod(x.y, y),
+        math<T>::mod(x.z, y)
+    );
+}
+
+template <typename T>
+Vector3<T> modf(const Vector3<T> &x, Vector3<T> *i) {
+    return Vector3<T>(
+        math<T>::modf(x.x, &i->x),
+        math<T>::modf(x.y, &i->y),
+        math<T>::modf(x.z, &i->z)
+    );
+}
+
+template <typename T>
+Vector3<T> min(const Vector3<T> &a, const Vector3<T> &b) {
+    return Vector3<T>(
+        math<T>::min(a.x, b.x),
+        math<T>::min(a.y, b.y),
+        math<T>::min(a.z, b.z)
+    );
+}
+
+template <typename T>
+Vector3<T> min(const Vector3<T> &a, T b) {
+    return Vector3<T>(
+        math<T>::min(a.x, b),
+        math<T>::min(a.y, b),
+        math<T>::min(a.z, b)
+    );
+}
+
+template <typename T>
+Vector3<T> max(const Vector3<T> &a, const Vector3<T> &b) {
+    return Vector3<T>(
+        math<T>::max(a.x, b.x),
+        math<T>::max(a.y, b.y),
+        math<T>::max(a.z, b.z)
+    );
+}
+
+template <typename T>
+Vector3<T> max(const Vector3<T> &a, T b) {
+    return Vector3<T>(
+        math<T>::max(a.x, b),
+        math<T>::max(a.y, b),
+        math<T>::max(a.z, b)
+    );
+}
+
+template <typename T>
+Vector3<T> clamp(const Vector3<T> &value, const Vector3<T> &min, const Vector3<T> &max) {
+    return Vector3<T>(
+        math<T>::clamp(value.x, min.x, max.x),
+        math<T>::clamp(value.y, min.y, max.y),
+        math<T>::clamp(value.z, min.z, max.z)
+    );
+}
+
+template <typename T>
+Vector3<T> clamp(const Vector3<T> &value, T min, T max) {
+    return Vector3<T>(
+        math<T>::clamp(value.x, min, max),
+        math<T>::clamp(value.y, min, max),
+        math<T>::clamp(value.z, min, max)
+    );
+}
+
+template <typename T>
+Vector3<T> mix(const Vector3<T> &x, const Vector3<T> &y, const Vector3<T> &a) {
+    return Vector3<T>(
+        math<T>::mix(x.x, y.x, a.x),
+        math<T>::mix(x.y, y.y, a.y),
+        math<T>::mix(x.z, y.z, a.z)
+    );
+}
+
+template <typename T>
+Vector3<T> mix(const Vector3<T> &x, const Vector3<T> &y, T a) {
+    return Vector3<T>(
+        math<T>::mix(x.x, y.x, a),
+        math<T>::mix(x.y, y.y, a),
+        math<T>::mix(x.z, y.z, a)
+    );
+}
+
+template <typename T>
+Vector3<T> step(const Vector3<T> &edge, const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::step(edge.x, x.x),
+        math<T>::step(edge.y, x.y),
+        math<T>::step(edge.z, x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> step(T edge, const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::step(edge, x.x),
+        math<T>::step(edge, x.y),
+        math<T>::step(edge, x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> smoothstep(const Vector3<T> &edge0, const Vector3<T> &edge1, const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::smoothstep(edge0.x, edge1.x, x.x),
+        math<T>::smoothstep(edge0.y, edge1.y, x.y),
+        math<T>::smoothstep(edge0.z, edge1.z, x.z)
+    );
+}
+
+template <typename T>
+Vector3<T> smoothstep(T edge0, T edge1, const Vector3<T> &x) {
+    return Vector3<T>(
+        math<T>::smoothstep(edge0, edge1, x.x),
+        math<T>::smoothstep(edge0, edge1, x.y),
+        math<T>::smoothstep(edge0, edge1, x.z)
+    );
+}
+
+template <typename T>
+Vector3<Bool_t> isnan(const Vector3<T> &x) {
+    return Vector3<Bool_t>(
+        math<T>::isnan(x.x),
+        math<T>::isnan(x.y),
+        math<T>::isnan(x.z)
+    );
+}
+
+template <typename T>
+Vector3<Bool_t> isinf(const Vector3<T> &x) {
+    return Vector3<Bool_t>(
+        math<T>::isinf(x.x),
+        math<T>::isinf(x.y),
+        math<T>::isinf(x.z)
+    );
+}
+
+//
+// TODO:
+// * floatBitToInt
+// * floatBitToUint
+// * intBitsToFloat
+// * fma
+// * frexp
+// * ldexp
+//
+
+// 8.4 Floating-Point Pack and Unpack Functions
+//
+// * packUnorm2x16
+// * packSnorm2x16
+// * packUnorm4x8
+// * packSnorm4x8
+// * unpackUnorm2x16
+// * unpackSnorm2x16
+// * unpackUnorm4x8
+// * unpackSnorm4x8
+// * packDouble2x32
+// * unpackDouble2x32
+// * packHalf2x16
+// * unpackHalf2x16
+//
+// 8.5 Geometric Functions
+//
 
 template <typename T>
 Vector3<T> cross(const Vector3<T> &x, const Vector3<T> &y) {
     return x.cross(y);
 }
+
+// 8.6 Matrix Functions
+//
+// * matrixCompMult
+// * outerProduct
+// * transpose
+// * determinant
+// * inverse
+//
+// 8.7 Vector Relational Functions
+//
+// * lessThan
+// * lessThanEqual
+// * greaterThan
+// * greaterThanEqual
+// * equal
+// * notEqual
+// * any
+// * all
+// * not
+//
+// 8.8 Integer Functions
+//
+// * uaddCarry
+// * usubBorrow
+// * umulExtended
+// * imulExtended
+// * bitfieldExtract
+// * bitfieldInsert
+// * bitfieldReverse
+// * bitCount
+// * findLSB
+// * findMSB
 
 template <typename T>
 Vector3<T> operator +(T a, const Vector3<T> &b) {
@@ -3100,7 +4721,7 @@ public:
     using Vector4Core<T>::w;
 
 public:
-    Vector4(T x)
+    explicit Vector4(T x)
         : Vector4Core<T>::Vector4Core(x)
         , GLSLIKE_VECTOR4_SWIZZLE()
     {}
@@ -3239,6 +4860,24 @@ public:
     //
     // glsl-like interface
     //
+
+    Vector4<T> operator +() const {
+        return Vector4<T>(
+            +x,
+            +y,
+            +z,
+            +w
+        );
+    }
+
+    Vector4<T> operator -() const {
+        return Vector4<T>(
+            -x,
+            -y,
+            -z,
+            -w
+        );
+    }
 
     Vector4<T> operator +(T rhs) const {
         return Vector4<T>(
@@ -4752,13 +6391,173 @@ public:
 
 };
 
+//
+// 8.1 Angle and Trigonometry Functions
+// These all operate component-wise.
+//
+
 template <typename T>
-Vector4<T> clamp(const Vector4<T> &value, T min, T max) {
+Vector4<T> radians(const Vector4<T> &degrees) {
     return Vector4<T>(
-        math<T>::clamp(value.x, min, max),
-        math<T>::clamp(value.y, min, max),
-        math<T>::clamp(value.z, min, max),
-        math<T>::clamp(value.w, min, max)
+        math<T>::radians(degrees.x),
+        math<T>::radians(degrees.y),
+        math<T>::radians(degrees.z),
+        math<T>::radians(degrees.w)
+    );
+}
+
+template <typename T>
+Vector4<T> degrees(const Vector4<T> &radians) {
+    return Vector4<T>(
+        math<T>::degrees(radians.x),
+        math<T>::degrees(radians.y),
+        math<T>::degrees(radians.z),
+        math<T>::degrees(radians.w)
+    );
+}
+
+template <typename T>
+Vector4<T> sin(const Vector4<T> &angle) {
+    return Vector4<T>(
+        math<T>::sin(angle.x),
+        math<T>::sin(angle.y),
+        math<T>::sin(angle.z),
+        math<T>::sin(angle.w)
+    );
+}
+
+template <typename T>
+Vector4<T> cos(const Vector4<T> &angle) {
+    return Vector4<T>(
+        math<T>::cos(angle.x),
+        math<T>::cos(angle.y),
+        math<T>::cos(angle.z),
+        math<T>::cos(angle.w)
+    );
+}
+
+template <typename T>
+Vector4<T> tan(const Vector4<T> & angle) {
+    return Vector4<T>(
+        math<T>::tan(angle.x),
+        math<T>::tan(angle.y),
+        math<T>::tan(angle.z),
+        math<T>::tan(angle.w)
+    );
+}
+
+template <typename T>
+Vector4<T> asin(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::asin(x.x),
+        math<T>::asin(x.y),
+        math<T>::asin(x.z),
+        math<T>::asin(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> acos(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::acos(x.x),
+        math<T>::acos(x.y),
+        math<T>::acos(x.z),
+        math<T>::acos(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> atan(const Vector4<T> &y, const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::atan(y.x, x.x),
+        math<T>::atan(y.y, x.y),
+        math<T>::atan(y.z, x.z),
+        math<T>::atan(y.w, x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> atan(const Vector4<T> &y_over_x) {
+    return Vector4<T>(
+        math<T>::atan(y_over_x.x),
+        math<T>::atan(y_over_x.y),
+        math<T>::atan(y_over_x.z),
+        math<T>::atan(y_over_x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> sinh(const Vector4<T> &angle) {
+    return Vector4<T>(
+        math<T>::sinh(angle.x),
+        math<T>::sinh(angle.y),
+        math<T>::sinh(angle.z),
+        math<T>::sinh(angle.w)
+    );
+}
+
+template <typename T>
+Vector4<T> cosh(const Vector4<T> &angle) {
+    return Vector4<T>(
+        math<T>::cosh(angle.x),
+        math<T>::cosh(angle.y),
+        math<T>::cosh(angle.z),
+        math<T>::cosh(angle.w)
+    );
+}
+
+template <typename T>
+Vector4<T> tanh(const Vector4<T> &angle) {
+    return Vector4<T>(
+        math<T>::tanh(angle.x),
+        math<T>::tanh(angle.y),
+        math<T>::tanh(angle.z),
+        math<T>::tanh(angle.w)
+    );
+}
+
+template <typename T>
+Vector4<T> asinh(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::asinh(x.x),
+        math<T>::asinh(x.y),
+        math<T>::asinh(x.z),
+        math<T>::asinh(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> acosh(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::acosh(x.x),
+        math<T>::acosh(x.y),
+        math<T>::acosh(x.z),
+        math<T>::acosh(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> atanh(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::atanh(x.x),
+        math<T>::atanh(x.y),
+        math<T>::atanh(x.z),
+        math<T>::atanh(x.w)
+    );
+}
+
+//
+// 8.2 Exponential Functions
+// These all operate component-wise.
+//
+
+template <typename T>
+Vector4<T> pow(const Vector4<T> &vec, T n) {
+    return Vector4<T>(
+        math<T>::pow(vec.x, n),
+        math<T>::pow(vec.y, n),
+        math<T>::pow(vec.z, n),
+        math<T>::pow(vec.w, n)
     );
 }
 
@@ -4773,14 +6572,367 @@ Vector4<T> exp(const Vector4<T> &vec) {
 }
 
 template <typename T>
-Vector4<T> pow(const Vector4<T> &vec, T n) {
+Vector4<T> log(const Vector4<T> &vec) {
     return Vector4<T>(
-        math<T>::pow(vec.x, n),
-        math<T>::pow(vec.y, n),
-        math<T>::pow(vec.z, n),
-        math<T>::pow(vec.w, n)
+        math<T>::log(vec.x),
+        math<T>::log(vec.y),
+        math<T>::log(vec.z),
+        math<T>::log(vec.w)
     );
 }
+
+template <typename T>
+Vector4<T> exp2(const Vector4<T> &vec) {
+    return Vector4<T>(
+        math<T>::exp2(vec.x),
+        math<T>::exp2(vec.y),
+        math<T>::exp2(vec.z),
+        math<T>::exp2(vec.w)
+    );
+}
+
+template <typename T>
+Vector4<T> log2(const Vector4<T> &vec) {
+    return Vector4<T>(
+        math<T>::log2(vec.x),
+        math<T>::log2(vec.y),
+        math<T>::log2(vec.z),
+        math<T>::log2(vec.w)
+    );
+}
+
+template <typename T>
+Vector4<T> sqrt(const Vector4<T> &vec) {
+    return Vector4<T>(
+        math<T>::sqrt(vec.x),
+        math<T>::sqrt(vec.y),
+        math<T>::sqrt(vec.z),
+        math<T>::sqrt(vec.w)
+    );
+}
+
+template <typename T>
+Vector4<T> inversesqrt(const Vector4<T> &vec) {
+    return Vector4<T>(
+        math<T>::inversesqrt(vec.x),
+        math<T>::inversesqrt(vec.y),
+        math<T>::inversesqrt(vec.z),
+        math<T>::inversesqrt(vec.w)
+    );
+}
+
+//
+// 8.3 Common Functions
+//
+
+template <typename T>
+Vector4<T> abs(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::abs(x.x),
+        math<T>::abs(x.y),
+        math<T>::abs(x.z),
+        math<T>::abs(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> sign(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::sign(x.x),
+        math<T>::sign(x.y),
+        math<T>::sign(x.z),
+        math<T>::sign(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> floor(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::floor(x.x),
+        math<T>::floor(x.y),
+        math<T>::floor(x.z),
+        math<T>::floor(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> trunc(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::trunc(x.x),
+        math<T>::trunc(x.y),
+        math<T>::trunc(x.z),
+        math<T>::trunc(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> round(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::round(x.x),
+        math<T>::round(x.y),
+        math<T>::round(x.z),
+        math<T>::round(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> roundEven(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::roundEven(x.x),
+        math<T>::roundEven(x.y),
+        math<T>::roundEven(x.z),
+        math<T>::roundEven(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> ceil(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::ceil(x.x),
+        math<T>::ceil(x.y),
+        math<T>::ceil(x.z),
+        math<T>::ceil(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> fract(const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::fract(x.x),
+        math<T>::fract(x.y),
+        math<T>::fract(x.z),
+        math<T>::fract(x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> mod(const Vector4<T> &x, const Vector4<T> &y) {
+    return Vector4<T>(
+        math<T>::mod(x.x, y.x),
+        math<T>::mod(x.y, y.y),
+        math<T>::mod(x.z, y.z),
+        math<T>::mod(x.w, y.w)
+    );
+}
+
+template <typename T>
+Vector4<T> mod(const Vector4<T> &x, T y) {
+    return Vector4<T>(
+        math<T>::mod(x.x, y),
+        math<T>::mod(x.y, y),
+        math<T>::mod(x.z, y),
+        math<T>::mod(x.w, y)
+    );
+}
+
+template <typename T>
+Vector4<T> modf(const Vector4<T> &x, Vector4<T> *i) {
+    return Vector4<T>(
+        math<T>::modf(x.x, &i->x),
+        math<T>::modf(x.y, &i->y),
+        math<T>::modf(x.z, &i->z),
+        math<T>::modf(x.w, &i->w)
+    );
+}
+
+template <typename T>
+Vector4<T> min(const Vector4<T> &a, const Vector4<T> &b) {
+    return Vector4<T>(
+        math<T>::min(a.x, b.x),
+        math<T>::min(a.y, b.y),
+        math<T>::min(a.z, b.z),
+        math<T>::min(a.w, b.w)
+    );
+}
+
+template <typename T>
+Vector4<T> min(const Vector4<T> &a, T b) {
+    return Vector4<T>(
+        math<T>::min(a.x, b),
+        math<T>::min(a.y, b),
+        math<T>::min(a.z, b),
+        math<T>::min(a.w, b)
+    );
+}
+
+template <typename T>
+Vector4<T> max(const Vector4<T> &a, const Vector4<T> &b) {
+    return Vector4<T>(
+        math<T>::max(a.x, b.x),
+        math<T>::max(a.y, b.y),
+        math<T>::max(a.z, b.z),
+        math<T>::max(a.w, b.w)
+    );
+}
+
+template <typename T>
+Vector4<T> max(const Vector4<T> &a, T b) {
+    return Vector4<T>(
+        math<T>::max(a.x, b),
+        math<T>::max(a.y, b),
+        math<T>::max(a.z, b),
+        math<T>::max(a.w, b)
+    );
+}
+
+template <typename T>
+Vector4<T> clamp(const Vector4<T> &value, const Vector4<T> &min, const Vector4<T> &max) {
+    return Vector4<T>(
+        math<T>::clamp(value.x, min.x, max.x),
+        math<T>::clamp(value.y, min.y, max.y),
+        math<T>::clamp(value.z, min.z, max.z),
+        math<T>::clamp(value.w, min.w, max.w)
+    );
+}
+
+template <typename T>
+Vector4<T> clamp(const Vector4<T> &value, T min, T max) {
+    return Vector4<T>(
+        math<T>::clamp(value.x, min, max),
+        math<T>::clamp(value.y, min, max),
+        math<T>::clamp(value.z, min, max),
+        math<T>::clamp(value.w, min, max)
+    );
+}
+
+template <typename T>
+Vector4<T> mix(const Vector4<T> &x, const Vector4<T> &y, const Vector4<T> &a) {
+    return Vector4<T>(
+        math<T>::mix(x.x, y.x, a.x),
+        math<T>::mix(x.y, y.y, a.y),
+        math<T>::mix(x.z, y.z, a.z),
+        math<T>::mix(x.w, y.w, a.w)
+    );
+}
+
+template <typename T>
+Vector4<T> mix(const Vector4<T> &x, const Vector4<T> &y, T a) {
+    return Vector4<T>(
+        math<T>::mix(x.x, y.x, a),
+        math<T>::mix(x.y, y.y, a),
+        math<T>::mix(x.z, y.z, a),
+        math<T>::mix(x.w, y.w, a)
+    );
+}
+
+template <typename T>
+Vector4<T> step(const Vector4<T> &edge, const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::step(edge.x, x.x),
+        math<T>::step(edge.y, x.y),
+        math<T>::step(edge.z, x.z),
+        math<T>::step(edge.w, x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> step(T edge, const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::step(edge, x.x),
+        math<T>::step(edge, x.y),
+        math<T>::step(edge, x.z),
+        math<T>::step(edge, x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> smoothstep(const Vector4<T> &edge0, const Vector4<T> &edge1, const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::smoothstep(edge0.x, edge1.x, x.x),
+        math<T>::smoothstep(edge0.y, edge1.y, x.y),
+        math<T>::smoothstep(edge0.z, edge1.z, x.z),
+        math<T>::smoothstep(edge0.w, edge1.w, x.w)
+    );
+}
+
+template <typename T>
+Vector4<T> smoothstep(T edge0, T edge1, const Vector4<T> &x) {
+    return Vector4<T>(
+        math<T>::smoothstep(edge0, edge1, x.x),
+        math<T>::smoothstep(edge0, edge1, x.y),
+        math<T>::smoothstep(edge0, edge1, x.z),
+        math<T>::smoothstep(edge0, edge1, x.w)
+    );
+}
+
+template <typename T>
+Vector4<Bool_t> isnan(const Vector4<T> &x) {
+    return Vector4<Bool_t>(
+        math<T>::isnan(x.x),
+        math<T>::isnan(x.y),
+        math<T>::isnan(x.z),
+        math<T>::isnan(x.w)
+    );
+}
+
+template <typename T>
+Vector4<Bool_t> isinf(const Vector4<T> &x) {
+    return Vector4<Bool_t>(
+        math<T>::isinf(x.x),
+        math<T>::isinf(x.y),
+        math<T>::isinf(x.z),
+        math<T>::isinf(x.w)
+    );
+}
+
+//
+// TODO:
+// * floatBitToInt
+// * floatBitToUint
+// * intBitsToFloat
+// * fma
+// * frexp
+// * ldexp
+//
+
+// 8.4 Floating-Point Pack and Unpack Functions
+//
+// * packUnorm2x16
+// * packSnorm2x16
+// * packUnorm4x8
+// * packSnorm4x8
+// * unpackUnorm2x16
+// * unpackSnorm2x16
+// * unpackUnorm4x8
+// * unpackSnorm4x8
+// * packDouble2x32
+// * unpackDouble2x32
+// * packHalf2x16
+// * unpackHalf2x16
+//
+// 8.6 Matrix Functions
+//
+// * matrixCompMult
+// * outerProduct
+// * transpose
+// * determinant
+// * inverse
+//
+// 8.7 Vector Relational Functions
+//
+// * lessThan
+// * lessThanEqual
+// * greaterThan
+// * greaterThanEqual
+// * equal
+// * notEqual
+// * any
+// * all
+// * not
+//
+// 8.8 Integer Functions
+//
+// * uaddCarry
+// * usubBorrow
+// * umulExtended
+// * imulExtended
+// * bitfieldExtract
+// * bitfieldInsert
+// * bitfieldReverse
+// * bitCount
+// * findLSB
+// * findMSB
+
 
 template <typename T>
 Vector4<T> operator +(T a, const Vector4<T> &b) {
@@ -4794,7 +6946,7 @@ Vector4<T> operator +(T a, const Vector4<T> &b) {
 
 template <typename T>
 Vector4<T> operator -(T a, const Vector4<T> &b) {
-    return Vector3<T>(
+    return Vector4<T>(
         a - b.x,
         a - b.y,
         a - b.z,
@@ -4804,7 +6956,7 @@ Vector4<T> operator -(T a, const Vector4<T> &b) {
 
 template <typename T>
 Vector4<T> operator *(T a, const Vector4<T> &b) {
-    return Vector3<T>(
+    return Vector4<T>(
         a * b.x,
         a * b.y,
         a * b.z,
@@ -4823,6 +6975,38 @@ Vector4<T> operator /(T a, const Vector4<T> &b) {
 }
 
 
+//=============================================================================
+// vec2, vec3, vec4 template
+//=============================================================================
+
+//
+// 8.4 Floating-Point Pack and Unpack Functions
+//
+// * packUnorm2x16
+// * packSnorm2x16
+// * packUnorm4x8
+// * packSnorm4x8
+// * unpackUnorm2x16
+// * unpackSnorm2x16
+// * unpackUnorm4x8
+// * unpackSnorm4x8
+// * packDouble2x32
+// * unpackDouble2x32
+// * packHalf2x16
+// * unpackHalf2x16
+//
+// 8.5 Geometric Functions
+//
+// * length
+// * distance
+// * dot
+// * cross
+// * normalize
+// * transform
+// * faceforward
+// * reflect
+// * refract
+//
 
 template <typename VectorT>
 typename VectorT::Type_t length(const VectorT &vec) {
@@ -4835,14 +7019,68 @@ typename VectorT::Type_t distance(const VectorT &p0, const VectorT &p1) {
 }
 
 template <typename VectorT>
+typename VectorT::Type_t dot(const VectorT &a, const VectorT &b) {
+    return a.dot(b);
+}
+
+template <typename VectorT>
 VectorT normalize(const VectorT &vec) {
     return vec.clone().normalize();
 }
 
 template <typename VectorT>
-typename VectorT::Type_t dot(const VectorT &a, const VectorT &b) {
-    return a.dot(b);
+VectorT faceforward(const VectorT &n, const VectorT &i, const VectorT &nref) {
+    return select(dot(nref, i) < 0.0f, n, -n);
 }
+
+template <typename VectorT>
+VectorT reflect(const VectorT &i, const VectorT &n) {
+    return i - 2 * dot(n, i) * n;
+}
+
+template <typename VectorT>
+VectorT refract(const VectorT &i, const VectorT &n, float eta) {
+    const auto k = 1.0f - eta * eta * (1.0f - dot(n, i) * dot(n, i));
+    return select(
+        k < 0.0f,
+        VectorT(0.0f),
+        eta * i - (eta * dot(n, i) + sqrt(k)) * n
+    );
+}
+
+//
+// 8.6 Matrix Functions
+//
+// * matrixCompMult
+// * outerProduct
+// * transpose
+// * determinant
+// * inverse
+//
+// 8.7 Vector Relational Functions
+//
+// * lessThan
+// * lessThanEqual
+// * greaterThan
+// * greaterThanEqual
+// * equal
+// * notEqual
+// * any
+// * all
+// * not
+//
+// 8.8 Integer Functions
+//
+// * uaddCarry
+// * usubBorrow
+// * umulExtended
+// * imulExtended
+// * bitfieldExtract
+// * bitfieldInsert
+// * bitfieldReverse
+// * bitCount
+// * findLSB
+// * findMSB
 
 
 template <typename T>
@@ -5075,5 +7313,8 @@ typedef Matrix2<float> mat2;
 typedef Matrix3<float> mat3;
 typedef Matrix4<float> mat4;
 #endif  // GLSLIKE_USE_HALIDE
+typedef Vector2<Bool_t> bvec2;
+typedef Vector3<Bool_t> bvec3;
+typedef Vector4<Bool_t> bvec4;
 
 }  // namespace glslike
