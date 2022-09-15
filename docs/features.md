@@ -16,16 +16,16 @@
 |6|bit-wise shift| `<<` ||||
 |7|relational| `<` `>` `<=` `>=` ||||
 |8|equality| `==` `!=` |✅|✅|✅|
-|9|bit-wise and| `&` |Left to Right|
-|10|bit-wise exclusive or| `^` |Left to Right|
-|11|bit-wise inclusive or| `|` |Left to Right|
-|12|logical and| `&&` |Left to Right|
-|13|logical exclusive or| `^^` |Left to Right|
-|14|logical inclusive or| `||` |Left to Right|
-|15|selection| `? :` |Right to Left|
-|16|Assignment| `=` |Right to Left|
-||arithmetic assignments| `+=` `-=` `*=` `/=` `%=` `<<=` `>>=` `&=` `^=` `|=` ||
-|17|sequence| `,` |Left to Right|
+|9|bit-wise and| `&` ||||
+|10|bit-wise exclusive or| `^` ||||
+|11|bit-wise inclusive or| `|` ||||
+|12|logical and| `&&` ||||
+|13|logical exclusive or| `^^` ||||
+|14|logical inclusive or| `\|\|` ||||
+|15|selection| `? :` ||||
+|16|Assignment| `=` ||||
+||arithmetic assignments| `+=` `-=` `*=` `/=` `%=` `<<=` `>>=` `&=` `^=` `\|=` ||||
+|17|sequence| `,` ||||
 
 
 ### 5.5 Vector and Scalar Components and Length
@@ -35,6 +35,7 @@
 ### 8.1 Angle and Trigonometry Functions
 
 |Function|float|vec2|vec3|vec4|
+|--------|-----|----|----|----|
 |radians|✅|✅|✅|✅|
 |degrees|✅|✅|✅|✅|
 |sin|✅|✅|✅|✅|
@@ -53,6 +54,7 @@
 ### 8.2 Exponential Functions
 
 |Function|float|vec2|vec3|vec4|
+|--------|-----|----|----|----|
 |pow|✅|✅|✅|✅|
 |exp|✅|✅|✅|✅|
 |log|✅|✅|✅|✅|
@@ -64,6 +66,7 @@
 ### 8.3 Common Functions
 
 |Function|float|vec2|vec3|vec4|
+|--------|-----|----|----|----|
 |abs|✅|✅|✅|✅|
 |sign|✅|✅|✅|✅|
 |floor|✅|✅|✅|✅|
@@ -91,6 +94,7 @@
 ### 8.4 Floating-Point Pack and Unpack Functions
 
 |Function|float|vec2|vec3|vec4|
+|--------|-----|----|----|----|
 |packUnorm2x16|||||
 |packSnorm2x16|||||
 |packUnorm4x8|||||
@@ -107,6 +111,7 @@
 ### 8.5 Geometric Functions
 
 |Function|float|vec2|vec3|vec4|
+|--------|-----|----|----|----|
 |length|✅|✅|✅|✅|
 |distance|✅|✅|✅|✅|
 |dot|✅|✅|✅|✅|
@@ -120,6 +125,7 @@
 ### 8.6 Matrix Functions
 
 |Function|float|vec2|vec3|vec4|
+|--------|-----|----|----|----|
 |matrixCompMult|||||
 |outerProduct|||||
 |transpose|||||
@@ -129,6 +135,7 @@
 ### 8.7 Vector Relational Functions
 
 |Function|float|vec2|vec3|vec4|
+|--------|-----|----|----|----|
 |lessThan|||||
 |lessThanEqual|||||
 |greaterThan|||||
@@ -142,6 +149,7 @@
 ### 8.8 Integer Functions
 
 |Function|float|vec2|vec3|vec4|
+|--------|-----|----|----|----|
 |uaddCarry|||||
 |usubBorrow|||||
 |umulExtended|||||
