@@ -14,6 +14,11 @@ std::uint8_t to256(float value) {
     return static_cast<std::uint8_t>(std::clamp(value, 0.0f, 1.0f) * 255.0f);
 }
 
+template <typename T>
+std::string repr(const T &value) {
+    return pybind11::repr(pybind11::cast(value));
+}
+
 template <typename T, int Dim>
 pybind11::array_t<std::uint8_t> realize(const pybind11::object &func, int size) {
     const float half = size / 2.0f;
@@ -579,7 +584,7 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__itruediv__", static_cast<vec2 &(vec2::*)(const vec2& )>(&vec2::operator /=))
         .def("__repr__", [](const vec2 &self) {
             std::ostringstream oss;
-            oss << std::scientific << "<vec2: (" << self.x << ", " << self.y << ")>";
+            oss << "<vec2: (" << repr(self.x) << ", " << repr(self.y) << ")>";
             return oss.str();
         })
         .def_property("x", [](const vec2 &self) {
@@ -743,7 +748,7 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__itruediv__", static_cast<vec3 &(vec3::*)(const vec3& )>(&vec3::operator /=))
         .def("__repr__", [](const vec3 &self) {
             std::ostringstream oss;
-            oss << std::scientific << "<vec3: (" << self.x << ", " << self.y << ", " << self.z << ")>";
+            oss << "<vec3: (" << repr(self.x) << ", " << repr(self.y) << ", " << repr(self.z) << ")>";
             return oss.str();
         })
         .def_property("x", [](const vec3 &self) {
@@ -938,7 +943,7 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__itruediv__", static_cast<vec4 &(vec4::*)(const vec4& )>(&vec4::operator /=))
         .def("__repr__", [](const vec4 &self) {
             std::ostringstream oss;
-            oss << std::scientific << "<vec4: (" << self.x << ", " << self.y << ", " << self.z << ", " << self.w << ")>";
+            oss << "<vec4: (" << repr(self.x) << ", " << repr(self.y) << ", " << repr(self.z) << ", " << repr(self.w) << ")>";
             return oss.str();
         })
         .def_property("x", [](const vec4 &self) {
@@ -1145,9 +1150,9 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__mul__", static_cast<mat2 (mat2::*)(const mat2 &) const>(&mat2::operator *))
         .def("__repr__", [](const mat2 &self) {
             std::ostringstream oss;
-            oss << std::scientific << "<mat2: ("
-                << self.f11 << ", " << self.f21 << ", "
-                << self.f12 << ", " << self.f22
+            oss << "<mat2: ("
+                << repr(self.f11) << ", " << repr(self.f21) << ", "
+                << repr(self.f12) << ", " << repr(self.f22)
                 << ")>";
             return oss.str();
         })
@@ -1164,10 +1169,10 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__mul__", static_cast<mat3 (mat3::*)(const mat3 &) const>(&mat3::operator *))
         .def("__repr__", [](const mat3 &self) {
             std::ostringstream oss;
-            oss << std::scientific << "<mat3: ("
-                << self.f11 << ", " << self.f21 << ", " << self.f31 << ", "
-                << self.f12 << ", " << self.f22 << ", " << self.f32 << ", "
-                << self.f13 << ", " << self.f23 << ", " << self.f33
+            oss << "<mat3: ("
+                << repr(self.f11) << ", " << repr(self.f21) << ", " << repr(self.f31) << ", "
+                << repr(self.f12) << ", " << repr(self.f22) << ", " << repr(self.f32) << ", "
+                << repr(self.f13) << ", " << repr(self.f23) << ", " << repr(self.f33)
                 << ")>";
             return oss.str();
         })
@@ -1185,11 +1190,11 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__mul__", static_cast<mat4 (mat4::*)(const mat4 &) const>(&mat4::operator *))
         .def("__repr__", [](const mat4 &self) {
             std::ostringstream oss;
-            oss << std::scientific << "<mat4: ("
-                << self.f11 << ", " << self.f21 << ", " << self.f31 << ", " << self.f41 << ", "
-                << self.f12 << ", " << self.f22 << ", " << self.f32 << ", " << self.f42 << ", "
-                << self.f13 << ", " << self.f23 << ", " << self.f33 << ", " << self.f43 << ", "
-                << self.f14 << ", " << self.f24 << ", " << self.f34 << ", " << self.f44
+            oss << "<mat4: ("
+                << repr(self.f11) << ", " << repr(self.f21) << ", " << repr(self.f31) << ", " << repr(self.f41) << ", "
+                << repr(self.f12) << ", " << repr(self.f22) << ", " << repr(self.f32) << ", " << repr(self.f42) << ", "
+                << repr(self.f13) << ", " << repr(self.f23) << ", " << repr(self.f33) << ", " << repr(self.f43) << ", "
+                << repr(self.f14) << ", " << repr(self.f24) << ", " << repr(self.f34) << ", " << repr(self.f44)
                 << ")>";
             return oss.str();
         })
