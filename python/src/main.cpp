@@ -582,6 +582,10 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__imul__", static_cast<vec2 &(vec2::*)(const vec2 &)>(&vec2::operator *=))
         .def("__itruediv__", static_cast<vec2 &(vec2::*)(float)>(&vec2::operator /=))
         .def("__itruediv__", static_cast<vec2 &(vec2::*)(const vec2& )>(&vec2::operator /=))
+        .def("__radd__", static_cast<vec2(*)(float, const vec2 &)>(&operator +))
+        .def("__rsub__", static_cast<vec2(*)(float, const vec2 &)>(&operator -))
+        .def("__rmul__", static_cast<vec2(*)(float, const vec2 &)>(&operator *))
+        .def("__rtruediv__", static_cast<vec2(*)(float, const vec2 &)>(&operator /))
         .def("__repr__", [](const vec2 &self) {
             std::ostringstream oss;
             oss << "vec2(" << repr(self.x) << ", " << repr(self.y) << ")";
@@ -746,6 +750,10 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__imul__", static_cast<vec3 &(vec3::*)(const vec3 &)>(&vec3::operator *=))
         .def("__itruediv__", static_cast<vec3 &(vec3::*)(float)>(&vec3::operator /=))
         .def("__itruediv__", static_cast<vec3 &(vec3::*)(const vec3& )>(&vec3::operator /=))
+        .def("__radd__", static_cast<vec3(*)(float, const vec3 &)>(&operator +))
+        .def("__rsub__", static_cast<vec3(*)(float, const vec3 &)>(&operator -))
+        .def("__rmul__", static_cast<vec3(*)(float, const vec3 &)>(&operator *))
+        .def("__rtruediv__", static_cast<vec3(*)(float, const vec3 &)>(&operator /))
         .def("__repr__", [](const vec3 &self) {
             std::ostringstream oss;
             oss << "vec3(" << repr(self.x) << ", " << repr(self.y) << ", " << repr(self.z) << ")";
@@ -941,6 +949,10 @@ PYBIND11_MODULE(__glslike, module) {
         .def("__imul__", static_cast<vec4 &(vec4::*)(const vec4 &)>(&vec4::operator *=))
         .def("__itruediv__", static_cast<vec4 &(vec4::*)(float)>(&vec4::operator /=))
         .def("__itruediv__", static_cast<vec4 &(vec4::*)(const vec4& )>(&vec4::operator /=))
+        .def("__radd__", static_cast<vec4(*)(float, const vec4 &)>(&operator +))
+        .def("__rsub__", static_cast<vec4(*)(float, const vec4 &)>(&operator -))
+        .def("__rmul__", static_cast<vec4(*)(float, const vec4 &)>(&operator *))
+        .def("__rtruediv__", static_cast<vec4(*)(float, const vec4 &)>(&operator /))
         .def("__repr__", [](const vec4 &self) {
             std::ostringstream oss;
             oss << "vec4(" << repr(self.x) << ", " << repr(self.y) << ", " << repr(self.z) << ", " << repr(self.w) << ")";
