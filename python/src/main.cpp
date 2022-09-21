@@ -5,7 +5,7 @@
 
 #define GLSLIKE_DISABLE_SWIZZLE
 #include "glslike.hpp"
-#include "glslike_io.hpp"
+//#include "glslike_io.hpp"
 
 using namespace glslike;
 

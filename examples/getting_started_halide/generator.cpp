@@ -19,7 +19,6 @@
 
 #define GLSLIKE_USE_HALIDE
 #include "glslike.hpp"
-#include "glslike_io.hpp"
 
 using namespace glslike;
 

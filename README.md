@@ -2,6 +2,11 @@
 
 ![GitHub](https://img.shields.io/github/license/mugwort-rc/glslike)
 
+## Supported compilers
+
+* gcc 9.4.0
+* clang 10.0.0
+
 ## Getting started
 
 ```cpp
@@ -64,7 +69,6 @@ int main() {
 ```cpp
 #define GLSLIKE_USE_HALIDE
 #include "glslike.hpp"
-#include "glslike_io.hpp"
 
 using namespace glslike;
 
