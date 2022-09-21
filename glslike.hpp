@@ -988,6 +988,8 @@ class Swizzle2 {
 public:
     Swizzle2(SelfT *self)
         : self(self)
+        , x(self->*attr1)
+        , y(self->*attr2)
     {}
 
     operator Vector2Core<T>() const {
@@ -998,6 +1000,9 @@ public:
     }
 
     const SelfT *self;
+
+    T &x;
+    T &y;
 };
 
 
@@ -1006,6 +1011,9 @@ class Swizzle3 {
 public:
     Swizzle3(SelfT *self)
         : self(self)
+        , x(self->*attr1)
+        , y(self->*attr2)
+        , z(self->*attr3)
     {}
 
     operator Vector3Core<T>() const {
@@ -1017,6 +1025,10 @@ public:
     }
 
     const SelfT *self;
+
+    T &x;
+    T &y;
+    T &z;
 };
 
 
@@ -1025,6 +1037,10 @@ class Swizzle4 {
 public:
     Swizzle4(SelfT *self)
         : self(self)
+        , x(self->*attr1)
+        , y(self->*attr2)
+        , z(self->*attr3)
+        , w(self->*attr4)
     {}
 
     operator Vector4Core<T>() const {
@@ -1037,6 +1053,11 @@ public:
     }
 
     const SelfT *self;
+
+    T &x;
+    T &y;
+    T &z;
+    T &w;
 };
 
 #endif  // GLSLIKE_DISABLE_SWIZZLE
@@ -1050,7 +1071,10 @@ public:
     , t(this)
 #else
 #define GLSLIKE_VECTOR2_SWIZZLE() \
-    GLSLIKE_VECTOR2_ALIAS() \
+    r(this) \
+    , g(this) \
+    , s(this) \
+    , t(this) \
     , xx(this) \
     , xy(this) \
     , yx(this) \
@@ -1175,7 +1199,6 @@ public:
     template <typename SwizzleT, typename std::enable_if<std::is_convertible<SwizzleT, Vector2Core<T>>::value>::type * = nullptr>
     Vector2(const SwizzleT &core)
         : Vector2Core<T>::Vector2Core(static_cast<Vector2Core<T>>(core))
-        , GLSLIKE_VECTOR2_ALIAS()
         , GLSLIKE_VECTOR2_SWIZZLE()
     {}
 #endif  // GLSLIKE_DISABLE_SWIZZLE
@@ -1994,6 +2017,169 @@ Vector2<T> operator /(T a, const Vector2<T> &b) {
     );
 }
 
+#ifndef GLSLIKE_DISABLE_SWIZZLE
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator +(const Swizzle2<T, SelfT, attr1, attr2> &a, const Vector2<T> &b) {
+    return Vector2<T>(
+        a.x + b.x,
+        a.y + b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator -(const Swizzle2<T, SelfT, attr1, attr2> &a, const Vector2<T> &b) {
+    return Vector2<T>(
+        a.x - b.x,
+        a.y - b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator *(const Swizzle2<T, SelfT, attr1, attr2> &a, const Vector2<T> &b) {
+    return Vector2<T>(
+        a.x * b.x,
+        a.y * b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator /(const Swizzle2<T, SelfT, attr1, attr2> &a, const Vector2<T> &b) {
+    return Vector2<T>(
+        a.x / b.x,
+        a.y / b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator +(const Vector2<T> & a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+    return Vector2<T>(
+        a.x + b.x,
+        a.y + b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator -(const Vector2<T> & a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+    return Vector2<T>(
+        a.x - b.x,
+        a.y - b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator *(const Vector2<T> & a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+    return Vector2<T>(
+        a.x * b.x,
+        a.y * b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator /(const Vector2<T> & a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+    return Vector2<T>(
+        a.x / b.x,
+        a.y / b.y
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2>
+Vector2<T> operator +(const Swizzle2<T, ASelfT, Aattr1, Aattr2> &a, const Swizzle2<T, BSelfT, Battr1, Battr2> &b) {
+    return Vector2<T>(
+        a.x + b.x,
+        a.y + b.y
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2>
+Vector2<T> operator -(const Swizzle2<T, ASelfT, Aattr1, Aattr2> &a, const Swizzle2<T, BSelfT, Battr1, Battr2> &b) {
+    return Vector2<T>(
+        a.x - b.x,
+        a.y - b.y
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2>
+Vector2<T> operator *(const Swizzle2<T, ASelfT, Aattr1, Aattr2> &a, const Swizzle2<T, BSelfT, Battr1, Battr2> &b) {
+    return Vector2<T>(
+        a.x * b.x,
+        a.y * b.y
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2>
+Vector2<T> operator /(const Swizzle2<T, ASelfT, Aattr1, Aattr2> &a, const Swizzle2<T, BSelfT, Battr1, Battr2> &b) {
+    return Vector2<T>(
+        a.x / b.x,
+        a.y / b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator +(const Swizzle2<T, SelfT, attr1, attr2> &a, T b) {
+    return Vector2<T>(
+        a.x + b,
+        a.y + b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator -(const Swizzle2<T, SelfT, attr1, attr2> &a, T b) {
+    return Vector2<T>(
+        a.x - b,
+        a.y - b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator *(const Swizzle2<T, SelfT, attr1, attr2> &a, T b) {
+    return Vector2<T>(
+        a.x * b,
+        a.y * b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator /(const Swizzle2<T, SelfT, attr1, attr2> &a, T b) {
+    return Vector2<T>(
+        a.x / b,
+        a.y / b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator +(T a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+    return Vector2<T>(
+        a + b.x,
+        a + b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator -(T a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+    return Vector2<T>(
+        a - b.x,
+        a - b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator *(T a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+    return Vector2<T>(
+        a * b.x,
+        a * b.y
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+Vector2<T> operator /(T a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+    return Vector2<T>(
+        a / b.x,
+        a / b.y
+    );
+}
+
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
 #ifdef GLSLIKE_DISABLE_SWIZZLE
 #define GLSLIKE_VECTOR3_SWIZZLE() \
@@ -3676,6 +3862,191 @@ Vector3<T> operator /(T a, const Vector3<T> &b) {
         a / b.z
     );
 }
+
+
+#ifndef GLSLIKE_DISABLE_SWIZZLE
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator +(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Vector3<T> &b) {
+    return Vector3<T>(
+        a.x + b.x,
+        a.y + b.y,
+        a.z + b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator -(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Vector3<T> &b) {
+    return Vector3<T>(
+        a.x - b.x,
+        a.y - b.y,
+        a.z - b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator *(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Vector3<T> &b) {
+    return Vector3<T>(
+        a.x * b.x,
+        a.y * b.y,
+        a.z * b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator /(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Vector3<T> &b) {
+    return Vector3<T>(
+        a.x / b.x,
+        a.y / b.y,
+        a.z / b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator +(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+    return Vector3<T>(
+        a.x + b.x,
+        a.y + b.y,
+        a.z + b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator -(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+    return Vector3<T>(
+        a.x - b.x,
+        a.y - b.y,
+        a.z - b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator *(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+    return Vector3<T>(
+        a.x * b.x,
+        a.y * b.y,
+        a.z * b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator /(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+    return Vector3<T>(
+        a.x / b.x,
+        a.y / b.y,
+        a.z / b.z
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3>
+Vector3<T> operator +(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, const Swizzle3<T, BSelfT, Battr1, Battr2, Battr3> &b) {
+    return Vector3<T>(
+        a.x + b.x,
+        a.y + b.y,
+        a.z + b.z
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3>
+Vector3<T> operator -(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, const Swizzle3<T, BSelfT, Battr1, Battr2, Battr3> &b) {
+    return Vector3<T>(
+        a.x - b.x,
+        a.y - b.y,
+        a.z - b.z
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3>
+Vector3<T> operator *(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, const Swizzle3<T, BSelfT, Battr1, Battr2, Battr3> &b) {
+    return Vector3<T>(
+        a.x * b.x,
+        a.y * b.y,
+        a.z * b.z
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3>
+Vector3<T> operator /(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, const Swizzle3<T, BSelfT, Battr1, Battr2, Battr3> &b) {
+    return Vector3<T>(
+        a.x / b.x,
+        a.y / b.y,
+        a.z / b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator +(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
+    return Vector3<T>(
+        a.x + b,
+        a.y + b,
+        a.z + b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator -(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
+    return Vector3<T>(
+        a.x - b,
+        a.y - b,
+        a.z - b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator *(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
+    return Vector3<T>(
+        a.x * b,
+        a.y * b,
+        a.z * b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator /(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
+    return Vector3<T>(
+        a.x / b,
+        a.y / b,
+        a.z / b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator +(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+    return Vector3<T>(
+        a + b.x,
+        a + b.y,
+        a + b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator -(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+    return Vector3<T>(
+        a - b.x,
+        a - b.y,
+        a - b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator *(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+    return Vector3<T>(
+        a * b.x,
+        a * b.y,
+        a * b.z
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+Vector3<T> operator /(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+    return Vector3<T>(
+        a / b.x,
+        a / b.y,
+        a / b.z
+    );
+}
+
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
 
 #ifdef GLSLIKE_DISABLE_SWIZZLE
@@ -6973,6 +7344,211 @@ Vector4<T> operator /(T a, const Vector4<T> &b) {
         a / b.w
     );
 }
+
+
+#ifndef GLSLIKE_DISABLE_SWIZZLE
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator +(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, const Vector4<T> &b) {
+    return Vector4<T>(
+        a.x + b.x,
+        a.y + b.y,
+        a.z + b.z,
+        a.w + b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator -(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, const Vector4<T> &b) {
+    return Vector4<T>(
+        a.x - b.x,
+        a.y - b.y,
+        a.z - b.z,
+        a.w - b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator *(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, const Vector4<T> &b) {
+    return Vector4<T>(
+        a.x * b.x,
+        a.y * b.y,
+        a.z * b.z,
+        a.w * b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator /(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, const Vector4<T> &b) {
+    return Vector4<T>(
+        a.x / b.x,
+        a.y / b.y,
+        a.z / b.z,
+        a.w / b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator +(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+    return Vector4<T>(
+        a.x + b.x,
+        a.y + b.y,
+        a.z + b.z,
+        a.w + b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator -(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+    return Vector4<T>(
+        a.x - b.x,
+        a.y - b.y,
+        a.z - b.z,
+        a.w - b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator *(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+    return Vector4<T>(
+        a.x * b.x,
+        a.y * b.y,
+        a.z * b.z,
+        a.w * b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator /(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+    return Vector4<T>(
+        a.x / b.x,
+        a.y / b.y,
+        a.z / b.z,
+        a.w / b.w
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, T ASelfT::Base_t::* Aattr4, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3, T BSelfT::Base_t::* Battr4>
+Vector4<T> operator +(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> &a, const Swizzle4<T, BSelfT, Battr1, Battr2, Battr3, Battr4> &b) {
+    return Vector4<T>(
+        a.x + b.x,
+        a.y + b.y,
+        a.z + b.z,
+        a.w + b.w
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, T ASelfT::Base_t::* Aattr4, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3, T BSelfT::Base_t::* Battr4>
+Vector4<T> operator -(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> &a, const Swizzle4<T, BSelfT, Battr1, Battr2, Battr3, Battr4> &b) {
+    return Vector4<T>(
+        a.x - b.x,
+        a.y - b.y,
+        a.z - b.z,
+        a.w - b.w
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, T ASelfT::Base_t::* Aattr4, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3, T BSelfT::Base_t::* Battr4>
+Vector4<T> operator *(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> &a, const Swizzle4<T, BSelfT, Battr1, Battr2, Battr3, Battr4> &b) {
+    return Vector4<T>(
+        a.x * b.x,
+        a.y * b.y,
+        a.z * b.z,
+        a.w * b.w
+    );
+}
+
+template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, T ASelfT::Base_t::* Aattr4, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3, T BSelfT::Base_t::* Battr4>
+Vector4<T> operator /(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> &a, const Swizzle4<T, BSelfT, Battr1, Battr2, Battr3, Battr4> &b) {
+    return Vector4<T>(
+        a.x / b.x,
+        a.y / b.y,
+        a.z / b.z,
+        a.w / b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator +(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T b) {
+    return Vector4<T>(
+        a.x + b,
+        a.y + b,
+        a.z + b,
+        a.w + b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator -(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T b) {
+    return Vector4<T>(
+        a.x - b,
+        a.y - b,
+        a.z - b,
+        a.w - b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator *(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T b) {
+    return Vector4<T>(
+        a.x * b,
+        a.y * b,
+        a.z * b,
+        a.w * b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator /(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T b) {
+    return Vector4<T>(
+        a.x / b,
+        a.y / b,
+        a.z / b,
+        a.w / b
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator +(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+    return Vector4<T>(
+        a + b.x,
+        a + b.y,
+        a + b.z,
+        a + b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator -(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+    return Vector4<T>(
+        a - b.x,
+        a - b.y,
+        a - b.z,
+        a - b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator *(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+    return Vector4<T>(
+        a * b.x,
+        a * b.y,
+        a * b.z,
+        a * b.w
+    );
+}
+
+template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
+Vector4<T> operator /(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+    return Vector4<T>(
+        a / b.x,
+        a / b.y,
+        a / b.z,
+        a / b.w
+    );
+}
+
+#endif  // GLSLIKE_DISABLE_SWIZZLE
 
 
 //=============================================================================

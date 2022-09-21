@@ -25,9 +25,417 @@ using namespace glslike;
 
 
 TEST(BuiltinFunctions, RoundEven) {
-    EXPECT_EQ(roundEven(1.4f), 1.0f);
+    EXPECT_EQ(roundEven(1.4f), 2.0f);
     EXPECT_EQ(roundEven(1.5f), 2.0f);
     EXPECT_EQ(roundEven(2.5f), 2.0f);
+    // For example, both 3.5 and 4.5 will round to 4.0.
+    EXPECT_EQ(roundEven(3.5f), 4.0f);
+    EXPECT_EQ(roundEven(4.5f), 4.0f);
+}
+
+
+TEST(GlslikeSwizzle2, Operators) {
+    vec2 vec(1.0f, 2.0f);
+
+    // swizzle + float
+    {
+        auto t = vec.xy + 1.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+    }
+    {
+        auto t = vec.xy - 1.0f;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 1.0f);
+    }
+    {
+        auto t = vec.xy * 2.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = vec.xy / 2.0f;
+        EXPECT_EQ(t.x, 0.5f);
+        EXPECT_EQ(t.y, 1.0f);
+    }
+
+    // float + swizzle
+    {
+        auto t = 1.0f + vec.xy;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+    }
+    {
+        auto t = 2.0f - vec.xy;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 0.0f);
+    }
+    {
+        auto t = 2.0f * vec.xy;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = 2.0f / vec.xy;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 1.0f);
+    }
+
+    // vector + swizzle
+    {
+        auto t = vec + vec.xy;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = vec - vec.xy;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 0.0f);
+    }
+    {
+        auto t = vec * vec.xy;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = vec / vec.xy;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 1.0f);
+    }
+
+    // swizzle + vector
+    {
+        auto t = vec.xy + vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = vec.xy - vec;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 0.0f);
+    }
+    {
+        auto t = vec.xy * vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = vec.xy / vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 1.0f);
+    }
+
+    // swizzle + swizzle
+    {
+        auto t = vec.xy + vec.yx;
+        EXPECT_EQ(t.x, 3.0f);
+        EXPECT_EQ(t.y, 3.0f);
+    }
+    {
+        auto t = vec.xy - vec.yx;
+        EXPECT_EQ(t.x, -1.0f);
+        EXPECT_EQ(t.y, 1.0f);
+    }
+    {
+        auto t = vec.xy * vec.yx;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 2.0f);
+    }
+    {
+        auto t = vec.xy / vec.yx;
+        EXPECT_EQ(t.x, 0.5f);
+        EXPECT_EQ(t.y, 2.0f);
+    }
+}
+
+
+TEST(GlslikeSwizzle3, Operators) {
+    vec3 vec(1.0f, 2.0f, 3.0f);
+
+    // swizzle + float
+    {
+        auto t = vec.xyz + 1.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+        EXPECT_EQ(t.z, 4.0f);
+    }
+    {
+        auto t = vec.xyz - 1.0f;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 2.0f);
+    }
+    {
+        auto t = vec.xyz * 2.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+    }
+    {
+        auto t = vec.xyz / 2.0f;
+        EXPECT_EQ(t.x, 0.5f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.5f);
+    }
+
+    // float + swizzle
+    {
+        auto t = 1.0f + vec.xyz;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+        EXPECT_EQ(t.z, 4.0f);
+    }
+    {
+        auto t = 2.0f - vec.xyz;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, -1.0f);
+    }
+    {
+        auto t = 2.0f * vec.xyz;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+    }
+    {
+        auto t = 3.0f / vec.xyz;
+        EXPECT_EQ(t.x, 3.0f);
+        EXPECT_EQ(t.y, 1.5f);
+        EXPECT_EQ(t.z, 1.0f);
+    }
+
+    // vector + swizzle
+    {
+        auto t = vec + vec.xyz;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+    }
+    {
+        auto t = vec - vec.xyz;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, 0.0f);
+    }
+    {
+        auto t = vec * vec.xyz;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 9.0f);
+    }
+    {
+        auto t = vec / vec.xyz;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.0f);
+    }
+
+    // swizzle + vector
+    {
+        auto t = vec.xyz + vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+    }
+    {
+        auto t = vec.xyz - vec;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, 0.0f);
+    }
+    {
+        auto t = vec.xyz * vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 9.0f);
+    }
+    {
+        auto t = vec.xyz / vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.0f);
+    }
+
+    // swizzle + swizzle
+    {
+        auto t = vec.xyz + vec.zyx;
+        EXPECT_EQ(t.x, 4.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 4.0f);
+    }
+    {
+        auto t = vec.xyz - vec.zyx;
+        EXPECT_EQ(t.x, -2.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, 2.0f);
+    }
+    {
+        auto t = vec.xyz * vec.zyx;
+        EXPECT_EQ(t.x, 3.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 3.0f);
+    }
+    {
+        auto t = vec.xyz / vec.zyx;
+        EXPECT_EQ(t.x, 1.0f / 3.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 3.0f);
+    }
+}
+
+
+TEST(GlslikeSwizzle4, Operators) {
+    vec4 vec(1.0f, 2.0f, 3.0f, 4.0f);
+
+    // swizzle + float
+    {
+        auto t = vec.xyzw + 1.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+        EXPECT_EQ(t.z, 4.0f);
+        EXPECT_EQ(t.w, 5.0f);
+    }
+    {
+        auto t = vec.xyzw - 1.0f;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 2.0f);
+        EXPECT_EQ(t.w, 3.0f);
+    }
+    {
+        auto t = vec.xyzw * 2.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+        EXPECT_EQ(t.w, 8.0f);
+    }
+    {
+        auto t = vec.xyzw / 2.0f;
+        EXPECT_EQ(t.x, 0.5f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.5f);
+        EXPECT_EQ(t.w, 2.0f);
+    }
+
+    // float + swizzle
+    {
+        auto t = 1.0f + vec.xyzw;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+        EXPECT_EQ(t.z, 4.0f);
+        EXPECT_EQ(t.w, 5.0f);
+    }
+    {
+        auto t = 2.0f - vec.xyzw;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, -1.0f);
+        EXPECT_EQ(t.w, -2.0f);
+    }
+    {
+        auto t = 2.0f * vec.xyzw;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+        EXPECT_EQ(t.w, 8.0f);
+    }
+    {
+        auto t = 3.0f / vec.xyzw;
+        EXPECT_EQ(t.x, 3.0f);
+        EXPECT_EQ(t.y, 1.5f);
+        EXPECT_EQ(t.z, 1.0f);
+        EXPECT_EQ(t.w, 0.75f);
+    }
+
+    // vector + swizzle
+    {
+        auto t = vec + vec.xyzw;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+        EXPECT_EQ(t.w, 8.0f);
+    }
+    {
+        auto t = vec - vec.xyzw;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, 0.0f);
+        EXPECT_EQ(t.w, 0.0f);
+    }
+    {
+        auto t = vec * vec.xyzw;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 9.0f);
+        EXPECT_EQ(t.w, 16.0f);
+    }
+    {
+        auto t = vec / vec.xyzw;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.0f);
+        EXPECT_EQ(t.w, 1.0f);
+    }
+
+    // swizzle + vector
+    {
+        auto t = vec.xyzw + vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+        EXPECT_EQ(t.w, 8.0f);
+    }
+    {
+        auto t = vec.xyzw - vec;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, 0.0f);
+        EXPECT_EQ(t.w, 0.0f);
+    }
+    {
+        auto t = vec.xyzw * vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 9.0f);
+        EXPECT_EQ(t.w, 16.0f);
+    }
+    {
+        auto t = vec.xyzw / vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.0f);
+        EXPECT_EQ(t.w, 1.0f);
+    }
+
+    // swizzle + swizzle
+    {
+        auto t = vec.xyzw + vec.wzyx;
+        EXPECT_EQ(t.x, 5.0f);
+        EXPECT_EQ(t.y, 5.0f);
+        EXPECT_EQ(t.z, 5.0f);
+        EXPECT_EQ(t.w, 5.0f);
+    }
+    {
+        auto t = vec.xyzw - vec.wzyx;
+        EXPECT_EQ(t.x, -3.0f);
+        EXPECT_EQ(t.y, -1.0f);
+        EXPECT_EQ(t.z, 1.0f);
+        EXPECT_EQ(t.w, 3.0f);
+    }
+    {
+        auto t = vec.xyzw * vec.wzyx;
+        EXPECT_EQ(t.x, 4.0f);
+        EXPECT_EQ(t.y, 6.0f);
+        EXPECT_EQ(t.z, 6.0f);
+        EXPECT_EQ(t.w, 4.0f);
+    }
+    {
+        auto t = vec.xyzw / vec.wzyx;
+        EXPECT_EQ(t.x, 0.25f);
+        EXPECT_EQ(t.y, 2.0f / 3.0f);
+        EXPECT_EQ(t.z, 1.5f);
+        EXPECT_EQ(t.w, 4.0f);
+    }
 }
 
 
