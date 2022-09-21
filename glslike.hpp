@@ -983,48 +983,42 @@ public:
 
 #ifndef GLSLIKE_DISABLE_SWIZZLE
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
+template <typename T>
 class Swizzle2 {
 public:
-    Swizzle2(SelfT *self)
-        : self(self)
-        , x(self->*attr1)
-        , y(self->*attr2)
+    Swizzle2(T &x, T &y)
+        : x(x)
+        , y(y)
     {}
 
     operator Vector2Core<T>() const {
         return Vector2Core<T>(
-            self->*attr1,
-            self->*attr2
+            x,
+            y
         );
     }
-
-    const SelfT *self;
 
     T &x;
     T &y;
 };
 
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
+template <typename T>
 class Swizzle3 {
 public:
-    Swizzle3(SelfT *self)
-        : self(self)
-        , x(self->*attr1)
-        , y(self->*attr2)
-        , z(self->*attr3)
+    Swizzle3(T &x, T &y, T &z)
+        : x(x)
+        , y(y)
+        , z(z)
     {}
 
     operator Vector3Core<T>() const {
         return Vector3Core<T>(
-            self->*attr1,
-            self->*attr2,
-            self->*attr3
+            x,
+            y,
+            z
         );
     }
-
-    const SelfT *self;
 
     T &x;
     T &y;
@@ -1032,27 +1026,24 @@ public:
 };
 
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::*attr4>
+template <typename T>
 class Swizzle4 {
 public:
-    Swizzle4(SelfT *self)
-        : self(self)
-        , x(self->*attr1)
-        , y(self->*attr2)
-        , z(self->*attr3)
-        , w(self->*attr4)
+    Swizzle4(T &x, T &y, T &z, T &w)
+        : x(x)
+        , y(y)
+        , z(z)
+        , w(w)
     {}
 
     operator Vector4Core<T>() const {
         return Vector4Core<T>(
-            self->*attr1,
-            self->*attr2,
-            self->*attr3,
-            self->*attr4
+            x,
+            y,
+            z,
+            w
         );
     }
-
-    const SelfT *self;
 
     T &x;
     T &y;
@@ -1065,100 +1056,100 @@ public:
 
 #ifdef GLSLIKE_DISABLE_SWIZZLE
 #define GLSLIKE_VECTOR2_SWIZZLE() \
-    r(this) \
-    , g(this) \
-    , s(this) \
-    , t(this)
+    r(this->x) \
+    , g(this->y) \
+    , s(this->x) \
+    , t(this->y)
 #else
 #define GLSLIKE_VECTOR2_SWIZZLE() \
-    r(this) \
-    , g(this) \
-    , s(this) \
-    , t(this) \
-    , xx(this) \
-    , xy(this) \
-    , yx(this) \
-    , yy(this) \
-    , rr(this) \
-    , rg(this) \
-    , gr(this) \
-    , gg(this) \
-    , ss(this) \
-    , st(this) \
-    , ts(this) \
-    , tt(this) \
-    , xxx(this) \
-    , xxy(this) \
-    , xyx(this) \
-    , xyy(this) \
-    , yxx(this) \
-    , yxy(this) \
-    , yyx(this) \
-    , yyy(this) \
-    , rrr(this) \
-    , rrg(this) \
-    , rgr(this) \
-    , rgg(this) \
-    , grr(this) \
-    , grg(this) \
-    , ggr(this) \
-    , ggg(this) \
-    , sss(this) \
-    , sst(this) \
-    , sts(this) \
-    , stt(this) \
-    , tss(this) \
-    , tst(this) \
-    , tts(this) \
-    , ttt(this) \
-    , xxxx(this) \
-    , xxxy(this) \
-    , xxyx(this) \
-    , xxyy(this) \
-    , xyxx(this) \
-    , xyxy(this) \
-    , xyyx(this) \
-    , xyyy(this) \
-    , yxxx(this) \
-    , yxxy(this) \
-    , yxyx(this) \
-    , yxyy(this) \
-    , yyxx(this) \
-    , yyxy(this) \
-    , yyyx(this) \
-    , yyyy(this) \
-    , rrrr(this) \
-    , rrrg(this) \
-    , rrgr(this) \
-    , rrgg(this) \
-    , rgrr(this) \
-    , rgrg(this) \
-    , rggr(this) \
-    , rggg(this) \
-    , grrr(this) \
-    , grrg(this) \
-    , grgr(this) \
-    , grgg(this) \
-    , ggrr(this) \
-    , ggrg(this) \
-    , gggr(this) \
-    , gggg(this) \
-    , ssss(this) \
-    , ssst(this) \
-    , ssts(this) \
-    , sstt(this) \
-    , stss(this) \
-    , stst(this) \
-    , stts(this) \
-    , sttt(this) \
-    , tsss(this) \
-    , tsst(this) \
-    , tsts(this) \
-    , tstt(this) \
-    , ttss(this) \
-    , ttst(this) \
-    , ttts(this) \
-    , tttt(this)
+    r(this->x) \
+    , g(this->y) \
+    , s(this->x) \
+    , t(this->y) \
+    , xx(this->x, this->x) \
+    , xy(this->x, this->y) \
+    , yx(this->y, this->x) \
+    , yy(this->y, this->y) \
+    , rr(this->x, this->x) \
+    , rg(this->x, this->y) \
+    , gr(this->y, this->x) \
+    , gg(this->y, this->y) \
+    , ss(this->x, this->x) \
+    , st(this->x, this->y) \
+    , ts(this->y, this->x) \
+    , tt(this->y, this->y) \
+    , xxx(this->x, this->x, this->x) \
+    , xxy(this->x, this->x, this->y) \
+    , xyx(this->x, this->y, this->x) \
+    , xyy(this->x, this->y, this->y) \
+    , yxx(this->y, this->x, this->x) \
+    , yxy(this->y, this->x, this->y) \
+    , yyx(this->y, this->y, this->x) \
+    , yyy(this->y, this->y, this->y) \
+    , rrr(this->x, this->x, this->x) \
+    , rrg(this->x, this->x, this->y) \
+    , rgr(this->x, this->y, this->x) \
+    , rgg(this->x, this->y, this->y) \
+    , grr(this->y, this->x, this->x) \
+    , grg(this->y, this->x, this->y) \
+    , ggr(this->y, this->y, this->x) \
+    , ggg(this->y, this->y, this->y) \
+    , sss(this->x, this->x, this->x) \
+    , sst(this->x, this->x, this->y) \
+    , sts(this->x, this->y, this->x) \
+    , stt(this->x, this->y, this->y) \
+    , tss(this->y, this->x, this->x) \
+    , tst(this->y, this->x, this->y) \
+    , tts(this->y, this->y, this->x) \
+    , ttt(this->y, this->y, this->y) \
+    , xxxx(this->x, this->x, this->x, this->x) \
+    , xxxy(this->x, this->x, this->x, this->y) \
+    , xxyx(this->x, this->x, this->y, this->x) \
+    , xxyy(this->x, this->x, this->y, this->y) \
+    , xyxx(this->x, this->y, this->x, this->x) \
+    , xyxy(this->x, this->y, this->x, this->y) \
+    , xyyx(this->x, this->y, this->y, this->x) \
+    , xyyy(this->x, this->y, this->y, this->y) \
+    , yxxx(this->y, this->x, this->x, this->x) \
+    , yxxy(this->y, this->x, this->x, this->y) \
+    , yxyx(this->y, this->x, this->y, this->x) \
+    , yxyy(this->y, this->x, this->y, this->y) \
+    , yyxx(this->y, this->y, this->x, this->x) \
+    , yyxy(this->y, this->y, this->x, this->y) \
+    , yyyx(this->y, this->y, this->y, this->x) \
+    , yyyy(this->y, this->y, this->y, this->y) \
+    , rrrr(this->x, this->x, this->x, this->x) \
+    , rrrg(this->x, this->x, this->x, this->y) \
+    , rrgr(this->x, this->x, this->y, this->x) \
+    , rrgg(this->x, this->x, this->y, this->y) \
+    , rgrr(this->x, this->y, this->x, this->x) \
+    , rgrg(this->x, this->y, this->x, this->y) \
+    , rggr(this->x, this->y, this->y, this->x) \
+    , rggg(this->x, this->y, this->y, this->y) \
+    , grrr(this->y, this->x, this->x, this->x) \
+    , grrg(this->y, this->x, this->x, this->y) \
+    , grgr(this->y, this->x, this->y, this->x) \
+    , grgg(this->y, this->x, this->y, this->y) \
+    , ggrr(this->y, this->y, this->x, this->x) \
+    , ggrg(this->y, this->y, this->x, this->y) \
+    , gggr(this->y, this->y, this->y, this->x) \
+    , gggg(this->y, this->y, this->y, this->y) \
+    , ssss(this->x, this->x, this->x, this->x) \
+    , ssst(this->x, this->x, this->x, this->y) \
+    , ssts(this->x, this->x, this->y, this->x) \
+    , sstt(this->x, this->x, this->y, this->y) \
+    , stss(this->x, this->y, this->x, this->x) \
+    , stst(this->x, this->y, this->x, this->y) \
+    , stts(this->x, this->y, this->y, this->x) \
+    , sttt(this->x, this->y, this->y, this->y) \
+    , tsss(this->y, this->x, this->x, this->x) \
+    , tsst(this->y, this->x, this->x, this->y) \
+    , tsts(this->y, this->x, this->y, this->x) \
+    , tstt(this->y, this->x, this->y, this->y) \
+    , ttss(this->y, this->y, this->x, this->x) \
+    , ttst(this->y, this->y, this->x, this->y) \
+    , ttts(this->y, this->y, this->y, this->x) \
+    , tttt(this->y, this->y, this->y, this->y)
 #endif  // GLSLIKE_DISABLE_SWIZZLE
 
 template <typename T>
@@ -1396,142 +1387,108 @@ public:
 
 public:
     // rgba
-    alias<T, Vector2<T>, &Vector2Core<T>::x> r;
-    alias<T, Vector2<T>, &Vector2Core<T>::y> g;
+    T &r;
+    T &g;
     // stpq
-    alias<T, Vector2<T>, &Vector2Core<T>::x> s;
-    alias<T, Vector2<T>, &Vector2Core<T>::y> t;
+    T &s;
+    T &t;
 
 #ifndef GLSLIKE_DISABLE_SWIZZLE
 public:
-    // >>> for v in itertools.product("xy", repeat=2): print("".join(v))
-    // ...
-    // xx
-    // xy
-    // yx
-    // yy
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x> xx;
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y> xy;
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x> yx;
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y> yy;
+    Swizzle2<T> xx;
+    Swizzle2<T> xy;
+    Swizzle2<T> yx;
+    Swizzle2<T> yy;
     // alias rg
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x> rr;
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y> rg;
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x> gr;
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y> gg;
+    Swizzle2<T> rr;
+    Swizzle2<T> rg;
+    Swizzle2<T> gr;
+    Swizzle2<T> gg;
     // alias st
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x> ss;
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y> st;
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x> ts;
-    Swizzle2<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y> tt;
+    Swizzle2<T> ss;
+    Swizzle2<T> st;
+    Swizzle2<T> ts;
+    Swizzle2<T> tt;
 
 public:
-    // >>> for v in itertools.product("xy", repeat=3): print("".join(v))
-    // ...
-    // xxx
-    // xxy
-    // xyx
-    // xyy
-    // yxx
-    // yxy
-    // yyx
-    // yyy
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x> xxx;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y> xxy;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x> xyx;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y> xyy;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x> yxx;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> yxy;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> yyx;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> yyy;
+    Swizzle3<T> xxx;
+    Swizzle3<T> xxy;
+    Swizzle3<T> xyx;
+    Swizzle3<T> xyy;
+    Swizzle3<T> yxx;
+    Swizzle3<T> yxy;
+    Swizzle3<T> yyx;
+    Swizzle3<T> yyy;
     // alias rg
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x> rrr;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y> rrg;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x> rgr;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y> rgg;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x> grr;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> grg;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> ggr;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> ggg;
+    Swizzle3<T> rrr;
+    Swizzle3<T> rrg;
+    Swizzle3<T> rgr;
+    Swizzle3<T> rgg;
+    Swizzle3<T> grr;
+    Swizzle3<T> grg;
+    Swizzle3<T> ggr;
+    Swizzle3<T> ggg;
     // alias st
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x> sss;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y> sst;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x> sts;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y> stt;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x> tss;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> tst;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> tts;
-    Swizzle3<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> ttt;
+    Swizzle3<T> sss;
+    Swizzle3<T> sst;
+    Swizzle3<T> sts;
+    Swizzle3<T> stt;
+    Swizzle3<T> tss;
+    Swizzle3<T> tst;
+    Swizzle3<T> tts;
+    Swizzle3<T> ttt;
 
 public:
-    // >>> for v in itertools.product("xy", repeat=4): print("".join(v))
-    // ...
-    // xxxx
-    // xxxy
-    // xxyx
-    // xxyy
-    // xyxx
-    // xyxy
-    // xyyx
-    // xyyy
-    // yxxx
-    // yxxy
-    // yxyx
-    // yxyy
-    // yyxx
-    // yyxy
-    // yyyx
-    // yyyy
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x> xxxx;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y> xxxy;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x> xxyx;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y> xxyy;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x> xyxx;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> xyxy;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> xyyx;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> xyyy;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x> yxxx;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y> yxxy;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x> yxyx;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y> yxyy;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x> yyxx;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> yyxy;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> yyyx;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> yyyy;
+    Swizzle4<T> xxxx;
+    Swizzle4<T> xxxy;
+    Swizzle4<T> xxyx;
+    Swizzle4<T> xxyy;
+    Swizzle4<T> xyxx;
+    Swizzle4<T> xyxy;
+    Swizzle4<T> xyyx;
+    Swizzle4<T> xyyy;
+    Swizzle4<T> yxxx;
+    Swizzle4<T> yxxy;
+    Swizzle4<T> yxyx;
+    Swizzle4<T> yxyy;
+    Swizzle4<T> yyxx;
+    Swizzle4<T> yyxy;
+    Swizzle4<T> yyyx;
+    Swizzle4<T> yyyy;
     // alias rg
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x> rrrr;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y> rrrg;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x> rrgr;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y> rrgg;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x> rgrr;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> rgrg;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> rggr;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> rggg;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x> grrr;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y> grrg;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x> grgr;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y> grgg;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x> ggrr;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> ggrg;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> gggr;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> gggg;
+    Swizzle4<T> rrrr;
+    Swizzle4<T> rrrg;
+    Swizzle4<T> rrgr;
+    Swizzle4<T> rrgg;
+    Swizzle4<T> rgrr;
+    Swizzle4<T> rgrg;
+    Swizzle4<T> rggr;
+    Swizzle4<T> rggg;
+    Swizzle4<T> grrr;
+    Swizzle4<T> grrg;
+    Swizzle4<T> grgr;
+    Swizzle4<T> grgg;
+    Swizzle4<T> ggrr;
+    Swizzle4<T> ggrg;
+    Swizzle4<T> gggr;
+    Swizzle4<T> gggg;
     // alias st
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x> ssss;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y> ssst;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x> ssts;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y> sstt;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x> stss;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> stst;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> stts;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> sttt;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::x> tsss;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x, &Vector2Core<T>::y> tsst;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::x> tsts;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y, &Vector2Core<T>::y> tstt;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::x> ttss;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x, &Vector2Core<T>::y> ttst;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::x> ttts;
-    Swizzle4<T, Vector2<T>, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y, &Vector2Core<T>::y> tttt;
+    Swizzle4<T> ssss;
+    Swizzle4<T> ssst;
+    Swizzle4<T> ssts;
+    Swizzle4<T> sstt;
+    Swizzle4<T> stss;
+    Swizzle4<T> stst;
+    Swizzle4<T> stts;
+    Swizzle4<T> sttt;
+    Swizzle4<T> tsss;
+    Swizzle4<T> tsst;
+    Swizzle4<T> tsts;
+    Swizzle4<T> tstt;
+    Swizzle4<T> ttss;
+    Swizzle4<T> ttst;
+    Swizzle4<T> ttts;
+    Swizzle4<T> tttt;
 #endif  // GLSLIKE_DISABLE_SWIZZLE
 
 };
@@ -2019,160 +1976,160 @@ Vector2<T> operator /(T a, const Vector2<T> &b) {
 
 #ifndef GLSLIKE_DISABLE_SWIZZLE
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator +(const Swizzle2<T, SelfT, attr1, attr2> &a, const Vector2<T> &b) {
+template <typename T>
+Vector2<T> operator +(const Swizzle2<T> &a, const Vector2<T> &b) {
     return Vector2<T>(
         a.x + b.x,
         a.y + b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator -(const Swizzle2<T, SelfT, attr1, attr2> &a, const Vector2<T> &b) {
+template <typename T>
+Vector2<T> operator -(const Swizzle2<T> &a, const Vector2<T> &b) {
     return Vector2<T>(
         a.x - b.x,
         a.y - b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator *(const Swizzle2<T, SelfT, attr1, attr2> &a, const Vector2<T> &b) {
+template <typename T>
+Vector2<T> operator *(const Swizzle2<T> &a, const Vector2<T> &b) {
     return Vector2<T>(
         a.x * b.x,
         a.y * b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator /(const Swizzle2<T, SelfT, attr1, attr2> &a, const Vector2<T> &b) {
+template <typename T>
+Vector2<T> operator /(const Swizzle2<T> &a, const Vector2<T> &b) {
     return Vector2<T>(
         a.x / b.x,
         a.y / b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator +(const Vector2<T> & a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+template <typename T>
+Vector2<T> operator +(const Vector2<T> & a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a.x + b.x,
         a.y + b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator -(const Vector2<T> & a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+template <typename T>
+Vector2<T> operator -(const Vector2<T> & a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a.x - b.x,
         a.y - b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator *(const Vector2<T> & a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+template <typename T>
+Vector2<T> operator *(const Vector2<T> & a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a.x * b.x,
         a.y * b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator /(const Vector2<T> & a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+template <typename T>
+Vector2<T> operator /(const Vector2<T> & a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a.x / b.x,
         a.y / b.y
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2>
-Vector2<T> operator +(const Swizzle2<T, ASelfT, Aattr1, Aattr2> &a, const Swizzle2<T, BSelfT, Battr1, Battr2> &b) {
+template <typename T>
+Vector2<T> operator +(const Swizzle2<T> &a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a.x + b.x,
         a.y + b.y
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2>
-Vector2<T> operator -(const Swizzle2<T, ASelfT, Aattr1, Aattr2> &a, const Swizzle2<T, BSelfT, Battr1, Battr2> &b) {
+template <typename T>
+Vector2<T> operator -(const Swizzle2<T> &a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a.x - b.x,
         a.y - b.y
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2>
-Vector2<T> operator *(const Swizzle2<T, ASelfT, Aattr1, Aattr2> &a, const Swizzle2<T, BSelfT, Battr1, Battr2> &b) {
+template <typename T>
+Vector2<T> operator *(const Swizzle2<T> &a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a.x * b.x,
         a.y * b.y
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2>
-Vector2<T> operator /(const Swizzle2<T, ASelfT, Aattr1, Aattr2> &a, const Swizzle2<T, BSelfT, Battr1, Battr2> &b) {
+template <typename T>
+Vector2<T> operator /(const Swizzle2<T> &a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a.x / b.x,
         a.y / b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator +(const Swizzle2<T, SelfT, attr1, attr2> &a, T b) {
+template <typename T>
+Vector2<T> operator +(const Swizzle2<T> &a, T b) {
     return Vector2<T>(
         a.x + b,
         a.y + b
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator -(const Swizzle2<T, SelfT, attr1, attr2> &a, T b) {
+template <typename T>
+Vector2<T> operator -(const Swizzle2<T> &a, T b) {
     return Vector2<T>(
         a.x - b,
         a.y - b
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator *(const Swizzle2<T, SelfT, attr1, attr2> &a, T b) {
+template <typename T>
+Vector2<T> operator *(const Swizzle2<T> &a, T b) {
     return Vector2<T>(
         a.x * b,
         a.y * b
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator /(const Swizzle2<T, SelfT, attr1, attr2> &a, T b) {
+template <typename T>
+Vector2<T> operator /(const Swizzle2<T> &a, T b) {
     return Vector2<T>(
         a.x / b,
         a.y / b
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator +(T a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+template <typename T>
+Vector2<T> operator +(T a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a + b.x,
         a + b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator -(T a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+template <typename T>
+Vector2<T> operator -(T a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a - b.x,
         a - b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator *(T a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+template <typename T>
+Vector2<T> operator *(T a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a * b.x,
         a * b.y
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2>
-Vector2<T> operator /(T a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
+template <typename T>
+Vector2<T> operator /(T a, const Swizzle2<T> &b) {
     return Vector2<T>(
         a / b.x,
         a / b.y
@@ -2183,371 +2140,371 @@ Vector2<T> operator /(T a, const Swizzle2<T, SelfT, attr1, attr2> &b) {
 
 #ifdef GLSLIKE_DISABLE_SWIZZLE
 #define GLSLIKE_VECTOR3_SWIZZLE() \
-    r(this) \
-    , g(this) \
-    , b(this) \
-    , s(this) \
-    , t(this) \
-    , p(this)
+    r(this->x) \
+    , g(this->y) \
+    , b(this->z) \
+    , s(this->x) \
+    , t(this->y) \
+    , p(this->z)
 #else
 #define GLSLIKE_VECTOR3_SWIZZLE() \
-    r(this) \
-    , g(this) \
-    , b(this) \
-    , s(this) \
-    , t(this) \
-    , p(this) \
-    , xx(this) \
-    , xy(this) \
-    , xz(this) \
-    , yx(this) \
-    , yy(this) \
-    , yz(this) \
-    , zx(this) \
-    , zy(this) \
-    , zz(this) \
-    , rr(this) \
-    , rg(this) \
-    , rb(this) \
-    , gr(this) \
-    , gg(this) \
-    , gb(this) \
-    , br(this) \
-    , bg(this) \
-    , bb(this) \
-    , ss(this) \
-    , st(this) \
-    , sp(this) \
-    , ts(this) \
-    , tt(this) \
-    , tp(this) \
-    , ps(this) \
-    , pt(this) \
-    , pp(this) \
-    , xxx(this) \
-    , xxy(this) \
-    , xxz(this) \
-    , xyx(this) \
-    , xyy(this) \
-    , xyz(this) \
-    , xzx(this) \
-    , xzy(this) \
-    , xzz(this) \
-    , yxx(this) \
-    , yxy(this) \
-    , yxz(this) \
-    , yyx(this) \
-    , yyy(this) \
-    , yyz(this) \
-    , yzx(this) \
-    , yzy(this) \
-    , yzz(this) \
-    , zxx(this) \
-    , zxy(this) \
-    , zxz(this) \
-    , zyx(this) \
-    , zyy(this) \
-    , zyz(this) \
-    , zzx(this) \
-    , zzy(this) \
-    , zzz(this) \
-    , rrr(this) \
-    , rrg(this) \
-    , rrb(this) \
-    , rgr(this) \
-    , rgg(this) \
-    , rgb(this) \
-    , rbr(this) \
-    , rbg(this) \
-    , rbb(this) \
-    , grr(this) \
-    , grg(this) \
-    , grb(this) \
-    , ggr(this) \
-    , ggg(this) \
-    , ggb(this) \
-    , gbr(this) \
-    , gbg(this) \
-    , gbb(this) \
-    , brr(this) \
-    , brg(this) \
-    , brb(this) \
-    , bgr(this) \
-    , bgg(this) \
-    , bgb(this) \
-    , bbr(this) \
-    , bbg(this) \
-    , bbb(this) \
-    , sss(this) \
-    , sst(this) \
-    , ssp(this) \
-    , sts(this) \
-    , stt(this) \
-    , stp(this) \
-    , sps(this) \
-    , spt(this) \
-    , spp(this) \
-    , tss(this) \
-    , tst(this) \
-    , tsp(this) \
-    , tts(this) \
-    , ttt(this) \
-    , ttp(this) \
-    , tps(this) \
-    , tpt(this) \
-    , tpp(this) \
-    , pss(this) \
-    , pst(this) \
-    , psp(this) \
-    , pts(this) \
-    , ptt(this) \
-    , ptp(this) \
-    , pps(this) \
-    , ppt(this) \
-    , ppp(this) \
-    , xxxx(this) \
-    , xxxy(this) \
-    , xxxz(this) \
-    , xxyx(this) \
-    , xxyy(this) \
-    , xxyz(this) \
-    , xxzx(this) \
-    , xxzy(this) \
-    , xxzz(this) \
-    , xyxx(this) \
-    , xyxy(this) \
-    , xyxz(this) \
-    , xyyx(this) \
-    , xyyy(this) \
-    , xyyz(this) \
-    , xyzx(this) \
-    , xyzy(this) \
-    , xyzz(this) \
-    , xzxx(this) \
-    , xzxy(this) \
-    , xzxz(this) \
-    , xzyx(this) \
-    , xzyy(this) \
-    , xzyz(this) \
-    , xzzx(this) \
-    , xzzy(this) \
-    , xzzz(this) \
-    , yxxx(this) \
-    , yxxy(this) \
-    , yxxz(this) \
-    , yxyx(this) \
-    , yxyy(this) \
-    , yxyz(this) \
-    , yxzx(this) \
-    , yxzy(this) \
-    , yxzz(this) \
-    , yyxx(this) \
-    , yyxy(this) \
-    , yyxz(this) \
-    , yyyx(this) \
-    , yyyy(this) \
-    , yyyz(this) \
-    , yyzx(this) \
-    , yyzy(this) \
-    , yyzz(this) \
-    , yzxx(this) \
-    , yzxy(this) \
-    , yzxz(this) \
-    , yzyx(this) \
-    , yzyy(this) \
-    , yzyz(this) \
-    , yzzx(this) \
-    , yzzy(this) \
-    , yzzz(this) \
-    , zxxx(this) \
-    , zxxy(this) \
-    , zxxz(this) \
-    , zxyx(this) \
-    , zxyy(this) \
-    , zxyz(this) \
-    , zxzx(this) \
-    , zxzy(this) \
-    , zxzz(this) \
-    , zyxx(this) \
-    , zyxy(this) \
-    , zyxz(this) \
-    , zyyx(this) \
-    , zyyy(this) \
-    , zyyz(this) \
-    , zyzx(this) \
-    , zyzy(this) \
-    , zyzz(this) \
-    , zzxx(this) \
-    , zzxy(this) \
-    , zzxz(this) \
-    , zzyx(this) \
-    , zzyy(this) \
-    , zzyz(this) \
-    , zzzx(this) \
-    , zzzy(this) \
-    , zzzz(this) \
-    , rrrr(this) \
-    , rrrg(this) \
-    , rrrb(this) \
-    , rrgr(this) \
-    , rrgg(this) \
-    , rrgb(this) \
-    , rrbr(this) \
-    , rrbg(this) \
-    , rrbb(this) \
-    , rgrr(this) \
-    , rgrg(this) \
-    , rgrb(this) \
-    , rggr(this) \
-    , rggg(this) \
-    , rggb(this) \
-    , rgbr(this) \
-    , rgbg(this) \
-    , rgbb(this) \
-    , rbrr(this) \
-    , rbrg(this) \
-    , rbrb(this) \
-    , rbgr(this) \
-    , rbgg(this) \
-    , rbgb(this) \
-    , rbbr(this) \
-    , rbbg(this) \
-    , rbbb(this) \
-    , grrr(this) \
-    , grrg(this) \
-    , grrb(this) \
-    , grgr(this) \
-    , grgg(this) \
-    , grgb(this) \
-    , grbr(this) \
-    , grbg(this) \
-    , grbb(this) \
-    , ggrr(this) \
-    , ggrg(this) \
-    , ggrb(this) \
-    , gggr(this) \
-    , gggg(this) \
-    , gggb(this) \
-    , ggbr(this) \
-    , ggbg(this) \
-    , ggbb(this) \
-    , gbrr(this) \
-    , gbrg(this) \
-    , gbrb(this) \
-    , gbgr(this) \
-    , gbgg(this) \
-    , gbgb(this) \
-    , gbbr(this) \
-    , gbbg(this) \
-    , gbbb(this) \
-    , brrr(this) \
-    , brrg(this) \
-    , brrb(this) \
-    , brgr(this) \
-    , brgg(this) \
-    , brgb(this) \
-    , brbr(this) \
-    , brbg(this) \
-    , brbb(this) \
-    , bgrr(this) \
-    , bgrg(this) \
-    , bgrb(this) \
-    , bggr(this) \
-    , bggg(this) \
-    , bggb(this) \
-    , bgbr(this) \
-    , bgbg(this) \
-    , bgbb(this) \
-    , bbrr(this) \
-    , bbrg(this) \
-    , bbrb(this) \
-    , bbgr(this) \
-    , bbgg(this) \
-    , bbgb(this) \
-    , bbbr(this) \
-    , bbbg(this) \
-    , bbbb(this) \
-    , ssss(this) \
-    , ssst(this) \
-    , sssp(this) \
-    , ssts(this) \
-    , sstt(this) \
-    , sstp(this) \
-    , ssps(this) \
-    , sspt(this) \
-    , sspp(this) \
-    , stss(this) \
-    , stst(this) \
-    , stsp(this) \
-    , stts(this) \
-    , sttt(this) \
-    , sttp(this) \
-    , stps(this) \
-    , stpt(this) \
-    , stpp(this) \
-    , spss(this) \
-    , spst(this) \
-    , spsp(this) \
-    , spts(this) \
-    , sptt(this) \
-    , sptp(this) \
-    , spps(this) \
-    , sppt(this) \
-    , sppp(this) \
-    , tsss(this) \
-    , tsst(this) \
-    , tssp(this) \
-    , tsts(this) \
-    , tstt(this) \
-    , tstp(this) \
-    , tsps(this) \
-    , tspt(this) \
-    , tspp(this) \
-    , ttss(this) \
-    , ttst(this) \
-    , ttsp(this) \
-    , ttts(this) \
-    , tttt(this) \
-    , tttp(this) \
-    , ttps(this) \
-    , ttpt(this) \
-    , ttpp(this) \
-    , tpss(this) \
-    , tpst(this) \
-    , tpsp(this) \
-    , tpts(this) \
-    , tptt(this) \
-    , tptp(this) \
-    , tpps(this) \
-    , tppt(this) \
-    , tppp(this) \
-    , psss(this) \
-    , psst(this) \
-    , pssp(this) \
-    , psts(this) \
-    , pstt(this) \
-    , pstp(this) \
-    , psps(this) \
-    , pspt(this) \
-    , pspp(this) \
-    , ptss(this) \
-    , ptst(this) \
-    , ptsp(this) \
-    , ptts(this) \
-    , pttt(this) \
-    , pttp(this) \
-    , ptps(this) \
-    , ptpt(this) \
-    , ptpp(this) \
-    , ppss(this) \
-    , ppst(this) \
-    , ppsp(this) \
-    , ppts(this) \
-    , pptt(this) \
-    , pptp(this) \
-    , ppps(this) \
-    , pppt(this) \
-    , pppp(this)
+    r(this->x) \
+    , g(this->y) \
+    , b(this->z) \
+    , s(this->x) \
+    , t(this->y) \
+    , p(this->z) \
+    , xx(this->x, this->x) \
+    , xy(this->x, this->y) \
+    , xz(this->x, this->z) \
+    , yx(this->y, this->x) \
+    , yy(this->y, this->y) \
+    , yz(this->y, this->z) \
+    , zx(this->z, this->x) \
+    , zy(this->z, this->y) \
+    , zz(this->z, this->z) \
+    , rr(this->x, this->x) \
+    , rg(this->x, this->y) \
+    , rb(this->x, this->z) \
+    , gr(this->y, this->x) \
+    , gg(this->y, this->y) \
+    , gb(this->y, this->z) \
+    , br(this->z, this->x) \
+    , bg(this->z, this->y) \
+    , bb(this->z, this->z) \
+    , ss(this->x, this->x) \
+    , st(this->x, this->y) \
+    , sp(this->x, this->z) \
+    , ts(this->y, this->x) \
+    , tt(this->y, this->y) \
+    , tp(this->y, this->z) \
+    , ps(this->z, this->x) \
+    , pt(this->z, this->y) \
+    , pp(this->z, this->z) \
+    , xxx(this->x, this->x, this->x) \
+    , xxy(this->x, this->x, this->y) \
+    , xxz(this->x, this->x, this->z) \
+    , xyx(this->x, this->y, this->x) \
+    , xyy(this->x, this->y, this->y) \
+    , xyz(this->x, this->y, this->z) \
+    , xzx(this->x, this->z, this->x) \
+    , xzy(this->x, this->z, this->y) \
+    , xzz(this->x, this->z, this->z) \
+    , yxx(this->y, this->x, this->x) \
+    , yxy(this->y, this->x, this->y) \
+    , yxz(this->y, this->x, this->z) \
+    , yyx(this->y, this->y, this->x) \
+    , yyy(this->y, this->y, this->y) \
+    , yyz(this->y, this->y, this->z) \
+    , yzx(this->y, this->z, this->x) \
+    , yzy(this->y, this->z, this->y) \
+    , yzz(this->y, this->z, this->z) \
+    , zxx(this->z, this->x, this->x) \
+    , zxy(this->z, this->x, this->y) \
+    , zxz(this->z, this->x, this->z) \
+    , zyx(this->z, this->y, this->x) \
+    , zyy(this->z, this->y, this->y) \
+    , zyz(this->z, this->y, this->z) \
+    , zzx(this->z, this->z, this->x) \
+    , zzy(this->z, this->z, this->y) \
+    , zzz(this->z, this->z, this->z) \
+    , rrr(this->x, this->x, this->x) \
+    , rrg(this->x, this->x, this->y) \
+    , rrb(this->x, this->x, this->z) \
+    , rgr(this->x, this->y, this->x) \
+    , rgg(this->x, this->y, this->y) \
+    , rgb(this->x, this->y, this->z) \
+    , rbr(this->x, this->z, this->x) \
+    , rbg(this->x, this->z, this->y) \
+    , rbb(this->x, this->z, this->z) \
+    , grr(this->y, this->x, this->x) \
+    , grg(this->y, this->x, this->y) \
+    , grb(this->y, this->x, this->z) \
+    , ggr(this->y, this->y, this->x) \
+    , ggg(this->y, this->y, this->y) \
+    , ggb(this->y, this->y, this->z) \
+    , gbr(this->y, this->z, this->x) \
+    , gbg(this->y, this->z, this->y) \
+    , gbb(this->y, this->z, this->z) \
+    , brr(this->z, this->x, this->x) \
+    , brg(this->z, this->x, this->y) \
+    , brb(this->z, this->x, this->z) \
+    , bgr(this->z, this->y, this->x) \
+    , bgg(this->z, this->y, this->y) \
+    , bgb(this->z, this->y, this->z) \
+    , bbr(this->z, this->z, this->x) \
+    , bbg(this->z, this->z, this->y) \
+    , bbb(this->z, this->z, this->z) \
+    , sss(this->x, this->x, this->x) \
+    , sst(this->x, this->x, this->y) \
+    , ssp(this->x, this->x, this->z) \
+    , sts(this->x, this->y, this->x) \
+    , stt(this->x, this->y, this->y) \
+    , stp(this->x, this->y, this->z) \
+    , sps(this->x, this->z, this->x) \
+    , spt(this->x, this->z, this->y) \
+    , spp(this->x, this->z, this->z) \
+    , tss(this->y, this->x, this->x) \
+    , tst(this->y, this->x, this->y) \
+    , tsp(this->y, this->x, this->z) \
+    , tts(this->y, this->y, this->x) \
+    , ttt(this->y, this->y, this->y) \
+    , ttp(this->y, this->y, this->z) \
+    , tps(this->y, this->z, this->x) \
+    , tpt(this->y, this->z, this->y) \
+    , tpp(this->y, this->z, this->z) \
+    , pss(this->z, this->x, this->x) \
+    , pst(this->z, this->x, this->y) \
+    , psp(this->z, this->x, this->z) \
+    , pts(this->z, this->y, this->x) \
+    , ptt(this->z, this->y, this->y) \
+    , ptp(this->z, this->y, this->z) \
+    , pps(this->z, this->z, this->x) \
+    , ppt(this->z, this->z, this->y) \
+    , ppp(this->z, this->z, this->z) \
+    , xxxx(this->x, this->x, this->x, this->x) \
+    , xxxy(this->x, this->x, this->x, this->y) \
+    , xxxz(this->x, this->x, this->x, this->z) \
+    , xxyx(this->x, this->x, this->y, this->x) \
+    , xxyy(this->x, this->x, this->y, this->y) \
+    , xxyz(this->x, this->x, this->y, this->z) \
+    , xxzx(this->x, this->x, this->z, this->x) \
+    , xxzy(this->x, this->x, this->z, this->y) \
+    , xxzz(this->x, this->x, this->z, this->z) \
+    , xyxx(this->x, this->y, this->x, this->x) \
+    , xyxy(this->x, this->y, this->x, this->y) \
+    , xyxz(this->x, this->y, this->x, this->z) \
+    , xyyx(this->x, this->y, this->y, this->x) \
+    , xyyy(this->x, this->y, this->y, this->y) \
+    , xyyz(this->x, this->y, this->y, this->z) \
+    , xyzx(this->x, this->y, this->z, this->x) \
+    , xyzy(this->x, this->y, this->z, this->y) \
+    , xyzz(this->x, this->y, this->z, this->z) \
+    , xzxx(this->x, this->z, this->x, this->x) \
+    , xzxy(this->x, this->z, this->x, this->y) \
+    , xzxz(this->x, this->z, this->x, this->z) \
+    , xzyx(this->x, this->z, this->y, this->x) \
+    , xzyy(this->x, this->z, this->y, this->y) \
+    , xzyz(this->x, this->z, this->y, this->z) \
+    , xzzx(this->x, this->z, this->z, this->x) \
+    , xzzy(this->x, this->z, this->z, this->y) \
+    , xzzz(this->x, this->z, this->z, this->z) \
+    , yxxx(this->y, this->x, this->x, this->x) \
+    , yxxy(this->y, this->x, this->x, this->y) \
+    , yxxz(this->y, this->x, this->x, this->z) \
+    , yxyx(this->y, this->x, this->y, this->x) \
+    , yxyy(this->y, this->x, this->y, this->y) \
+    , yxyz(this->y, this->x, this->y, this->z) \
+    , yxzx(this->y, this->x, this->z, this->x) \
+    , yxzy(this->y, this->x, this->z, this->y) \
+    , yxzz(this->y, this->x, this->z, this->z) \
+    , yyxx(this->y, this->y, this->x, this->x) \
+    , yyxy(this->y, this->y, this->x, this->y) \
+    , yyxz(this->y, this->y, this->x, this->z) \
+    , yyyx(this->y, this->y, this->y, this->x) \
+    , yyyy(this->y, this->y, this->y, this->y) \
+    , yyyz(this->y, this->y, this->y, this->z) \
+    , yyzx(this->y, this->y, this->z, this->x) \
+    , yyzy(this->y, this->y, this->z, this->y) \
+    , yyzz(this->y, this->y, this->z, this->z) \
+    , yzxx(this->y, this->z, this->x, this->x) \
+    , yzxy(this->y, this->z, this->x, this->y) \
+    , yzxz(this->y, this->z, this->x, this->z) \
+    , yzyx(this->y, this->z, this->y, this->x) \
+    , yzyy(this->y, this->z, this->y, this->y) \
+    , yzyz(this->y, this->z, this->y, this->z) \
+    , yzzx(this->y, this->z, this->z, this->x) \
+    , yzzy(this->y, this->z, this->z, this->y) \
+    , yzzz(this->y, this->z, this->z, this->z) \
+    , zxxx(this->z, this->x, this->x, this->x) \
+    , zxxy(this->z, this->x, this->x, this->y) \
+    , zxxz(this->z, this->x, this->x, this->z) \
+    , zxyx(this->z, this->x, this->y, this->x) \
+    , zxyy(this->z, this->x, this->y, this->y) \
+    , zxyz(this->z, this->x, this->y, this->z) \
+    , zxzx(this->z, this->x, this->z, this->x) \
+    , zxzy(this->z, this->x, this->z, this->y) \
+    , zxzz(this->z, this->x, this->z, this->z) \
+    , zyxx(this->z, this->y, this->x, this->x) \
+    , zyxy(this->z, this->y, this->x, this->y) \
+    , zyxz(this->z, this->y, this->x, this->z) \
+    , zyyx(this->z, this->y, this->y, this->x) \
+    , zyyy(this->z, this->y, this->y, this->y) \
+    , zyyz(this->z, this->y, this->y, this->z) \
+    , zyzx(this->z, this->y, this->z, this->x) \
+    , zyzy(this->z, this->y, this->z, this->y) \
+    , zyzz(this->z, this->y, this->z, this->z) \
+    , zzxx(this->z, this->z, this->x, this->x) \
+    , zzxy(this->z, this->z, this->x, this->y) \
+    , zzxz(this->z, this->z, this->x, this->z) \
+    , zzyx(this->z, this->z, this->y, this->x) \
+    , zzyy(this->z, this->z, this->y, this->y) \
+    , zzyz(this->z, this->z, this->y, this->z) \
+    , zzzx(this->z, this->z, this->z, this->x) \
+    , zzzy(this->z, this->z, this->z, this->y) \
+    , zzzz(this->z, this->z, this->z, this->z) \
+    , rrrr(this->x, this->x, this->x, this->x) \
+    , rrrg(this->x, this->x, this->x, this->y) \
+    , rrrb(this->x, this->x, this->x, this->z) \
+    , rrgr(this->x, this->x, this->y, this->x) \
+    , rrgg(this->x, this->x, this->y, this->y) \
+    , rrgb(this->x, this->x, this->y, this->z) \
+    , rrbr(this->x, this->x, this->z, this->x) \
+    , rrbg(this->x, this->x, this->z, this->y) \
+    , rrbb(this->x, this->x, this->z, this->z) \
+    , rgrr(this->x, this->y, this->x, this->x) \
+    , rgrg(this->x, this->y, this->x, this->y) \
+    , rgrb(this->x, this->y, this->x, this->z) \
+    , rggr(this->x, this->y, this->y, this->x) \
+    , rggg(this->x, this->y, this->y, this->y) \
+    , rggb(this->x, this->y, this->y, this->z) \
+    , rgbr(this->x, this->y, this->z, this->x) \
+    , rgbg(this->x, this->y, this->z, this->y) \
+    , rgbb(this->x, this->y, this->z, this->z) \
+    , rbrr(this->x, this->z, this->x, this->x) \
+    , rbrg(this->x, this->z, this->x, this->y) \
+    , rbrb(this->x, this->z, this->x, this->z) \
+    , rbgr(this->x, this->z, this->y, this->x) \
+    , rbgg(this->x, this->z, this->y, this->y) \
+    , rbgb(this->x, this->z, this->y, this->z) \
+    , rbbr(this->x, this->z, this->z, this->x) \
+    , rbbg(this->x, this->z, this->z, this->y) \
+    , rbbb(this->x, this->z, this->z, this->z) \
+    , grrr(this->y, this->x, this->x, this->x) \
+    , grrg(this->y, this->x, this->x, this->y) \
+    , grrb(this->y, this->x, this->x, this->z) \
+    , grgr(this->y, this->x, this->y, this->x) \
+    , grgg(this->y, this->x, this->y, this->y) \
+    , grgb(this->y, this->x, this->y, this->z) \
+    , grbr(this->y, this->x, this->z, this->x) \
+    , grbg(this->y, this->x, this->z, this->y) \
+    , grbb(this->y, this->x, this->z, this->z) \
+    , ggrr(this->y, this->y, this->x, this->x) \
+    , ggrg(this->y, this->y, this->x, this->y) \
+    , ggrb(this->y, this->y, this->x, this->z) \
+    , gggr(this->y, this->y, this->y, this->x) \
+    , gggg(this->y, this->y, this->y, this->y) \
+    , gggb(this->y, this->y, this->y, this->z) \
+    , ggbr(this->y, this->y, this->z, this->x) \
+    , ggbg(this->y, this->y, this->z, this->y) \
+    , ggbb(this->y, this->y, this->z, this->z) \
+    , gbrr(this->y, this->z, this->x, this->x) \
+    , gbrg(this->y, this->z, this->x, this->y) \
+    , gbrb(this->y, this->z, this->x, this->z) \
+    , gbgr(this->y, this->z, this->y, this->x) \
+    , gbgg(this->y, this->z, this->y, this->y) \
+    , gbgb(this->y, this->z, this->y, this->z) \
+    , gbbr(this->y, this->z, this->z, this->x) \
+    , gbbg(this->y, this->z, this->z, this->y) \
+    , gbbb(this->y, this->z, this->z, this->z) \
+    , brrr(this->z, this->x, this->x, this->x) \
+    , brrg(this->z, this->x, this->x, this->y) \
+    , brrb(this->z, this->x, this->x, this->z) \
+    , brgr(this->z, this->x, this->y, this->x) \
+    , brgg(this->z, this->x, this->y, this->y) \
+    , brgb(this->z, this->x, this->y, this->z) \
+    , brbr(this->z, this->x, this->z, this->x) \
+    , brbg(this->z, this->x, this->z, this->y) \
+    , brbb(this->z, this->x, this->z, this->z) \
+    , bgrr(this->z, this->y, this->x, this->x) \
+    , bgrg(this->z, this->y, this->x, this->y) \
+    , bgrb(this->z, this->y, this->x, this->z) \
+    , bggr(this->z, this->y, this->y, this->x) \
+    , bggg(this->z, this->y, this->y, this->y) \
+    , bggb(this->z, this->y, this->y, this->z) \
+    , bgbr(this->z, this->y, this->z, this->x) \
+    , bgbg(this->z, this->y, this->z, this->y) \
+    , bgbb(this->z, this->y, this->z, this->z) \
+    , bbrr(this->z, this->z, this->x, this->x) \
+    , bbrg(this->z, this->z, this->x, this->y) \
+    , bbrb(this->z, this->z, this->x, this->z) \
+    , bbgr(this->z, this->z, this->y, this->x) \
+    , bbgg(this->z, this->z, this->y, this->y) \
+    , bbgb(this->z, this->z, this->y, this->z) \
+    , bbbr(this->z, this->z, this->z, this->x) \
+    , bbbg(this->z, this->z, this->z, this->y) \
+    , bbbb(this->z, this->z, this->z, this->z) \
+    , ssss(this->x, this->x, this->x, this->x) \
+    , ssst(this->x, this->x, this->x, this->y) \
+    , sssp(this->x, this->x, this->x, this->z) \
+    , ssts(this->x, this->x, this->y, this->x) \
+    , sstt(this->x, this->x, this->y, this->y) \
+    , sstp(this->x, this->x, this->y, this->z) \
+    , ssps(this->x, this->x, this->z, this->x) \
+    , sspt(this->x, this->x, this->z, this->y) \
+    , sspp(this->x, this->x, this->z, this->z) \
+    , stss(this->x, this->y, this->x, this->x) \
+    , stst(this->x, this->y, this->x, this->y) \
+    , stsp(this->x, this->y, this->x, this->z) \
+    , stts(this->x, this->y, this->y, this->x) \
+    , sttt(this->x, this->y, this->y, this->y) \
+    , sttp(this->x, this->y, this->y, this->z) \
+    , stps(this->x, this->y, this->z, this->x) \
+    , stpt(this->x, this->y, this->z, this->y) \
+    , stpp(this->x, this->y, this->z, this->z) \
+    , spss(this->x, this->z, this->x, this->x) \
+    , spst(this->x, this->z, this->x, this->y) \
+    , spsp(this->x, this->z, this->x, this->z) \
+    , spts(this->x, this->z, this->y, this->x) \
+    , sptt(this->x, this->z, this->y, this->y) \
+    , sptp(this->x, this->z, this->y, this->z) \
+    , spps(this->x, this->z, this->z, this->x) \
+    , sppt(this->x, this->z, this->z, this->y) \
+    , sppp(this->x, this->z, this->z, this->z) \
+    , tsss(this->y, this->x, this->x, this->x) \
+    , tsst(this->y, this->x, this->x, this->y) \
+    , tssp(this->y, this->x, this->x, this->z) \
+    , tsts(this->y, this->x, this->y, this->x) \
+    , tstt(this->y, this->x, this->y, this->y) \
+    , tstp(this->y, this->x, this->y, this->z) \
+    , tsps(this->y, this->x, this->z, this->x) \
+    , tspt(this->y, this->x, this->z, this->y) \
+    , tspp(this->y, this->x, this->z, this->z) \
+    , ttss(this->y, this->y, this->x, this->x) \
+    , ttst(this->y, this->y, this->x, this->y) \
+    , ttsp(this->y, this->y, this->x, this->z) \
+    , ttts(this->y, this->y, this->y, this->x) \
+    , tttt(this->y, this->y, this->y, this->y) \
+    , tttp(this->y, this->y, this->y, this->z) \
+    , ttps(this->y, this->y, this->z, this->x) \
+    , ttpt(this->y, this->y, this->z, this->y) \
+    , ttpp(this->y, this->y, this->z, this->z) \
+    , tpss(this->y, this->z, this->x, this->x) \
+    , tpst(this->y, this->z, this->x, this->y) \
+    , tpsp(this->y, this->z, this->x, this->z) \
+    , tpts(this->y, this->z, this->y, this->x) \
+    , tptt(this->y, this->z, this->y, this->y) \
+    , tptp(this->y, this->z, this->y, this->z) \
+    , tpps(this->y, this->z, this->z, this->x) \
+    , tppt(this->y, this->z, this->z, this->y) \
+    , tppp(this->y, this->z, this->z, this->z) \
+    , psss(this->z, this->x, this->x, this->x) \
+    , psst(this->z, this->x, this->x, this->y) \
+    , pssp(this->z, this->x, this->x, this->z) \
+    , psts(this->z, this->x, this->y, this->x) \
+    , pstt(this->z, this->x, this->y, this->y) \
+    , pstp(this->z, this->x, this->y, this->z) \
+    , psps(this->z, this->x, this->z, this->x) \
+    , pspt(this->z, this->x, this->z, this->y) \
+    , pspp(this->z, this->x, this->z, this->z) \
+    , ptss(this->z, this->y, this->x, this->x) \
+    , ptst(this->z, this->y, this->x, this->y) \
+    , ptsp(this->z, this->y, this->x, this->z) \
+    , ptts(this->z, this->y, this->y, this->x) \
+    , pttt(this->z, this->y, this->y, this->y) \
+    , pttp(this->z, this->y, this->y, this->z) \
+    , ptps(this->z, this->y, this->z, this->x) \
+    , ptpt(this->z, this->y, this->z, this->y) \
+    , ptpp(this->z, this->y, this->z, this->z) \
+    , ppss(this->z, this->z, this->x, this->x) \
+    , ppst(this->z, this->z, this->x, this->y) \
+    , ppsp(this->z, this->z, this->x, this->z) \
+    , ppts(this->z, this->z, this->y, this->x) \
+    , pptt(this->z, this->z, this->y, this->y) \
+    , pptp(this->z, this->z, this->y, this->z) \
+    , ppps(this->z, this->z, this->z, this->x) \
+    , pppt(this->z, this->z, this->z, this->y) \
+    , pppp(this->z, this->z, this->z, this->z)
 #endif  // GLSLIKE_DISABLE_SWIZZLE
 
 
@@ -2827,499 +2784,376 @@ public:
     }
 
 public:
-    alias<T, Vector3<T>, &Vector3Core<T>::x> r;
-    alias<T, Vector3<T>, &Vector3Core<T>::y> g;
-    alias<T, Vector3<T>, &Vector3Core<T>::z> b;
-    alias<T, Vector3<T>, &Vector3Core<T>::x> s;
-    alias<T, Vector3<T>, &Vector3Core<T>::y> t;
-    alias<T, Vector3<T>, &Vector3Core<T>::z> p;
+    T &r;
+    T &g;
+    T &b;
+    T &s;
+    T &t;
+    T &p;
 
 #ifndef GLSLIKE_DISABLE_SWIZZLE
 public:
-    // >>> for v in itertools.product("xyz", repeat=2): print("".join(v))
-    // ...
-    // xx
-    // xy
-    // xz
-    // yx
-    // yy
-    // yz
-    // zx
-    // zy
-    // zz
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x> xx;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y> xy;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z> xz;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x> yx;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y> yy;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z> yz;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x> zx;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y> zy;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z> zz;
+    Swizzle2<T> xx;
+    Swizzle2<T> xy;
+    Swizzle2<T> xz;
+    Swizzle2<T> yx;
+    Swizzle2<T> yy;
+    Swizzle2<T> yz;
+    Swizzle2<T> zx;
+    Swizzle2<T> zy;
+    Swizzle2<T> zz;
     // alias rgb
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x> rr;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y> rg;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z> rb;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x> gr;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y> gg;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z> gb;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x> br;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y> bg;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z> bb;
+    Swizzle2<T> rr;
+    Swizzle2<T> rg;
+    Swizzle2<T> rb;
+    Swizzle2<T> gr;
+    Swizzle2<T> gg;
+    Swizzle2<T> gb;
+    Swizzle2<T> br;
+    Swizzle2<T> bg;
+    Swizzle2<T> bb;
     // alias stp
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x> ss;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y> st;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z> sp;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x> ts;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y> tt;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z> tp;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x> ps;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y> pt;
-    Swizzle2<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z> pp;
+    Swizzle2<T> ss;
+    Swizzle2<T> st;
+    Swizzle2<T> sp;
+    Swizzle2<T> ts;
+    Swizzle2<T> tt;
+    Swizzle2<T> tp;
+    Swizzle2<T> ps;
+    Swizzle2<T> pt;
+    Swizzle2<T> pp;
 
 public:
-    // >>> for v in itertools.product("xyz", repeat=3): print("".join(v))
-    // ...
-    // xxx
-    // xxy
-    // xxz
-    // xyx
-    // xyy
-    // xyz
-    // xzx
-    // xzy
-    // xzz
-    // yxx
-    // yxy
-    // yxz
-    // yyx
-    // yyy
-    // yyz
-    // yzx
-    // yzy
-    // yzz
-    // zxx
-    // zxy
-    // zxz
-    // zyx
-    // zyy
-    // zyz
-    // zzx
-    // zzy
-    // zzz
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> xxx;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> xxy;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> xxz;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> xyx;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> xyy;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> xyz;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> xzx;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> xzy;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> xzz;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> yxx;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> yxy;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> yxz;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> yyx;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> yyy;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> yyz;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> yzx;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> yzy;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> yzz;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> zxx;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> zxy;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> zxz;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> zyx;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> zyy;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> zyz;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> zzx;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> zzy;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> zzz;
+    Swizzle3<T> xxx;
+    Swizzle3<T> xxy;
+    Swizzle3<T> xxz;
+    Swizzle3<T> xyx;
+    Swizzle3<T> xyy;
+    Swizzle3<T> xyz;
+    Swizzle3<T> xzx;
+    Swizzle3<T> xzy;
+    Swizzle3<T> xzz;
+    Swizzle3<T> yxx;
+    Swizzle3<T> yxy;
+    Swizzle3<T> yxz;
+    Swizzle3<T> yyx;
+    Swizzle3<T> yyy;
+    Swizzle3<T> yyz;
+    Swizzle3<T> yzx;
+    Swizzle3<T> yzy;
+    Swizzle3<T> yzz;
+    Swizzle3<T> zxx;
+    Swizzle3<T> zxy;
+    Swizzle3<T> zxz;
+    Swizzle3<T> zyx;
+    Swizzle3<T> zyy;
+    Swizzle3<T> zyz;
+    Swizzle3<T> zzx;
+    Swizzle3<T> zzy;
+    Swizzle3<T> zzz;
     // alias rgb
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> rrr;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> rrg;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> rrb;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> rgr;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> rgg;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> rgb;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> rbr;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> rbg;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> rbb;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> grr;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> grg;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> grb;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> ggr;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> ggg;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> ggb;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> gbr;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> gbg;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> gbb;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> brr;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> brg;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> brb;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> bgr;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> bgg;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> bgb;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> bbr;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> bbg;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> bbb;
+    Swizzle3<T> rrr;
+    Swizzle3<T> rrg;
+    Swizzle3<T> rrb;
+    Swizzle3<T> rgr;
+    Swizzle3<T> rgg;
+    Swizzle3<T> rgb;
+    Swizzle3<T> rbr;
+    Swizzle3<T> rbg;
+    Swizzle3<T> rbb;
+    Swizzle3<T> grr;
+    Swizzle3<T> grg;
+    Swizzle3<T> grb;
+    Swizzle3<T> ggr;
+    Swizzle3<T> ggg;
+    Swizzle3<T> ggb;
+    Swizzle3<T> gbr;
+    Swizzle3<T> gbg;
+    Swizzle3<T> gbb;
+    Swizzle3<T> brr;
+    Swizzle3<T> brg;
+    Swizzle3<T> brb;
+    Swizzle3<T> bgr;
+    Swizzle3<T> bgg;
+    Swizzle3<T> bgb;
+    Swizzle3<T> bbr;
+    Swizzle3<T> bbg;
+    Swizzle3<T> bbb;
     // alias stp
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> sss;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> sst;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> ssp;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> sts;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> stt;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> stp;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> sps;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> spt;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> spp;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> tss;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> tst;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> tsp;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> tts;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> ttt;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> ttp;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> tps;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> tpt;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> tpp;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> pss;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> pst;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> psp;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> pts;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> ptt;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> ptp;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> pps;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> ppt;
-    Swizzle3<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> ppp;
+    Swizzle3<T> sss;
+    Swizzle3<T> sst;
+    Swizzle3<T> ssp;
+    Swizzle3<T> sts;
+    Swizzle3<T> stt;
+    Swizzle3<T> stp;
+    Swizzle3<T> sps;
+    Swizzle3<T> spt;
+    Swizzle3<T> spp;
+    Swizzle3<T> tss;
+    Swizzle3<T> tst;
+    Swizzle3<T> tsp;
+    Swizzle3<T> tts;
+    Swizzle3<T> ttt;
+    Swizzle3<T> ttp;
+    Swizzle3<T> tps;
+    Swizzle3<T> tpt;
+    Swizzle3<T> tpp;
+    Swizzle3<T> pss;
+    Swizzle3<T> pst;
+    Swizzle3<T> psp;
+    Swizzle3<T> pts;
+    Swizzle3<T> ptt;
+    Swizzle3<T> ptp;
+    Swizzle3<T> pps;
+    Swizzle3<T> ppt;
+    Swizzle3<T> ppp;
 
 public:
-    // >>> for v in itertools.product("xyz", repeat=4): print("".join(v))
-    // ...
-    // xxxx
-    // xxxy
-    // xxxz
-    // xxyx
-    // xxyy
-    // xxyz
-    // xxzx
-    // xxzy
-    // xxzz
-    // xyxx
-    // xyxy
-    // xyxz
-    // xyyx
-    // xyyy
-    // xyyz
-    // xyzx
-    // xyzy
-    // xyzz
-    // xzxx
-    // xzxy
-    // xzxz
-    // xzyx
-    // xzyy
-    // xzyz
-    // xzzx
-    // xzzy
-    // xzzz
-    // yxxx
-    // yxxy
-    // yxxz
-    // yxyx
-    // yxyy
-    // yxyz
-    // yxzx
-    // yxzy
-    // yxzz
-    // yyxx
-    // yyxy
-    // yyxz
-    // yyyx
-    // yyyy
-    // yyyz
-    // yyzx
-    // yyzy
-    // yyzz
-    // yzxx
-    // yzxy
-    // yzxz
-    // yzyx
-    // yzyy
-    // yzyz
-    // yzzx
-    // yzzy
-    // yzzz
-    // zxxx
-    // zxxy
-    // zxxz
-    // zxyx
-    // zxyy
-    // zxyz
-    // zxzx
-    // zxzy
-    // zxzz
-    // zyxx
-    // zyxy
-    // zyxz
-    // zyyx
-    // zyyy
-    // zyyz
-    // zyzx
-    // zyzy
-    // zyzz
-    // zzxx
-    // zzxy
-    // zzxz
-    // zzyx
-    // zzyy
-    // zzyz
-    // zzzx
-    // zzzy
-    // zzzz
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> xxxx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> xxxy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> xxxz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> xxyx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> xxyy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> xxyz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> xxzx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> xxzy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> xxzz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> xyxx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> xyxy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> xyxz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> xyyx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> xyyy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> xyyz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> xyzx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> xyzy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> xyzz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> xzxx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> xzxy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> xzxz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> xzyx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> xzyy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> xzyz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> xzzx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> xzzy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> xzzz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> yxxx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> yxxy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> yxxz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> yxyx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> yxyy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> yxyz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> yxzx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> yxzy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> yxzz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> yyxx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> yyxy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> yyxz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> yyyx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> yyyy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> yyyz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> yyzx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> yyzy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> yyzz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> yzxx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> yzxy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> yzxz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> yzyx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> yzyy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> yzyz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> yzzx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> yzzy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> yzzz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> zxxx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> zxxy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> zxxz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> zxyx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> zxyy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> zxyz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> zxzx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> zxzy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> zxzz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> zyxx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> zyxy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> zyxz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> zyyx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> zyyy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> zyyz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> zyzx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> zyzy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> zyzz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> zzxx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> zzxy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> zzxz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> zzyx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> zzyy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> zzyz;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> zzzx;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> zzzy;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> zzzz;
+    Swizzle4<T> xxxx;
+    Swizzle4<T> xxxy;
+    Swizzle4<T> xxxz;
+    Swizzle4<T> xxyx;
+    Swizzle4<T> xxyy;
+    Swizzle4<T> xxyz;
+    Swizzle4<T> xxzx;
+    Swizzle4<T> xxzy;
+    Swizzle4<T> xxzz;
+    Swizzle4<T> xyxx;
+    Swizzle4<T> xyxy;
+    Swizzle4<T> xyxz;
+    Swizzle4<T> xyyx;
+    Swizzle4<T> xyyy;
+    Swizzle4<T> xyyz;
+    Swizzle4<T> xyzx;
+    Swizzle4<T> xyzy;
+    Swizzle4<T> xyzz;
+    Swizzle4<T> xzxx;
+    Swizzle4<T> xzxy;
+    Swizzle4<T> xzxz;
+    Swizzle4<T> xzyx;
+    Swizzle4<T> xzyy;
+    Swizzle4<T> xzyz;
+    Swizzle4<T> xzzx;
+    Swizzle4<T> xzzy;
+    Swizzle4<T> xzzz;
+    Swizzle4<T> yxxx;
+    Swizzle4<T> yxxy;
+    Swizzle4<T> yxxz;
+    Swizzle4<T> yxyx;
+    Swizzle4<T> yxyy;
+    Swizzle4<T> yxyz;
+    Swizzle4<T> yxzx;
+    Swizzle4<T> yxzy;
+    Swizzle4<T> yxzz;
+    Swizzle4<T> yyxx;
+    Swizzle4<T> yyxy;
+    Swizzle4<T> yyxz;
+    Swizzle4<T> yyyx;
+    Swizzle4<T> yyyy;
+    Swizzle4<T> yyyz;
+    Swizzle4<T> yyzx;
+    Swizzle4<T> yyzy;
+    Swizzle4<T> yyzz;
+    Swizzle4<T> yzxx;
+    Swizzle4<T> yzxy;
+    Swizzle4<T> yzxz;
+    Swizzle4<T> yzyx;
+    Swizzle4<T> yzyy;
+    Swizzle4<T> yzyz;
+    Swizzle4<T> yzzx;
+    Swizzle4<T> yzzy;
+    Swizzle4<T> yzzz;
+    Swizzle4<T> zxxx;
+    Swizzle4<T> zxxy;
+    Swizzle4<T> zxxz;
+    Swizzle4<T> zxyx;
+    Swizzle4<T> zxyy;
+    Swizzle4<T> zxyz;
+    Swizzle4<T> zxzx;
+    Swizzle4<T> zxzy;
+    Swizzle4<T> zxzz;
+    Swizzle4<T> zyxx;
+    Swizzle4<T> zyxy;
+    Swizzle4<T> zyxz;
+    Swizzle4<T> zyyx;
+    Swizzle4<T> zyyy;
+    Swizzle4<T> zyyz;
+    Swizzle4<T> zyzx;
+    Swizzle4<T> zyzy;
+    Swizzle4<T> zyzz;
+    Swizzle4<T> zzxx;
+    Swizzle4<T> zzxy;
+    Swizzle4<T> zzxz;
+    Swizzle4<T> zzyx;
+    Swizzle4<T> zzyy;
+    Swizzle4<T> zzyz;
+    Swizzle4<T> zzzx;
+    Swizzle4<T> zzzy;
+    Swizzle4<T> zzzz;
     // alias rgb
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> rrrr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> rrrg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> rrrb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> rrgr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> rrgg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> rrgb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> rrbr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> rrbg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> rrbb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> rgrr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> rgrg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> rgrb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> rggr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> rggg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> rggb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> rgbr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> rgbg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> rgbb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> rbrr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> rbrg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> rbrb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> rbgr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> rbgg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> rbgb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> rbbr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> rbbg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> rbbb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> grrr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> grrg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> grrb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> grgr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> grgg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> grgb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> grbr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> grbg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> grbb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> ggrr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> ggrg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> ggrb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> gggr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> gggg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> gggb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> ggbr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> ggbg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> ggbb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> gbrr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> gbrg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> gbrb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> gbgr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> gbgg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> gbgb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> gbbr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> gbbg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> gbbb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> brrr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> brrg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> brrb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> brgr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> brgg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> brgb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> brbr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> brbg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> brbb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> bgrr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> bgrg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> bgrb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> bggr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> bggg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> bggb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> bgbr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> bgbg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> bgbb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> bbrr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> bbrg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> bbrb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> bbgr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> bbgg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> bbgb;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> bbbr;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> bbbg;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> bbbb;
+    Swizzle4<T> rrrr;
+    Swizzle4<T> rrrg;
+    Swizzle4<T> rrrb;
+    Swizzle4<T> rrgr;
+    Swizzle4<T> rrgg;
+    Swizzle4<T> rrgb;
+    Swizzle4<T> rrbr;
+    Swizzle4<T> rrbg;
+    Swizzle4<T> rrbb;
+    Swizzle4<T> rgrr;
+    Swizzle4<T> rgrg;
+    Swizzle4<T> rgrb;
+    Swizzle4<T> rggr;
+    Swizzle4<T> rggg;
+    Swizzle4<T> rggb;
+    Swizzle4<T> rgbr;
+    Swizzle4<T> rgbg;
+    Swizzle4<T> rgbb;
+    Swizzle4<T> rbrr;
+    Swizzle4<T> rbrg;
+    Swizzle4<T> rbrb;
+    Swizzle4<T> rbgr;
+    Swizzle4<T> rbgg;
+    Swizzle4<T> rbgb;
+    Swizzle4<T> rbbr;
+    Swizzle4<T> rbbg;
+    Swizzle4<T> rbbb;
+    Swizzle4<T> grrr;
+    Swizzle4<T> grrg;
+    Swizzle4<T> grrb;
+    Swizzle4<T> grgr;
+    Swizzle4<T> grgg;
+    Swizzle4<T> grgb;
+    Swizzle4<T> grbr;
+    Swizzle4<T> grbg;
+    Swizzle4<T> grbb;
+    Swizzle4<T> ggrr;
+    Swizzle4<T> ggrg;
+    Swizzle4<T> ggrb;
+    Swizzle4<T> gggr;
+    Swizzle4<T> gggg;
+    Swizzle4<T> gggb;
+    Swizzle4<T> ggbr;
+    Swizzle4<T> ggbg;
+    Swizzle4<T> ggbb;
+    Swizzle4<T> gbrr;
+    Swizzle4<T> gbrg;
+    Swizzle4<T> gbrb;
+    Swizzle4<T> gbgr;
+    Swizzle4<T> gbgg;
+    Swizzle4<T> gbgb;
+    Swizzle4<T> gbbr;
+    Swizzle4<T> gbbg;
+    Swizzle4<T> gbbb;
+    Swizzle4<T> brrr;
+    Swizzle4<T> brrg;
+    Swizzle4<T> brrb;
+    Swizzle4<T> brgr;
+    Swizzle4<T> brgg;
+    Swizzle4<T> brgb;
+    Swizzle4<T> brbr;
+    Swizzle4<T> brbg;
+    Swizzle4<T> brbb;
+    Swizzle4<T> bgrr;
+    Swizzle4<T> bgrg;
+    Swizzle4<T> bgrb;
+    Swizzle4<T> bggr;
+    Swizzle4<T> bggg;
+    Swizzle4<T> bggb;
+    Swizzle4<T> bgbr;
+    Swizzle4<T> bgbg;
+    Swizzle4<T> bgbb;
+    Swizzle4<T> bbrr;
+    Swizzle4<T> bbrg;
+    Swizzle4<T> bbrb;
+    Swizzle4<T> bbgr;
+    Swizzle4<T> bbgg;
+    Swizzle4<T> bbgb;
+    Swizzle4<T> bbbr;
+    Swizzle4<T> bbbg;
+    Swizzle4<T> bbbb;
     // alias stp
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> ssss;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> ssst;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> sssp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> ssts;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> sstt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> sstp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> ssps;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> sspt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> sspp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> stss;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> stst;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> stsp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> stts;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> sttt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> sttp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> stps;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> stpt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> stpp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> spss;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> spst;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> spsp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> spts;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> sptt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> sptp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> spps;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> sppt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> sppp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> tsss;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> tsst;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> tssp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> tsts;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> tstt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> tstp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> tsps;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> tspt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> tspp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> ttss;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> ttst;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> ttsp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> ttts;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> tttt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> tttp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> ttps;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> ttpt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> ttpp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> tpss;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> tpst;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> tpsp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> tpts;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> tptt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> tptp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> tpps;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> tppt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> tppp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::x> psss;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::y> psst;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x, &Vector3Core<T>::z> pssp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::x> psts;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::y> pstt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y, &Vector3Core<T>::z> pstp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::x> psps;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::y> pspt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z, &Vector3Core<T>::z> pspp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::x> ptss;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::y> ptst;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x, &Vector3Core<T>::z> ptsp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::x> ptts;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::y> pttt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y, &Vector3Core<T>::z> pttp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::x> ptps;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::y> ptpt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z, &Vector3Core<T>::z> ptpp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::x> ppss;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::y> ppst;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x, &Vector3Core<T>::z> ppsp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::x> ppts;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::y> pptt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y, &Vector3Core<T>::z> pptp;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::x> ppps;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::y> pppt;
-    Swizzle4<T, Vector3<T>, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z, &Vector3Core<T>::z> pppp;
+    Swizzle4<T> ssss;
+    Swizzle4<T> ssst;
+    Swizzle4<T> sssp;
+    Swizzle4<T> ssts;
+    Swizzle4<T> sstt;
+    Swizzle4<T> sstp;
+    Swizzle4<T> ssps;
+    Swizzle4<T> sspt;
+    Swizzle4<T> sspp;
+    Swizzle4<T> stss;
+    Swizzle4<T> stst;
+    Swizzle4<T> stsp;
+    Swizzle4<T> stts;
+    Swizzle4<T> sttt;
+    Swizzle4<T> sttp;
+    Swizzle4<T> stps;
+    Swizzle4<T> stpt;
+    Swizzle4<T> stpp;
+    Swizzle4<T> spss;
+    Swizzle4<T> spst;
+    Swizzle4<T> spsp;
+    Swizzle4<T> spts;
+    Swizzle4<T> sptt;
+    Swizzle4<T> sptp;
+    Swizzle4<T> spps;
+    Swizzle4<T> sppt;
+    Swizzle4<T> sppp;
+    Swizzle4<T> tsss;
+    Swizzle4<T> tsst;
+    Swizzle4<T> tssp;
+    Swizzle4<T> tsts;
+    Swizzle4<T> tstt;
+    Swizzle4<T> tstp;
+    Swizzle4<T> tsps;
+    Swizzle4<T> tspt;
+    Swizzle4<T> tspp;
+    Swizzle4<T> ttss;
+    Swizzle4<T> ttst;
+    Swizzle4<T> ttsp;
+    Swizzle4<T> ttts;
+    Swizzle4<T> tttt;
+    Swizzle4<T> tttp;
+    Swizzle4<T> ttps;
+    Swizzle4<T> ttpt;
+    Swizzle4<T> ttpp;
+    Swizzle4<T> tpss;
+    Swizzle4<T> tpst;
+    Swizzle4<T> tpsp;
+    Swizzle4<T> tpts;
+    Swizzle4<T> tptt;
+    Swizzle4<T> tptp;
+    Swizzle4<T> tpps;
+    Swizzle4<T> tppt;
+    Swizzle4<T> tppp;
+    Swizzle4<T> psss;
+    Swizzle4<T> psst;
+    Swizzle4<T> pssp;
+    Swizzle4<T> psts;
+    Swizzle4<T> pstt;
+    Swizzle4<T> pstp;
+    Swizzle4<T> psps;
+    Swizzle4<T> pspt;
+    Swizzle4<T> pspp;
+    Swizzle4<T> ptss;
+    Swizzle4<T> ptst;
+    Swizzle4<T> ptsp;
+    Swizzle4<T> ptts;
+    Swizzle4<T> pttt;
+    Swizzle4<T> pttp;
+    Swizzle4<T> ptps;
+    Swizzle4<T> ptpt;
+    Swizzle4<T> ptpp;
+    Swizzle4<T> ppss;
+    Swizzle4<T> ppst;
+    Swizzle4<T> ppsp;
+    Swizzle4<T> ppts;
+    Swizzle4<T> pptt;
+    Swizzle4<T> pptp;
+    Swizzle4<T> ppps;
+    Swizzle4<T> pppt;
+    Swizzle4<T> pppp;
 #endif  // GLSLIKE_DISABLE_SWIZZLE
 
 };
@@ -3866,8 +3700,8 @@ Vector3<T> operator /(T a, const Vector3<T> &b) {
 
 #ifndef GLSLIKE_DISABLE_SWIZZLE
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator +(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Vector3<T> &b) {
+template <typename T>
+Vector3<T> operator +(const Swizzle3<T> &a, const Vector3<T> &b) {
     return Vector3<T>(
         a.x + b.x,
         a.y + b.y,
@@ -3875,8 +3709,8 @@ Vector3<T> operator +(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Ve
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator -(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Vector3<T> &b) {
+template <typename T>
+Vector3<T> operator -(const Swizzle3<T> &a, const Vector3<T> &b) {
     return Vector3<T>(
         a.x - b.x,
         a.y - b.y,
@@ -3884,8 +3718,8 @@ Vector3<T> operator -(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Ve
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator *(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Vector3<T> &b) {
+template <typename T>
+Vector3<T> operator *(const Swizzle3<T> &a, const Vector3<T> &b) {
     return Vector3<T>(
         a.x * b.x,
         a.y * b.y,
@@ -3893,8 +3727,8 @@ Vector3<T> operator *(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Ve
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator /(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Vector3<T> &b) {
+template <typename T>
+Vector3<T> operator /(const Swizzle3<T> &a, const Vector3<T> &b) {
     return Vector3<T>(
         a.x / b.x,
         a.y / b.y,
@@ -3902,8 +3736,8 @@ Vector3<T> operator /(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, const Ve
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator +(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+template <typename T>
+Vector3<T> operator +(const Vector3<T> & a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a.x + b.x,
         a.y + b.y,
@@ -3911,8 +3745,8 @@ Vector3<T> operator +(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator -(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+template <typename T>
+Vector3<T> operator -(const Vector3<T> & a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a.x - b.x,
         a.y - b.y,
@@ -3920,8 +3754,8 @@ Vector3<T> operator -(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator *(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+template <typename T>
+Vector3<T> operator *(const Vector3<T> & a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a.x * b.x,
         a.y * b.y,
@@ -3929,8 +3763,8 @@ Vector3<T> operator *(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator /(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+template <typename T>
+Vector3<T> operator /(const Vector3<T> & a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a.x / b.x,
         a.y / b.y,
@@ -3938,8 +3772,8 @@ Vector3<T> operator /(const Vector3<T> & a, const Swizzle3<T, SelfT, attr1, attr
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3>
-Vector3<T> operator +(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, const Swizzle3<T, BSelfT, Battr1, Battr2, Battr3> &b) {
+template <typename T>
+Vector3<T> operator +(const Swizzle3<T> &a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a.x + b.x,
         a.y + b.y,
@@ -3947,8 +3781,8 @@ Vector3<T> operator +(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, cons
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3>
-Vector3<T> operator -(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, const Swizzle3<T, BSelfT, Battr1, Battr2, Battr3> &b) {
+template <typename T>
+Vector3<T> operator -(const Swizzle3<T> &a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a.x - b.x,
         a.y - b.y,
@@ -3956,8 +3790,8 @@ Vector3<T> operator -(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, cons
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3>
-Vector3<T> operator *(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, const Swizzle3<T, BSelfT, Battr1, Battr2, Battr3> &b) {
+template <typename T>
+Vector3<T> operator *(const Swizzle3<T> &a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a.x * b.x,
         a.y * b.y,
@@ -3965,8 +3799,8 @@ Vector3<T> operator *(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, cons
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3>
-Vector3<T> operator /(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, const Swizzle3<T, BSelfT, Battr1, Battr2, Battr3> &b) {
+template <typename T>
+Vector3<T> operator /(const Swizzle3<T> &a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a.x / b.x,
         a.y / b.y,
@@ -3974,8 +3808,8 @@ Vector3<T> operator /(const Swizzle3<T, ASelfT, Aattr1, Aattr2, Aattr3> &a, cons
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator +(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
+template <typename T>
+Vector3<T> operator +(const Swizzle3<T> &a, T b) {
     return Vector3<T>(
         a.x + b,
         a.y + b,
@@ -3983,8 +3817,8 @@ Vector3<T> operator +(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator -(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
+template <typename T>
+Vector3<T> operator -(const Swizzle3<T> &a, T b) {
     return Vector3<T>(
         a.x - b,
         a.y - b,
@@ -3992,8 +3826,8 @@ Vector3<T> operator -(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator *(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
+template <typename T>
+Vector3<T> operator *(const Swizzle3<T> &a, T b) {
     return Vector3<T>(
         a.x * b,
         a.y * b,
@@ -4001,8 +3835,8 @@ Vector3<T> operator *(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator /(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
+template <typename T>
+Vector3<T> operator /(const Swizzle3<T> &a, T b) {
     return Vector3<T>(
         a.x / b,
         a.y / b,
@@ -4010,8 +3844,8 @@ Vector3<T> operator /(const Swizzle3<T, SelfT, attr1, attr2, attr3> &a, T b) {
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator +(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+template <typename T>
+Vector3<T> operator +(T a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a + b.x,
         a + b.y,
@@ -4019,8 +3853,8 @@ Vector3<T> operator +(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator -(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+template <typename T>
+Vector3<T> operator -(T a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a - b.x,
         a - b.y,
@@ -4028,8 +3862,8 @@ Vector3<T> operator -(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator *(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+template <typename T>
+Vector3<T> operator *(T a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a * b.x,
         a * b.y,
@@ -4037,8 +3871,8 @@ Vector3<T> operator *(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3>
-Vector3<T> operator /(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
+template <typename T>
+Vector3<T> operator /(T a, const Swizzle3<T> &b) {
     return Vector3<T>(
         a / b.x,
         a / b.y,
@@ -4051,1032 +3885,1032 @@ Vector3<T> operator /(T a, const Swizzle3<T, SelfT, attr1, attr2, attr3> &b) {
 
 #ifdef GLSLIKE_DISABLE_SWIZZLE
 #define GLSLIKE_VECTOR4_SWIZZLE() \
-    r(this) \
-    , g(this) \
-    , b(this) \
-    , a(this) \
-    , s(this) \
-    , t(this) \
-    , p(this) \
-    , q(this)
+    r(this->x) \
+    , g(this->y) \
+    , b(this->z) \
+    , a(this->w) \
+    , s(this->x) \
+    , t(this->y) \
+    , p(this->z) \
+    , q(this->w)
 #else
 #define GLSLIKE_VECTOR4_SWIZZLE() \
-    r(this) \
-    , g(this) \
-    , b(this) \
-    , a(this) \
-    , s(this) \
-    , t(this) \
-    , p(this) \
-    , q(this) \
-    , xx(this) \
-    , xy(this) \
-    , xz(this) \
-    , xw(this) \
-    , yx(this) \
-    , yy(this) \
-    , yz(this) \
-    , yw(this) \
-    , zx(this) \
-    , zy(this) \
-    , zz(this) \
-    , zw(this) \
-    , wx(this) \
-    , wy(this) \
-    , wz(this) \
-    , ww(this) \
-    , rr(this) \
-    , rg(this) \
-    , rb(this) \
-    , ra(this) \
-    , gr(this) \
-    , gg(this) \
-    , gb(this) \
-    , ga(this) \
-    , br(this) \
-    , bg(this) \
-    , bb(this) \
-    , ba(this) \
-    , ar(this) \
-    , ag(this) \
-    , ab(this) \
-    , aa(this) \
-    , ss(this) \
-    , st(this) \
-    , sp(this) \
-    , sq(this) \
-    , ts(this) \
-    , tt(this) \
-    , tp(this) \
-    , tq(this) \
-    , ps(this) \
-    , pt(this) \
-    , pp(this) \
-    , pq(this) \
-    , qs(this) \
-    , qt(this) \
-    , qp(this) \
-    , qq(this) \
-    , xxx(this) \
-    , xxy(this) \
-    , xxz(this) \
-    , xxw(this) \
-    , xyx(this) \
-    , xyy(this) \
-    , xyz(this) \
-    , xyw(this) \
-    , xzx(this) \
-    , xzy(this) \
-    , xzz(this) \
-    , xzw(this) \
-    , xwx(this) \
-    , xwy(this) \
-    , xwz(this) \
-    , xww(this) \
-    , yxx(this) \
-    , yxy(this) \
-    , yxz(this) \
-    , yxw(this) \
-    , yyx(this) \
-    , yyy(this) \
-    , yyz(this) \
-    , yyw(this) \
-    , yzx(this) \
-    , yzy(this) \
-    , yzz(this) \
-    , yzw(this) \
-    , ywx(this) \
-    , ywy(this) \
-    , ywz(this) \
-    , yww(this) \
-    , zxx(this) \
-    , zxy(this) \
-    , zxz(this) \
-    , zxw(this) \
-    , zyx(this) \
-    , zyy(this) \
-    , zyz(this) \
-    , zyw(this) \
-    , zzx(this) \
-    , zzy(this) \
-    , zzz(this) \
-    , zzw(this) \
-    , zwx(this) \
-    , zwy(this) \
-    , zwz(this) \
-    , zww(this) \
-    , wxx(this) \
-    , wxy(this) \
-    , wxz(this) \
-    , wxw(this) \
-    , wyx(this) \
-    , wyy(this) \
-    , wyz(this) \
-    , wyw(this) \
-    , wzx(this) \
-    , wzy(this) \
-    , wzz(this) \
-    , wzw(this) \
-    , wwx(this) \
-    , wwy(this) \
-    , wwz(this) \
-    , www(this) \
-    , rrr(this) \
-    , rrg(this) \
-    , rrb(this) \
-    , rra(this) \
-    , rgr(this) \
-    , rgg(this) \
-    , rgb(this) \
-    , rga(this) \
-    , rbr(this) \
-    , rbg(this) \
-    , rbb(this) \
-    , rba(this) \
-    , rar(this) \
-    , rag(this) \
-    , rab(this) \
-    , raa(this) \
-    , grr(this) \
-    , grg(this) \
-    , grb(this) \
-    , gra(this) \
-    , ggr(this) \
-    , ggg(this) \
-    , ggb(this) \
-    , gga(this) \
-    , gbr(this) \
-    , gbg(this) \
-    , gbb(this) \
-    , gba(this) \
-    , gar(this) \
-    , gag(this) \
-    , gab(this) \
-    , gaa(this) \
-    , brr(this) \
-    , brg(this) \
-    , brb(this) \
-    , bra(this) \
-    , bgr(this) \
-    , bgg(this) \
-    , bgb(this) \
-    , bga(this) \
-    , bbr(this) \
-    , bbg(this) \
-    , bbb(this) \
-    , bba(this) \
-    , bar(this) \
-    , bag(this) \
-    , bab(this) \
-    , baa(this) \
-    , arr(this) \
-    , arg(this) \
-    , arb(this) \
-    , ara(this) \
-    , agr(this) \
-    , agg(this) \
-    , agb(this) \
-    , aga(this) \
-    , abr(this) \
-    , abg(this) \
-    , abb(this) \
-    , aba(this) \
-    , aar(this) \
-    , aag(this) \
-    , aab(this) \
-    , aaa(this) \
-    , sss(this) \
-    , sst(this) \
-    , ssp(this) \
-    , ssq(this) \
-    , sts(this) \
-    , stt(this) \
-    , stp(this) \
-    , stq(this) \
-    , sps(this) \
-    , spt(this) \
-    , spp(this) \
-    , spq(this) \
-    , sqs(this) \
-    , sqt(this) \
-    , sqp(this) \
-    , sqq(this) \
-    , tss(this) \
-    , tst(this) \
-    , tsp(this) \
-    , tsq(this) \
-    , tts(this) \
-    , ttt(this) \
-    , ttp(this) \
-    , ttq(this) \
-    , tps(this) \
-    , tpt(this) \
-    , tpp(this) \
-    , tpq(this) \
-    , tqs(this) \
-    , tqt(this) \
-    , tqp(this) \
-    , tqq(this) \
-    , pss(this) \
-    , pst(this) \
-    , psp(this) \
-    , psq(this) \
-    , pts(this) \
-    , ptt(this) \
-    , ptp(this) \
-    , ptq(this) \
-    , pps(this) \
-    , ppt(this) \
-    , ppp(this) \
-    , ppq(this) \
-    , pqs(this) \
-    , pqt(this) \
-    , pqp(this) \
-    , pqq(this) \
-    , qss(this) \
-    , qst(this) \
-    , qsp(this) \
-    , qsq(this) \
-    , qts(this) \
-    , qtt(this) \
-    , qtp(this) \
-    , qtq(this) \
-    , qps(this) \
-    , qpt(this) \
-    , qpp(this) \
-    , qpq(this) \
-    , qqs(this) \
-    , qqt(this) \
-    , qqp(this) \
-    , qqq(this) \
-    , xxxx(this) \
-    , xxxy(this) \
-    , xxxz(this) \
-    , xxxw(this) \
-    , xxyx(this) \
-    , xxyy(this) \
-    , xxyz(this) \
-    , xxyw(this) \
-    , xxzx(this) \
-    , xxzy(this) \
-    , xxzz(this) \
-    , xxzw(this) \
-    , xxwx(this) \
-    , xxwy(this) \
-    , xxwz(this) \
-    , xxww(this) \
-    , xyxx(this) \
-    , xyxy(this) \
-    , xyxz(this) \
-    , xyxw(this) \
-    , xyyx(this) \
-    , xyyy(this) \
-    , xyyz(this) \
-    , xyyw(this) \
-    , xyzx(this) \
-    , xyzy(this) \
-    , xyzz(this) \
-    , xyzw(this) \
-    , xywx(this) \
-    , xywy(this) \
-    , xywz(this) \
-    , xyww(this) \
-    , xzxx(this) \
-    , xzxy(this) \
-    , xzxz(this) \
-    , xzxw(this) \
-    , xzyx(this) \
-    , xzyy(this) \
-    , xzyz(this) \
-    , xzyw(this) \
-    , xzzx(this) \
-    , xzzy(this) \
-    , xzzz(this) \
-    , xzzw(this) \
-    , xzwx(this) \
-    , xzwy(this) \
-    , xzwz(this) \
-    , xzww(this) \
-    , xwxx(this) \
-    , xwxy(this) \
-    , xwxz(this) \
-    , xwxw(this) \
-    , xwyx(this) \
-    , xwyy(this) \
-    , xwyz(this) \
-    , xwyw(this) \
-    , xwzx(this) \
-    , xwzy(this) \
-    , xwzz(this) \
-    , xwzw(this) \
-    , xwwx(this) \
-    , xwwy(this) \
-    , xwwz(this) \
-    , xwww(this) \
-    , yxxx(this) \
-    , yxxy(this) \
-    , yxxz(this) \
-    , yxxw(this) \
-    , yxyx(this) \
-    , yxyy(this) \
-    , yxyz(this) \
-    , yxyw(this) \
-    , yxzx(this) \
-    , yxzy(this) \
-    , yxzz(this) \
-    , yxzw(this) \
-    , yxwx(this) \
-    , yxwy(this) \
-    , yxwz(this) \
-    , yxww(this) \
-    , yyxx(this) \
-    , yyxy(this) \
-    , yyxz(this) \
-    , yyxw(this) \
-    , yyyx(this) \
-    , yyyy(this) \
-    , yyyz(this) \
-    , yyyw(this) \
-    , yyzx(this) \
-    , yyzy(this) \
-    , yyzz(this) \
-    , yyzw(this) \
-    , yywx(this) \
-    , yywy(this) \
-    , yywz(this) \
-    , yyww(this) \
-    , yzxx(this) \
-    , yzxy(this) \
-    , yzxz(this) \
-    , yzxw(this) \
-    , yzyx(this) \
-    , yzyy(this) \
-    , yzyz(this) \
-    , yzyw(this) \
-    , yzzx(this) \
-    , yzzy(this) \
-    , yzzz(this) \
-    , yzzw(this) \
-    , yzwx(this) \
-    , yzwy(this) \
-    , yzwz(this) \
-    , yzww(this) \
-    , ywxx(this) \
-    , ywxy(this) \
-    , ywxz(this) \
-    , ywxw(this) \
-    , ywyx(this) \
-    , ywyy(this) \
-    , ywyz(this) \
-    , ywyw(this) \
-    , ywzx(this) \
-    , ywzy(this) \
-    , ywzz(this) \
-    , ywzw(this) \
-    , ywwx(this) \
-    , ywwy(this) \
-    , ywwz(this) \
-    , ywww(this) \
-    , zxxx(this) \
-    , zxxy(this) \
-    , zxxz(this) \
-    , zxxw(this) \
-    , zxyx(this) \
-    , zxyy(this) \
-    , zxyz(this) \
-    , zxyw(this) \
-    , zxzx(this) \
-    , zxzy(this) \
-    , zxzz(this) \
-    , zxzw(this) \
-    , zxwx(this) \
-    , zxwy(this) \
-    , zxwz(this) \
-    , zxww(this) \
-    , zyxx(this) \
-    , zyxy(this) \
-    , zyxz(this) \
-    , zyxw(this) \
-    , zyyx(this) \
-    , zyyy(this) \
-    , zyyz(this) \
-    , zyyw(this) \
-    , zyzx(this) \
-    , zyzy(this) \
-    , zyzz(this) \
-    , zyzw(this) \
-    , zywx(this) \
-    , zywy(this) \
-    , zywz(this) \
-    , zyww(this) \
-    , zzxx(this) \
-    , zzxy(this) \
-    , zzxz(this) \
-    , zzxw(this) \
-    , zzyx(this) \
-    , zzyy(this) \
-    , zzyz(this) \
-    , zzyw(this) \
-    , zzzx(this) \
-    , zzzy(this) \
-    , zzzz(this) \
-    , zzzw(this) \
-    , zzwx(this) \
-    , zzwy(this) \
-    , zzwz(this) \
-    , zzww(this) \
-    , zwxx(this) \
-    , zwxy(this) \
-    , zwxz(this) \
-    , zwxw(this) \
-    , zwyx(this) \
-    , zwyy(this) \
-    , zwyz(this) \
-    , zwyw(this) \
-    , zwzx(this) \
-    , zwzy(this) \
-    , zwzz(this) \
-    , zwzw(this) \
-    , zwwx(this) \
-    , zwwy(this) \
-    , zwwz(this) \
-    , zwww(this) \
-    , wxxx(this) \
-    , wxxy(this) \
-    , wxxz(this) \
-    , wxxw(this) \
-    , wxyx(this) \
-    , wxyy(this) \
-    , wxyz(this) \
-    , wxyw(this) \
-    , wxzx(this) \
-    , wxzy(this) \
-    , wxzz(this) \
-    , wxzw(this) \
-    , wxwx(this) \
-    , wxwy(this) \
-    , wxwz(this) \
-    , wxww(this) \
-    , wyxx(this) \
-    , wyxy(this) \
-    , wyxz(this) \
-    , wyxw(this) \
-    , wyyx(this) \
-    , wyyy(this) \
-    , wyyz(this) \
-    , wyyw(this) \
-    , wyzx(this) \
-    , wyzy(this) \
-    , wyzz(this) \
-    , wyzw(this) \
-    , wywx(this) \
-    , wywy(this) \
-    , wywz(this) \
-    , wyww(this) \
-    , wzxx(this) \
-    , wzxy(this) \
-    , wzxz(this) \
-    , wzxw(this) \
-    , wzyx(this) \
-    , wzyy(this) \
-    , wzyz(this) \
-    , wzyw(this) \
-    , wzzx(this) \
-    , wzzy(this) \
-    , wzzz(this) \
-    , wzzw(this) \
-    , wzwx(this) \
-    , wzwy(this) \
-    , wzwz(this) \
-    , wzww(this) \
-    , wwxx(this) \
-    , wwxy(this) \
-    , wwxz(this) \
-    , wwxw(this) \
-    , wwyx(this) \
-    , wwyy(this) \
-    , wwyz(this) \
-    , wwyw(this) \
-    , wwzx(this) \
-    , wwzy(this) \
-    , wwzz(this) \
-    , wwzw(this) \
-    , wwwx(this) \
-    , wwwy(this) \
-    , wwwz(this) \
-    , wwww(this) \
-    , rrrr(this) \
-    , rrrg(this) \
-    , rrrb(this) \
-    , rrra(this) \
-    , rrgr(this) \
-    , rrgg(this) \
-    , rrgb(this) \
-    , rrga(this) \
-    , rrbr(this) \
-    , rrbg(this) \
-    , rrbb(this) \
-    , rrba(this) \
-    , rrar(this) \
-    , rrag(this) \
-    , rrab(this) \
-    , rraa(this) \
-    , rgrr(this) \
-    , rgrg(this) \
-    , rgrb(this) \
-    , rgra(this) \
-    , rggr(this) \
-    , rggg(this) \
-    , rggb(this) \
-    , rgga(this) \
-    , rgbr(this) \
-    , rgbg(this) \
-    , rgbb(this) \
-    , rgba(this) \
-    , rgar(this) \
-    , rgag(this) \
-    , rgab(this) \
-    , rgaa(this) \
-    , rbrr(this) \
-    , rbrg(this) \
-    , rbrb(this) \
-    , rbra(this) \
-    , rbgr(this) \
-    , rbgg(this) \
-    , rbgb(this) \
-    , rbga(this) \
-    , rbbr(this) \
-    , rbbg(this) \
-    , rbbb(this) \
-    , rbba(this) \
-    , rbar(this) \
-    , rbag(this) \
-    , rbab(this) \
-    , rbaa(this) \
-    , rarr(this) \
-    , rarg(this) \
-    , rarb(this) \
-    , rara(this) \
-    , ragr(this) \
-    , ragg(this) \
-    , ragb(this) \
-    , raga(this) \
-    , rabr(this) \
-    , rabg(this) \
-    , rabb(this) \
-    , raba(this) \
-    , raar(this) \
-    , raag(this) \
-    , raab(this) \
-    , raaa(this) \
-    , grrr(this) \
-    , grrg(this) \
-    , grrb(this) \
-    , grra(this) \
-    , grgr(this) \
-    , grgg(this) \
-    , grgb(this) \
-    , grga(this) \
-    , grbr(this) \
-    , grbg(this) \
-    , grbb(this) \
-    , grba(this) \
-    , grar(this) \
-    , grag(this) \
-    , grab(this) \
-    , graa(this) \
-    , ggrr(this) \
-    , ggrg(this) \
-    , ggrb(this) \
-    , ggra(this) \
-    , gggr(this) \
-    , gggg(this) \
-    , gggb(this) \
-    , ggga(this) \
-    , ggbr(this) \
-    , ggbg(this) \
-    , ggbb(this) \
-    , ggba(this) \
-    , ggar(this) \
-    , ggag(this) \
-    , ggab(this) \
-    , ggaa(this) \
-    , gbrr(this) \
-    , gbrg(this) \
-    , gbrb(this) \
-    , gbra(this) \
-    , gbgr(this) \
-    , gbgg(this) \
-    , gbgb(this) \
-    , gbga(this) \
-    , gbbr(this) \
-    , gbbg(this) \
-    , gbbb(this) \
-    , gbba(this) \
-    , gbar(this) \
-    , gbag(this) \
-    , gbab(this) \
-    , gbaa(this) \
-    , garr(this) \
-    , garg(this) \
-    , garb(this) \
-    , gara(this) \
-    , gagr(this) \
-    , gagg(this) \
-    , gagb(this) \
-    , gaga(this) \
-    , gabr(this) \
-    , gabg(this) \
-    , gabb(this) \
-    , gaba(this) \
-    , gaar(this) \
-    , gaag(this) \
-    , gaab(this) \
-    , gaaa(this) \
-    , brrr(this) \
-    , brrg(this) \
-    , brrb(this) \
-    , brra(this) \
-    , brgr(this) \
-    , brgg(this) \
-    , brgb(this) \
-    , brga(this) \
-    , brbr(this) \
-    , brbg(this) \
-    , brbb(this) \
-    , brba(this) \
-    , brar(this) \
-    , brag(this) \
-    , brab(this) \
-    , braa(this) \
-    , bgrr(this) \
-    , bgrg(this) \
-    , bgrb(this) \
-    , bgra(this) \
-    , bggr(this) \
-    , bggg(this) \
-    , bggb(this) \
-    , bgga(this) \
-    , bgbr(this) \
-    , bgbg(this) \
-    , bgbb(this) \
-    , bgba(this) \
-    , bgar(this) \
-    , bgag(this) \
-    , bgab(this) \
-    , bgaa(this) \
-    , bbrr(this) \
-    , bbrg(this) \
-    , bbrb(this) \
-    , bbra(this) \
-    , bbgr(this) \
-    , bbgg(this) \
-    , bbgb(this) \
-    , bbga(this) \
-    , bbbr(this) \
-    , bbbg(this) \
-    , bbbb(this) \
-    , bbba(this) \
-    , bbar(this) \
-    , bbag(this) \
-    , bbab(this) \
-    , bbaa(this) \
-    , barr(this) \
-    , barg(this) \
-    , barb(this) \
-    , bara(this) \
-    , bagr(this) \
-    , bagg(this) \
-    , bagb(this) \
-    , baga(this) \
-    , babr(this) \
-    , babg(this) \
-    , babb(this) \
-    , baba(this) \
-    , baar(this) \
-    , baag(this) \
-    , baab(this) \
-    , baaa(this) \
-    , arrr(this) \
-    , arrg(this) \
-    , arrb(this) \
-    , arra(this) \
-    , argr(this) \
-    , argg(this) \
-    , argb(this) \
-    , arga(this) \
-    , arbr(this) \
-    , arbg(this) \
-    , arbb(this) \
-    , arba(this) \
-    , arar(this) \
-    , arag(this) \
-    , arab(this) \
-    , araa(this) \
-    , agrr(this) \
-    , agrg(this) \
-    , agrb(this) \
-    , agra(this) \
-    , aggr(this) \
-    , aggg(this) \
-    , aggb(this) \
-    , agga(this) \
-    , agbr(this) \
-    , agbg(this) \
-    , agbb(this) \
-    , agba(this) \
-    , agar(this) \
-    , agag(this) \
-    , agab(this) \
-    , agaa(this) \
-    , abrr(this) \
-    , abrg(this) \
-    , abrb(this) \
-    , abra(this) \
-    , abgr(this) \
-    , abgg(this) \
-    , abgb(this) \
-    , abga(this) \
-    , abbr(this) \
-    , abbg(this) \
-    , abbb(this) \
-    , abba(this) \
-    , abar(this) \
-    , abag(this) \
-    , abab(this) \
-    , abaa(this) \
-    , aarr(this) \
-    , aarg(this) \
-    , aarb(this) \
-    , aara(this) \
-    , aagr(this) \
-    , aagg(this) \
-    , aagb(this) \
-    , aaga(this) \
-    , aabr(this) \
-    , aabg(this) \
-    , aabb(this) \
-    , aaba(this) \
-    , aaar(this) \
-    , aaag(this) \
-    , aaab(this) \
-    , aaaa(this) \
-    , ssss(this) \
-    , ssst(this) \
-    , sssp(this) \
-    , sssq(this) \
-    , ssts(this) \
-    , sstt(this) \
-    , sstp(this) \
-    , sstq(this) \
-    , ssps(this) \
-    , sspt(this) \
-    , sspp(this) \
-    , sspq(this) \
-    , ssqs(this) \
-    , ssqt(this) \
-    , ssqp(this) \
-    , ssqq(this) \
-    , stss(this) \
-    , stst(this) \
-    , stsp(this) \
-    , stsq(this) \
-    , stts(this) \
-    , sttt(this) \
-    , sttp(this) \
-    , sttq(this) \
-    , stps(this) \
-    , stpt(this) \
-    , stpp(this) \
-    , stpq(this) \
-    , stqs(this) \
-    , stqt(this) \
-    , stqp(this) \
-    , stqq(this) \
-    , spss(this) \
-    , spst(this) \
-    , spsp(this) \
-    , spsq(this) \
-    , spts(this) \
-    , sptt(this) \
-    , sptp(this) \
-    , sptq(this) \
-    , spps(this) \
-    , sppt(this) \
-    , sppp(this) \
-    , sppq(this) \
-    , spqs(this) \
-    , spqt(this) \
-    , spqp(this) \
-    , spqq(this) \
-    , sqss(this) \
-    , sqst(this) \
-    , sqsp(this) \
-    , sqsq(this) \
-    , sqts(this) \
-    , sqtt(this) \
-    , sqtp(this) \
-    , sqtq(this) \
-    , sqps(this) \
-    , sqpt(this) \
-    , sqpp(this) \
-    , sqpq(this) \
-    , sqqs(this) \
-    , sqqt(this) \
-    , sqqp(this) \
-    , sqqq(this) \
-    , tsss(this) \
-    , tsst(this) \
-    , tssp(this) \
-    , tssq(this) \
-    , tsts(this) \
-    , tstt(this) \
-    , tstp(this) \
-    , tstq(this) \
-    , tsps(this) \
-    , tspt(this) \
-    , tspp(this) \
-    , tspq(this) \
-    , tsqs(this) \
-    , tsqt(this) \
-    , tsqp(this) \
-    , tsqq(this) \
-    , ttss(this) \
-    , ttst(this) \
-    , ttsp(this) \
-    , ttsq(this) \
-    , ttts(this) \
-    , tttt(this) \
-    , tttp(this) \
-    , tttq(this) \
-    , ttps(this) \
-    , ttpt(this) \
-    , ttpp(this) \
-    , ttpq(this) \
-    , ttqs(this) \
-    , ttqt(this) \
-    , ttqp(this) \
-    , ttqq(this) \
-    , tpss(this) \
-    , tpst(this) \
-    , tpsp(this) \
-    , tpsq(this) \
-    , tpts(this) \
-    , tptt(this) \
-    , tptp(this) \
-    , tptq(this) \
-    , tpps(this) \
-    , tppt(this) \
-    , tppp(this) \
-    , tppq(this) \
-    , tpqs(this) \
-    , tpqt(this) \
-    , tpqp(this) \
-    , tpqq(this) \
-    , tqss(this) \
-    , tqst(this) \
-    , tqsp(this) \
-    , tqsq(this) \
-    , tqts(this) \
-    , tqtt(this) \
-    , tqtp(this) \
-    , tqtq(this) \
-    , tqps(this) \
-    , tqpt(this) \
-    , tqpp(this) \
-    , tqpq(this) \
-    , tqqs(this) \
-    , tqqt(this) \
-    , tqqp(this) \
-    , tqqq(this) \
-    , psss(this) \
-    , psst(this) \
-    , pssp(this) \
-    , pssq(this) \
-    , psts(this) \
-    , pstt(this) \
-    , pstp(this) \
-    , pstq(this) \
-    , psps(this) \
-    , pspt(this) \
-    , pspp(this) \
-    , pspq(this) \
-    , psqs(this) \
-    , psqt(this) \
-    , psqp(this) \
-    , psqq(this) \
-    , ptss(this) \
-    , ptst(this) \
-    , ptsp(this) \
-    , ptsq(this) \
-    , ptts(this) \
-    , pttt(this) \
-    , pttp(this) \
-    , pttq(this) \
-    , ptps(this) \
-    , ptpt(this) \
-    , ptpp(this) \
-    , ptpq(this) \
-    , ptqs(this) \
-    , ptqt(this) \
-    , ptqp(this) \
-    , ptqq(this) \
-    , ppss(this) \
-    , ppst(this) \
-    , ppsp(this) \
-    , ppsq(this) \
-    , ppts(this) \
-    , pptt(this) \
-    , pptp(this) \
-    , pptq(this) \
-    , ppps(this) \
-    , pppt(this) \
-    , pppp(this) \
-    , pppq(this) \
-    , ppqs(this) \
-    , ppqt(this) \
-    , ppqp(this) \
-    , ppqq(this) \
-    , pqss(this) \
-    , pqst(this) \
-    , pqsp(this) \
-    , pqsq(this) \
-    , pqts(this) \
-    , pqtt(this) \
-    , pqtp(this) \
-    , pqtq(this) \
-    , pqps(this) \
-    , pqpt(this) \
-    , pqpp(this) \
-    , pqpq(this) \
-    , pqqs(this) \
-    , pqqt(this) \
-    , pqqp(this) \
-    , pqqq(this) \
-    , qsss(this) \
-    , qsst(this) \
-    , qssp(this) \
-    , qssq(this) \
-    , qsts(this) \
-    , qstt(this) \
-    , qstp(this) \
-    , qstq(this) \
-    , qsps(this) \
-    , qspt(this) \
-    , qspp(this) \
-    , qspq(this) \
-    , qsqs(this) \
-    , qsqt(this) \
-    , qsqp(this) \
-    , qsqq(this) \
-    , qtss(this) \
-    , qtst(this) \
-    , qtsp(this) \
-    , qtsq(this) \
-    , qtts(this) \
-    , qttt(this) \
-    , qttp(this) \
-    , qttq(this) \
-    , qtps(this) \
-    , qtpt(this) \
-    , qtpp(this) \
-    , qtpq(this) \
-    , qtqs(this) \
-    , qtqt(this) \
-    , qtqp(this) \
-    , qtqq(this) \
-    , qpss(this) \
-    , qpst(this) \
-    , qpsp(this) \
-    , qpsq(this) \
-    , qpts(this) \
-    , qptt(this) \
-    , qptp(this) \
-    , qptq(this) \
-    , qpps(this) \
-    , qppt(this) \
-    , qppp(this) \
-    , qppq(this) \
-    , qpqs(this) \
-    , qpqt(this) \
-    , qpqp(this) \
-    , qpqq(this) \
-    , qqss(this) \
-    , qqst(this) \
-    , qqsp(this) \
-    , qqsq(this) \
-    , qqts(this) \
-    , qqtt(this) \
-    , qqtp(this) \
-    , qqtq(this) \
-    , qqps(this) \
-    , qqpt(this) \
-    , qqpp(this) \
-    , qqpq(this) \
-    , qqqs(this) \
-    , qqqt(this) \
-    , qqqp(this) \
-    , qqqq(this)
+    r(this->x) \
+    , g(this->y) \
+    , b(this->z) \
+    , a(this->w) \
+    , s(this->x) \
+    , t(this->y) \
+    , p(this->z) \
+    , q(this->w) \
+    , xx(this->x, this->x) \
+    , xy(this->x, this->y) \
+    , xz(this->x, this->z) \
+    , xw(this->x, this->w) \
+    , yx(this->y, this->x) \
+    , yy(this->y, this->y) \
+    , yz(this->y, this->z) \
+    , yw(this->y, this->w) \
+    , zx(this->z, this->x) \
+    , zy(this->z, this->y) \
+    , zz(this->z, this->z) \
+    , zw(this->z, this->w) \
+    , wx(this->w, this->x) \
+    , wy(this->w, this->y) \
+    , wz(this->w, this->z) \
+    , ww(this->w, this->w) \
+    , rr(this->x, this->x) \
+    , rg(this->x, this->y) \
+    , rb(this->x, this->z) \
+    , ra(this->x, this->w) \
+    , gr(this->y, this->x) \
+    , gg(this->y, this->y) \
+    , gb(this->y, this->z) \
+    , ga(this->y, this->w) \
+    , br(this->z, this->x) \
+    , bg(this->z, this->y) \
+    , bb(this->z, this->z) \
+    , ba(this->z, this->w) \
+    , ar(this->w, this->x) \
+    , ag(this->w, this->y) \
+    , ab(this->w, this->z) \
+    , aa(this->w, this->w) \
+    , ss(this->x, this->x) \
+    , st(this->x, this->y) \
+    , sp(this->x, this->z) \
+    , sq(this->x, this->w) \
+    , ts(this->y, this->x) \
+    , tt(this->y, this->y) \
+    , tp(this->y, this->z) \
+    , tq(this->y, this->w) \
+    , ps(this->z, this->x) \
+    , pt(this->z, this->y) \
+    , pp(this->z, this->z) \
+    , pq(this->z, this->w) \
+    , qs(this->w, this->x) \
+    , qt(this->w, this->y) \
+    , qp(this->w, this->z) \
+    , qq(this->w, this->w) \
+    , xxx(this->x, this->x, this->x) \
+    , xxy(this->x, this->x, this->y) \
+    , xxz(this->x, this->x, this->z) \
+    , xxw(this->x, this->x, this->w) \
+    , xyx(this->x, this->y, this->x) \
+    , xyy(this->x, this->y, this->y) \
+    , xyz(this->x, this->y, this->z) \
+    , xyw(this->x, this->y, this->w) \
+    , xzx(this->x, this->z, this->x) \
+    , xzy(this->x, this->z, this->y) \
+    , xzz(this->x, this->z, this->z) \
+    , xzw(this->x, this->z, this->w) \
+    , xwx(this->x, this->w, this->x) \
+    , xwy(this->x, this->w, this->y) \
+    , xwz(this->x, this->w, this->z) \
+    , xww(this->x, this->w, this->w) \
+    , yxx(this->y, this->x, this->x) \
+    , yxy(this->y, this->x, this->y) \
+    , yxz(this->y, this->x, this->z) \
+    , yxw(this->y, this->x, this->w) \
+    , yyx(this->y, this->y, this->x) \
+    , yyy(this->y, this->y, this->y) \
+    , yyz(this->y, this->y, this->z) \
+    , yyw(this->y, this->y, this->w) \
+    , yzx(this->y, this->z, this->x) \
+    , yzy(this->y, this->z, this->y) \
+    , yzz(this->y, this->z, this->z) \
+    , yzw(this->y, this->z, this->w) \
+    , ywx(this->y, this->w, this->x) \
+    , ywy(this->y, this->w, this->y) \
+    , ywz(this->y, this->w, this->z) \
+    , yww(this->y, this->w, this->w) \
+    , zxx(this->z, this->x, this->x) \
+    , zxy(this->z, this->x, this->y) \
+    , zxz(this->z, this->x, this->z) \
+    , zxw(this->z, this->x, this->w) \
+    , zyx(this->z, this->y, this->x) \
+    , zyy(this->z, this->y, this->y) \
+    , zyz(this->z, this->y, this->z) \
+    , zyw(this->z, this->y, this->w) \
+    , zzx(this->z, this->z, this->x) \
+    , zzy(this->z, this->z, this->y) \
+    , zzz(this->z, this->z, this->z) \
+    , zzw(this->z, this->z, this->w) \
+    , zwx(this->z, this->w, this->x) \
+    , zwy(this->z, this->w, this->y) \
+    , zwz(this->z, this->w, this->z) \
+    , zww(this->z, this->w, this->w) \
+    , wxx(this->w, this->x, this->x) \
+    , wxy(this->w, this->x, this->y) \
+    , wxz(this->w, this->x, this->z) \
+    , wxw(this->w, this->x, this->w) \
+    , wyx(this->w, this->y, this->x) \
+    , wyy(this->w, this->y, this->y) \
+    , wyz(this->w, this->y, this->z) \
+    , wyw(this->w, this->y, this->w) \
+    , wzx(this->w, this->z, this->x) \
+    , wzy(this->w, this->z, this->y) \
+    , wzz(this->w, this->z, this->z) \
+    , wzw(this->w, this->z, this->w) \
+    , wwx(this->w, this->w, this->x) \
+    , wwy(this->w, this->w, this->y) \
+    , wwz(this->w, this->w, this->z) \
+    , www(this->w, this->w, this->w) \
+    , rrr(this->x, this->x, this->x) \
+    , rrg(this->x, this->x, this->y) \
+    , rrb(this->x, this->x, this->z) \
+    , rra(this->x, this->x, this->w) \
+    , rgr(this->x, this->y, this->x) \
+    , rgg(this->x, this->y, this->y) \
+    , rgb(this->x, this->y, this->z) \
+    , rga(this->x, this->y, this->w) \
+    , rbr(this->x, this->z, this->x) \
+    , rbg(this->x, this->z, this->y) \
+    , rbb(this->x, this->z, this->z) \
+    , rba(this->x, this->z, this->w) \
+    , rar(this->x, this->w, this->x) \
+    , rag(this->x, this->w, this->y) \
+    , rab(this->x, this->w, this->z) \
+    , raa(this->x, this->w, this->w) \
+    , grr(this->y, this->x, this->x) \
+    , grg(this->y, this->x, this->y) \
+    , grb(this->y, this->x, this->z) \
+    , gra(this->y, this->x, this->w) \
+    , ggr(this->y, this->y, this->x) \
+    , ggg(this->y, this->y, this->y) \
+    , ggb(this->y, this->y, this->z) \
+    , gga(this->y, this->y, this->w) \
+    , gbr(this->y, this->z, this->x) \
+    , gbg(this->y, this->z, this->y) \
+    , gbb(this->y, this->z, this->z) \
+    , gba(this->y, this->z, this->w) \
+    , gar(this->y, this->w, this->x) \
+    , gag(this->y, this->w, this->y) \
+    , gab(this->y, this->w, this->z) \
+    , gaa(this->y, this->w, this->w) \
+    , brr(this->z, this->x, this->x) \
+    , brg(this->z, this->x, this->y) \
+    , brb(this->z, this->x, this->z) \
+    , bra(this->z, this->x, this->w) \
+    , bgr(this->z, this->y, this->x) \
+    , bgg(this->z, this->y, this->y) \
+    , bgb(this->z, this->y, this->z) \
+    , bga(this->z, this->y, this->w) \
+    , bbr(this->z, this->z, this->x) \
+    , bbg(this->z, this->z, this->y) \
+    , bbb(this->z, this->z, this->z) \
+    , bba(this->z, this->z, this->w) \
+    , bar(this->z, this->w, this->x) \
+    , bag(this->z, this->w, this->y) \
+    , bab(this->z, this->w, this->z) \
+    , baa(this->z, this->w, this->w) \
+    , arr(this->w, this->x, this->x) \
+    , arg(this->w, this->x, this->y) \
+    , arb(this->w, this->x, this->z) \
+    , ara(this->w, this->x, this->w) \
+    , agr(this->w, this->y, this->x) \
+    , agg(this->w, this->y, this->y) \
+    , agb(this->w, this->y, this->z) \
+    , aga(this->w, this->y, this->w) \
+    , abr(this->w, this->z, this->x) \
+    , abg(this->w, this->z, this->y) \
+    , abb(this->w, this->z, this->z) \
+    , aba(this->w, this->z, this->w) \
+    , aar(this->w, this->w, this->x) \
+    , aag(this->w, this->w, this->y) \
+    , aab(this->w, this->w, this->z) \
+    , aaa(this->w, this->w, this->w) \
+    , sss(this->x, this->x, this->x) \
+    , sst(this->x, this->x, this->y) \
+    , ssp(this->x, this->x, this->z) \
+    , ssq(this->x, this->x, this->w) \
+    , sts(this->x, this->y, this->x) \
+    , stt(this->x, this->y, this->y) \
+    , stp(this->x, this->y, this->z) \
+    , stq(this->x, this->y, this->w) \
+    , sps(this->x, this->z, this->x) \
+    , spt(this->x, this->z, this->y) \
+    , spp(this->x, this->z, this->z) \
+    , spq(this->x, this->z, this->w) \
+    , sqs(this->x, this->w, this->x) \
+    , sqt(this->x, this->w, this->y) \
+    , sqp(this->x, this->w, this->z) \
+    , sqq(this->x, this->w, this->w) \
+    , tss(this->y, this->x, this->x) \
+    , tst(this->y, this->x, this->y) \
+    , tsp(this->y, this->x, this->z) \
+    , tsq(this->y, this->x, this->w) \
+    , tts(this->y, this->y, this->x) \
+    , ttt(this->y, this->y, this->y) \
+    , ttp(this->y, this->y, this->z) \
+    , ttq(this->y, this->y, this->w) \
+    , tps(this->y, this->z, this->x) \
+    , tpt(this->y, this->z, this->y) \
+    , tpp(this->y, this->z, this->z) \
+    , tpq(this->y, this->z, this->w) \
+    , tqs(this->y, this->w, this->x) \
+    , tqt(this->y, this->w, this->y) \
+    , tqp(this->y, this->w, this->z) \
+    , tqq(this->y, this->w, this->w) \
+    , pss(this->z, this->x, this->x) \
+    , pst(this->z, this->x, this->y) \
+    , psp(this->z, this->x, this->z) \
+    , psq(this->z, this->x, this->w) \
+    , pts(this->z, this->y, this->x) \
+    , ptt(this->z, this->y, this->y) \
+    , ptp(this->z, this->y, this->z) \
+    , ptq(this->z, this->y, this->w) \
+    , pps(this->z, this->z, this->x) \
+    , ppt(this->z, this->z, this->y) \
+    , ppp(this->z, this->z, this->z) \
+    , ppq(this->z, this->z, this->w) \
+    , pqs(this->z, this->w, this->x) \
+    , pqt(this->z, this->w, this->y) \
+    , pqp(this->z, this->w, this->z) \
+    , pqq(this->z, this->w, this->w) \
+    , qss(this->w, this->x, this->x) \
+    , qst(this->w, this->x, this->y) \
+    , qsp(this->w, this->x, this->z) \
+    , qsq(this->w, this->x, this->w) \
+    , qts(this->w, this->y, this->x) \
+    , qtt(this->w, this->y, this->y) \
+    , qtp(this->w, this->y, this->z) \
+    , qtq(this->w, this->y, this->w) \
+    , qps(this->w, this->z, this->x) \
+    , qpt(this->w, this->z, this->y) \
+    , qpp(this->w, this->z, this->z) \
+    , qpq(this->w, this->z, this->w) \
+    , qqs(this->w, this->w, this->x) \
+    , qqt(this->w, this->w, this->y) \
+    , qqp(this->w, this->w, this->z) \
+    , qqq(this->w, this->w, this->w) \
+    , xxxx(this->x, this->x, this->x, this->x) \
+    , xxxy(this->x, this->x, this->x, this->y) \
+    , xxxz(this->x, this->x, this->x, this->z) \
+    , xxxw(this->x, this->x, this->x, this->w) \
+    , xxyx(this->x, this->x, this->y, this->x) \
+    , xxyy(this->x, this->x, this->y, this->y) \
+    , xxyz(this->x, this->x, this->y, this->z) \
+    , xxyw(this->x, this->x, this->y, this->w) \
+    , xxzx(this->x, this->x, this->z, this->x) \
+    , xxzy(this->x, this->x, this->z, this->y) \
+    , xxzz(this->x, this->x, this->z, this->z) \
+    , xxzw(this->x, this->x, this->z, this->w) \
+    , xxwx(this->x, this->x, this->w, this->x) \
+    , xxwy(this->x, this->x, this->w, this->y) \
+    , xxwz(this->x, this->x, this->w, this->z) \
+    , xxww(this->x, this->x, this->w, this->w) \
+    , xyxx(this->x, this->y, this->x, this->x) \
+    , xyxy(this->x, this->y, this->x, this->y) \
+    , xyxz(this->x, this->y, this->x, this->z) \
+    , xyxw(this->x, this->y, this->x, this->w) \
+    , xyyx(this->x, this->y, this->y, this->x) \
+    , xyyy(this->x, this->y, this->y, this->y) \
+    , xyyz(this->x, this->y, this->y, this->z) \
+    , xyyw(this->x, this->y, this->y, this->w) \
+    , xyzx(this->x, this->y, this->z, this->x) \
+    , xyzy(this->x, this->y, this->z, this->y) \
+    , xyzz(this->x, this->y, this->z, this->z) \
+    , xyzw(this->x, this->y, this->z, this->w) \
+    , xywx(this->x, this->y, this->w, this->x) \
+    , xywy(this->x, this->y, this->w, this->y) \
+    , xywz(this->x, this->y, this->w, this->z) \
+    , xyww(this->x, this->y, this->w, this->w) \
+    , xzxx(this->x, this->z, this->x, this->x) \
+    , xzxy(this->x, this->z, this->x, this->y) \
+    , xzxz(this->x, this->z, this->x, this->z) \
+    , xzxw(this->x, this->z, this->x, this->w) \
+    , xzyx(this->x, this->z, this->y, this->x) \
+    , xzyy(this->x, this->z, this->y, this->y) \
+    , xzyz(this->x, this->z, this->y, this->z) \
+    , xzyw(this->x, this->z, this->y, this->w) \
+    , xzzx(this->x, this->z, this->z, this->x) \
+    , xzzy(this->x, this->z, this->z, this->y) \
+    , xzzz(this->x, this->z, this->z, this->z) \
+    , xzzw(this->x, this->z, this->z, this->w) \
+    , xzwx(this->x, this->z, this->w, this->x) \
+    , xzwy(this->x, this->z, this->w, this->y) \
+    , xzwz(this->x, this->z, this->w, this->z) \
+    , xzww(this->x, this->z, this->w, this->w) \
+    , xwxx(this->x, this->w, this->x, this->x) \
+    , xwxy(this->x, this->w, this->x, this->y) \
+    , xwxz(this->x, this->w, this->x, this->z) \
+    , xwxw(this->x, this->w, this->x, this->w) \
+    , xwyx(this->x, this->w, this->y, this->x) \
+    , xwyy(this->x, this->w, this->y, this->y) \
+    , xwyz(this->x, this->w, this->y, this->z) \
+    , xwyw(this->x, this->w, this->y, this->w) \
+    , xwzx(this->x, this->w, this->z, this->x) \
+    , xwzy(this->x, this->w, this->z, this->y) \
+    , xwzz(this->x, this->w, this->z, this->z) \
+    , xwzw(this->x, this->w, this->z, this->w) \
+    , xwwx(this->x, this->w, this->w, this->x) \
+    , xwwy(this->x, this->w, this->w, this->y) \
+    , xwwz(this->x, this->w, this->w, this->z) \
+    , xwww(this->x, this->w, this->w, this->w) \
+    , yxxx(this->y, this->x, this->x, this->x) \
+    , yxxy(this->y, this->x, this->x, this->y) \
+    , yxxz(this->y, this->x, this->x, this->z) \
+    , yxxw(this->y, this->x, this->x, this->w) \
+    , yxyx(this->y, this->x, this->y, this->x) \
+    , yxyy(this->y, this->x, this->y, this->y) \
+    , yxyz(this->y, this->x, this->y, this->z) \
+    , yxyw(this->y, this->x, this->y, this->w) \
+    , yxzx(this->y, this->x, this->z, this->x) \
+    , yxzy(this->y, this->x, this->z, this->y) \
+    , yxzz(this->y, this->x, this->z, this->z) \
+    , yxzw(this->y, this->x, this->z, this->w) \
+    , yxwx(this->y, this->x, this->w, this->x) \
+    , yxwy(this->y, this->x, this->w, this->y) \
+    , yxwz(this->y, this->x, this->w, this->z) \
+    , yxww(this->y, this->x, this->w, this->w) \
+    , yyxx(this->y, this->y, this->x, this->x) \
+    , yyxy(this->y, this->y, this->x, this->y) \
+    , yyxz(this->y, this->y, this->x, this->z) \
+    , yyxw(this->y, this->y, this->x, this->w) \
+    , yyyx(this->y, this->y, this->y, this->x) \
+    , yyyy(this->y, this->y, this->y, this->y) \
+    , yyyz(this->y, this->y, this->y, this->z) \
+    , yyyw(this->y, this->y, this->y, this->w) \
+    , yyzx(this->y, this->y, this->z, this->x) \
+    , yyzy(this->y, this->y, this->z, this->y) \
+    , yyzz(this->y, this->y, this->z, this->z) \
+    , yyzw(this->y, this->y, this->z, this->w) \
+    , yywx(this->y, this->y, this->w, this->x) \
+    , yywy(this->y, this->y, this->w, this->y) \
+    , yywz(this->y, this->y, this->w, this->z) \
+    , yyww(this->y, this->y, this->w, this->w) \
+    , yzxx(this->y, this->z, this->x, this->x) \
+    , yzxy(this->y, this->z, this->x, this->y) \
+    , yzxz(this->y, this->z, this->x, this->z) \
+    , yzxw(this->y, this->z, this->x, this->w) \
+    , yzyx(this->y, this->z, this->y, this->x) \
+    , yzyy(this->y, this->z, this->y, this->y) \
+    , yzyz(this->y, this->z, this->y, this->z) \
+    , yzyw(this->y, this->z, this->y, this->w) \
+    , yzzx(this->y, this->z, this->z, this->x) \
+    , yzzy(this->y, this->z, this->z, this->y) \
+    , yzzz(this->y, this->z, this->z, this->z) \
+    , yzzw(this->y, this->z, this->z, this->w) \
+    , yzwx(this->y, this->z, this->w, this->x) \
+    , yzwy(this->y, this->z, this->w, this->y) \
+    , yzwz(this->y, this->z, this->w, this->z) \
+    , yzww(this->y, this->z, this->w, this->w) \
+    , ywxx(this->y, this->w, this->x, this->x) \
+    , ywxy(this->y, this->w, this->x, this->y) \
+    , ywxz(this->y, this->w, this->x, this->z) \
+    , ywxw(this->y, this->w, this->x, this->w) \
+    , ywyx(this->y, this->w, this->y, this->x) \
+    , ywyy(this->y, this->w, this->y, this->y) \
+    , ywyz(this->y, this->w, this->y, this->z) \
+    , ywyw(this->y, this->w, this->y, this->w) \
+    , ywzx(this->y, this->w, this->z, this->x) \
+    , ywzy(this->y, this->w, this->z, this->y) \
+    , ywzz(this->y, this->w, this->z, this->z) \
+    , ywzw(this->y, this->w, this->z, this->w) \
+    , ywwx(this->y, this->w, this->w, this->x) \
+    , ywwy(this->y, this->w, this->w, this->y) \
+    , ywwz(this->y, this->w, this->w, this->z) \
+    , ywww(this->y, this->w, this->w, this->w) \
+    , zxxx(this->z, this->x, this->x, this->x) \
+    , zxxy(this->z, this->x, this->x, this->y) \
+    , zxxz(this->z, this->x, this->x, this->z) \
+    , zxxw(this->z, this->x, this->x, this->w) \
+    , zxyx(this->z, this->x, this->y, this->x) \
+    , zxyy(this->z, this->x, this->y, this->y) \
+    , zxyz(this->z, this->x, this->y, this->z) \
+    , zxyw(this->z, this->x, this->y, this->w) \
+    , zxzx(this->z, this->x, this->z, this->x) \
+    , zxzy(this->z, this->x, this->z, this->y) \
+    , zxzz(this->z, this->x, this->z, this->z) \
+    , zxzw(this->z, this->x, this->z, this->w) \
+    , zxwx(this->z, this->x, this->w, this->x) \
+    , zxwy(this->z, this->x, this->w, this->y) \
+    , zxwz(this->z, this->x, this->w, this->z) \
+    , zxww(this->z, this->x, this->w, this->w) \
+    , zyxx(this->z, this->y, this->x, this->x) \
+    , zyxy(this->z, this->y, this->x, this->y) \
+    , zyxz(this->z, this->y, this->x, this->z) \
+    , zyxw(this->z, this->y, this->x, this->w) \
+    , zyyx(this->z, this->y, this->y, this->x) \
+    , zyyy(this->z, this->y, this->y, this->y) \
+    , zyyz(this->z, this->y, this->y, this->z) \
+    , zyyw(this->z, this->y, this->y, this->w) \
+    , zyzx(this->z, this->y, this->z, this->x) \
+    , zyzy(this->z, this->y, this->z, this->y) \
+    , zyzz(this->z, this->y, this->z, this->z) \
+    , zyzw(this->z, this->y, this->z, this->w) \
+    , zywx(this->z, this->y, this->w, this->x) \
+    , zywy(this->z, this->y, this->w, this->y) \
+    , zywz(this->z, this->y, this->w, this->z) \
+    , zyww(this->z, this->y, this->w, this->w) \
+    , zzxx(this->z, this->z, this->x, this->x) \
+    , zzxy(this->z, this->z, this->x, this->y) \
+    , zzxz(this->z, this->z, this->x, this->z) \
+    , zzxw(this->z, this->z, this->x, this->w) \
+    , zzyx(this->z, this->z, this->y, this->x) \
+    , zzyy(this->z, this->z, this->y, this->y) \
+    , zzyz(this->z, this->z, this->y, this->z) \
+    , zzyw(this->z, this->z, this->y, this->w) \
+    , zzzx(this->z, this->z, this->z, this->x) \
+    , zzzy(this->z, this->z, this->z, this->y) \
+    , zzzz(this->z, this->z, this->z, this->z) \
+    , zzzw(this->z, this->z, this->z, this->w) \
+    , zzwx(this->z, this->z, this->w, this->x) \
+    , zzwy(this->z, this->z, this->w, this->y) \
+    , zzwz(this->z, this->z, this->w, this->z) \
+    , zzww(this->z, this->z, this->w, this->w) \
+    , zwxx(this->z, this->w, this->x, this->x) \
+    , zwxy(this->z, this->w, this->x, this->y) \
+    , zwxz(this->z, this->w, this->x, this->z) \
+    , zwxw(this->z, this->w, this->x, this->w) \
+    , zwyx(this->z, this->w, this->y, this->x) \
+    , zwyy(this->z, this->w, this->y, this->y) \
+    , zwyz(this->z, this->w, this->y, this->z) \
+    , zwyw(this->z, this->w, this->y, this->w) \
+    , zwzx(this->z, this->w, this->z, this->x) \
+    , zwzy(this->z, this->w, this->z, this->y) \
+    , zwzz(this->z, this->w, this->z, this->z) \
+    , zwzw(this->z, this->w, this->z, this->w) \
+    , zwwx(this->z, this->w, this->w, this->x) \
+    , zwwy(this->z, this->w, this->w, this->y) \
+    , zwwz(this->z, this->w, this->w, this->z) \
+    , zwww(this->z, this->w, this->w, this->w) \
+    , wxxx(this->w, this->x, this->x, this->x) \
+    , wxxy(this->w, this->x, this->x, this->y) \
+    , wxxz(this->w, this->x, this->x, this->z) \
+    , wxxw(this->w, this->x, this->x, this->w) \
+    , wxyx(this->w, this->x, this->y, this->x) \
+    , wxyy(this->w, this->x, this->y, this->y) \
+    , wxyz(this->w, this->x, this->y, this->z) \
+    , wxyw(this->w, this->x, this->y, this->w) \
+    , wxzx(this->w, this->x, this->z, this->x) \
+    , wxzy(this->w, this->x, this->z, this->y) \
+    , wxzz(this->w, this->x, this->z, this->z) \
+    , wxzw(this->w, this->x, this->z, this->w) \
+    , wxwx(this->w, this->x, this->w, this->x) \
+    , wxwy(this->w, this->x, this->w, this->y) \
+    , wxwz(this->w, this->x, this->w, this->z) \
+    , wxww(this->w, this->x, this->w, this->w) \
+    , wyxx(this->w, this->y, this->x, this->x) \
+    , wyxy(this->w, this->y, this->x, this->y) \
+    , wyxz(this->w, this->y, this->x, this->z) \
+    , wyxw(this->w, this->y, this->x, this->w) \
+    , wyyx(this->w, this->y, this->y, this->x) \
+    , wyyy(this->w, this->y, this->y, this->y) \
+    , wyyz(this->w, this->y, this->y, this->z) \
+    , wyyw(this->w, this->y, this->y, this->w) \
+    , wyzx(this->w, this->y, this->z, this->x) \
+    , wyzy(this->w, this->y, this->z, this->y) \
+    , wyzz(this->w, this->y, this->z, this->z) \
+    , wyzw(this->w, this->y, this->z, this->w) \
+    , wywx(this->w, this->y, this->w, this->x) \
+    , wywy(this->w, this->y, this->w, this->y) \
+    , wywz(this->w, this->y, this->w, this->z) \
+    , wyww(this->w, this->y, this->w, this->w) \
+    , wzxx(this->w, this->z, this->x, this->x) \
+    , wzxy(this->w, this->z, this->x, this->y) \
+    , wzxz(this->w, this->z, this->x, this->z) \
+    , wzxw(this->w, this->z, this->x, this->w) \
+    , wzyx(this->w, this->z, this->y, this->x) \
+    , wzyy(this->w, this->z, this->y, this->y) \
+    , wzyz(this->w, this->z, this->y, this->z) \
+    , wzyw(this->w, this->z, this->y, this->w) \
+    , wzzx(this->w, this->z, this->z, this->x) \
+    , wzzy(this->w, this->z, this->z, this->y) \
+    , wzzz(this->w, this->z, this->z, this->z) \
+    , wzzw(this->w, this->z, this->z, this->w) \
+    , wzwx(this->w, this->z, this->w, this->x) \
+    , wzwy(this->w, this->z, this->w, this->y) \
+    , wzwz(this->w, this->z, this->w, this->z) \
+    , wzww(this->w, this->z, this->w, this->w) \
+    , wwxx(this->w, this->w, this->x, this->x) \
+    , wwxy(this->w, this->w, this->x, this->y) \
+    , wwxz(this->w, this->w, this->x, this->z) \
+    , wwxw(this->w, this->w, this->x, this->w) \
+    , wwyx(this->w, this->w, this->y, this->x) \
+    , wwyy(this->w, this->w, this->y, this->y) \
+    , wwyz(this->w, this->w, this->y, this->z) \
+    , wwyw(this->w, this->w, this->y, this->w) \
+    , wwzx(this->w, this->w, this->z, this->x) \
+    , wwzy(this->w, this->w, this->z, this->y) \
+    , wwzz(this->w, this->w, this->z, this->z) \
+    , wwzw(this->w, this->w, this->z, this->w) \
+    , wwwx(this->w, this->w, this->w, this->x) \
+    , wwwy(this->w, this->w, this->w, this->y) \
+    , wwwz(this->w, this->w, this->w, this->z) \
+    , wwww(this->w, this->w, this->w, this->w) \
+    , rrrr(this->x, this->x, this->x, this->x) \
+    , rrrg(this->x, this->x, this->x, this->y) \
+    , rrrb(this->x, this->x, this->x, this->z) \
+    , rrra(this->x, this->x, this->x, this->w) \
+    , rrgr(this->x, this->x, this->y, this->x) \
+    , rrgg(this->x, this->x, this->y, this->y) \
+    , rrgb(this->x, this->x, this->y, this->z) \
+    , rrga(this->x, this->x, this->y, this->w) \
+    , rrbr(this->x, this->x, this->z, this->x) \
+    , rrbg(this->x, this->x, this->z, this->y) \
+    , rrbb(this->x, this->x, this->z, this->z) \
+    , rrba(this->x, this->x, this->z, this->w) \
+    , rrar(this->x, this->x, this->w, this->x) \
+    , rrag(this->x, this->x, this->w, this->y) \
+    , rrab(this->x, this->x, this->w, this->z) \
+    , rraa(this->x, this->x, this->w, this->w) \
+    , rgrr(this->x, this->y, this->x, this->x) \
+    , rgrg(this->x, this->y, this->x, this->y) \
+    , rgrb(this->x, this->y, this->x, this->z) \
+    , rgra(this->x, this->y, this->x, this->w) \
+    , rggr(this->x, this->y, this->y, this->x) \
+    , rggg(this->x, this->y, this->y, this->y) \
+    , rggb(this->x, this->y, this->y, this->z) \
+    , rgga(this->x, this->y, this->y, this->w) \
+    , rgbr(this->x, this->y, this->z, this->x) \
+    , rgbg(this->x, this->y, this->z, this->y) \
+    , rgbb(this->x, this->y, this->z, this->z) \
+    , rgba(this->x, this->y, this->z, this->w) \
+    , rgar(this->x, this->y, this->w, this->x) \
+    , rgag(this->x, this->y, this->w, this->y) \
+    , rgab(this->x, this->y, this->w, this->z) \
+    , rgaa(this->x, this->y, this->w, this->w) \
+    , rbrr(this->x, this->z, this->x, this->x) \
+    , rbrg(this->x, this->z, this->x, this->y) \
+    , rbrb(this->x, this->z, this->x, this->z) \
+    , rbra(this->x, this->z, this->x, this->w) \
+    , rbgr(this->x, this->z, this->y, this->x) \
+    , rbgg(this->x, this->z, this->y, this->y) \
+    , rbgb(this->x, this->z, this->y, this->z) \
+    , rbga(this->x, this->z, this->y, this->w) \
+    , rbbr(this->x, this->z, this->z, this->x) \
+    , rbbg(this->x, this->z, this->z, this->y) \
+    , rbbb(this->x, this->z, this->z, this->z) \
+    , rbba(this->x, this->z, this->z, this->w) \
+    , rbar(this->x, this->z, this->w, this->x) \
+    , rbag(this->x, this->z, this->w, this->y) \
+    , rbab(this->x, this->z, this->w, this->z) \
+    , rbaa(this->x, this->z, this->w, this->w) \
+    , rarr(this->x, this->w, this->x, this->x) \
+    , rarg(this->x, this->w, this->x, this->y) \
+    , rarb(this->x, this->w, this->x, this->z) \
+    , rara(this->x, this->w, this->x, this->w) \
+    , ragr(this->x, this->w, this->y, this->x) \
+    , ragg(this->x, this->w, this->y, this->y) \
+    , ragb(this->x, this->w, this->y, this->z) \
+    , raga(this->x, this->w, this->y, this->w) \
+    , rabr(this->x, this->w, this->z, this->x) \
+    , rabg(this->x, this->w, this->z, this->y) \
+    , rabb(this->x, this->w, this->z, this->z) \
+    , raba(this->x, this->w, this->z, this->w) \
+    , raar(this->x, this->w, this->w, this->x) \
+    , raag(this->x, this->w, this->w, this->y) \
+    , raab(this->x, this->w, this->w, this->z) \
+    , raaa(this->x, this->w, this->w, this->w) \
+    , grrr(this->y, this->x, this->x, this->x) \
+    , grrg(this->y, this->x, this->x, this->y) \
+    , grrb(this->y, this->x, this->x, this->z) \
+    , grra(this->y, this->x, this->x, this->w) \
+    , grgr(this->y, this->x, this->y, this->x) \
+    , grgg(this->y, this->x, this->y, this->y) \
+    , grgb(this->y, this->x, this->y, this->z) \
+    , grga(this->y, this->x, this->y, this->w) \
+    , grbr(this->y, this->x, this->z, this->x) \
+    , grbg(this->y, this->x, this->z, this->y) \
+    , grbb(this->y, this->x, this->z, this->z) \
+    , grba(this->y, this->x, this->z, this->w) \
+    , grar(this->y, this->x, this->w, this->x) \
+    , grag(this->y, this->x, this->w, this->y) \
+    , grab(this->y, this->x, this->w, this->z) \
+    , graa(this->y, this->x, this->w, this->w) \
+    , ggrr(this->y, this->y, this->x, this->x) \
+    , ggrg(this->y, this->y, this->x, this->y) \
+    , ggrb(this->y, this->y, this->x, this->z) \
+    , ggra(this->y, this->y, this->x, this->w) \
+    , gggr(this->y, this->y, this->y, this->x) \
+    , gggg(this->y, this->y, this->y, this->y) \
+    , gggb(this->y, this->y, this->y, this->z) \
+    , ggga(this->y, this->y, this->y, this->w) \
+    , ggbr(this->y, this->y, this->z, this->x) \
+    , ggbg(this->y, this->y, this->z, this->y) \
+    , ggbb(this->y, this->y, this->z, this->z) \
+    , ggba(this->y, this->y, this->z, this->w) \
+    , ggar(this->y, this->y, this->w, this->x) \
+    , ggag(this->y, this->y, this->w, this->y) \
+    , ggab(this->y, this->y, this->w, this->z) \
+    , ggaa(this->y, this->y, this->w, this->w) \
+    , gbrr(this->y, this->z, this->x, this->x) \
+    , gbrg(this->y, this->z, this->x, this->y) \
+    , gbrb(this->y, this->z, this->x, this->z) \
+    , gbra(this->y, this->z, this->x, this->w) \
+    , gbgr(this->y, this->z, this->y, this->x) \
+    , gbgg(this->y, this->z, this->y, this->y) \
+    , gbgb(this->y, this->z, this->y, this->z) \
+    , gbga(this->y, this->z, this->y, this->w) \
+    , gbbr(this->y, this->z, this->z, this->x) \
+    , gbbg(this->y, this->z, this->z, this->y) \
+    , gbbb(this->y, this->z, this->z, this->z) \
+    , gbba(this->y, this->z, this->z, this->w) \
+    , gbar(this->y, this->z, this->w, this->x) \
+    , gbag(this->y, this->z, this->w, this->y) \
+    , gbab(this->y, this->z, this->w, this->z) \
+    , gbaa(this->y, this->z, this->w, this->w) \
+    , garr(this->y, this->w, this->x, this->x) \
+    , garg(this->y, this->w, this->x, this->y) \
+    , garb(this->y, this->w, this->x, this->z) \
+    , gara(this->y, this->w, this->x, this->w) \
+    , gagr(this->y, this->w, this->y, this->x) \
+    , gagg(this->y, this->w, this->y, this->y) \
+    , gagb(this->y, this->w, this->y, this->z) \
+    , gaga(this->y, this->w, this->y, this->w) \
+    , gabr(this->y, this->w, this->z, this->x) \
+    , gabg(this->y, this->w, this->z, this->y) \
+    , gabb(this->y, this->w, this->z, this->z) \
+    , gaba(this->y, this->w, this->z, this->w) \
+    , gaar(this->y, this->w, this->w, this->x) \
+    , gaag(this->y, this->w, this->w, this->y) \
+    , gaab(this->y, this->w, this->w, this->z) \
+    , gaaa(this->y, this->w, this->w, this->w) \
+    , brrr(this->z, this->x, this->x, this->x) \
+    , brrg(this->z, this->x, this->x, this->y) \
+    , brrb(this->z, this->x, this->x, this->z) \
+    , brra(this->z, this->x, this->x, this->w) \
+    , brgr(this->z, this->x, this->y, this->x) \
+    , brgg(this->z, this->x, this->y, this->y) \
+    , brgb(this->z, this->x, this->y, this->z) \
+    , brga(this->z, this->x, this->y, this->w) \
+    , brbr(this->z, this->x, this->z, this->x) \
+    , brbg(this->z, this->x, this->z, this->y) \
+    , brbb(this->z, this->x, this->z, this->z) \
+    , brba(this->z, this->x, this->z, this->w) \
+    , brar(this->z, this->x, this->w, this->x) \
+    , brag(this->z, this->x, this->w, this->y) \
+    , brab(this->z, this->x, this->w, this->z) \
+    , braa(this->z, this->x, this->w, this->w) \
+    , bgrr(this->z, this->y, this->x, this->x) \
+    , bgrg(this->z, this->y, this->x, this->y) \
+    , bgrb(this->z, this->y, this->x, this->z) \
+    , bgra(this->z, this->y, this->x, this->w) \
+    , bggr(this->z, this->y, this->y, this->x) \
+    , bggg(this->z, this->y, this->y, this->y) \
+    , bggb(this->z, this->y, this->y, this->z) \
+    , bgga(this->z, this->y, this->y, this->w) \
+    , bgbr(this->z, this->y, this->z, this->x) \
+    , bgbg(this->z, this->y, this->z, this->y) \
+    , bgbb(this->z, this->y, this->z, this->z) \
+    , bgba(this->z, this->y, this->z, this->w) \
+    , bgar(this->z, this->y, this->w, this->x) \
+    , bgag(this->z, this->y, this->w, this->y) \
+    , bgab(this->z, this->y, this->w, this->z) \
+    , bgaa(this->z, this->y, this->w, this->w) \
+    , bbrr(this->z, this->z, this->x, this->x) \
+    , bbrg(this->z, this->z, this->x, this->y) \
+    , bbrb(this->z, this->z, this->x, this->z) \
+    , bbra(this->z, this->z, this->x, this->w) \
+    , bbgr(this->z, this->z, this->y, this->x) \
+    , bbgg(this->z, this->z, this->y, this->y) \
+    , bbgb(this->z, this->z, this->y, this->z) \
+    , bbga(this->z, this->z, this->y, this->w) \
+    , bbbr(this->z, this->z, this->z, this->x) \
+    , bbbg(this->z, this->z, this->z, this->y) \
+    , bbbb(this->z, this->z, this->z, this->z) \
+    , bbba(this->z, this->z, this->z, this->w) \
+    , bbar(this->z, this->z, this->w, this->x) \
+    , bbag(this->z, this->z, this->w, this->y) \
+    , bbab(this->z, this->z, this->w, this->z) \
+    , bbaa(this->z, this->z, this->w, this->w) \
+    , barr(this->z, this->w, this->x, this->x) \
+    , barg(this->z, this->w, this->x, this->y) \
+    , barb(this->z, this->w, this->x, this->z) \
+    , bara(this->z, this->w, this->x, this->w) \
+    , bagr(this->z, this->w, this->y, this->x) \
+    , bagg(this->z, this->w, this->y, this->y) \
+    , bagb(this->z, this->w, this->y, this->z) \
+    , baga(this->z, this->w, this->y, this->w) \
+    , babr(this->z, this->w, this->z, this->x) \
+    , babg(this->z, this->w, this->z, this->y) \
+    , babb(this->z, this->w, this->z, this->z) \
+    , baba(this->z, this->w, this->z, this->w) \
+    , baar(this->z, this->w, this->w, this->x) \
+    , baag(this->z, this->w, this->w, this->y) \
+    , baab(this->z, this->w, this->w, this->z) \
+    , baaa(this->z, this->w, this->w, this->w) \
+    , arrr(this->w, this->x, this->x, this->x) \
+    , arrg(this->w, this->x, this->x, this->y) \
+    , arrb(this->w, this->x, this->x, this->z) \
+    , arra(this->w, this->x, this->x, this->w) \
+    , argr(this->w, this->x, this->y, this->x) \
+    , argg(this->w, this->x, this->y, this->y) \
+    , argb(this->w, this->x, this->y, this->z) \
+    , arga(this->w, this->x, this->y, this->w) \
+    , arbr(this->w, this->x, this->z, this->x) \
+    , arbg(this->w, this->x, this->z, this->y) \
+    , arbb(this->w, this->x, this->z, this->z) \
+    , arba(this->w, this->x, this->z, this->w) \
+    , arar(this->w, this->x, this->w, this->x) \
+    , arag(this->w, this->x, this->w, this->y) \
+    , arab(this->w, this->x, this->w, this->z) \
+    , araa(this->w, this->x, this->w, this->w) \
+    , agrr(this->w, this->y, this->x, this->x) \
+    , agrg(this->w, this->y, this->x, this->y) \
+    , agrb(this->w, this->y, this->x, this->z) \
+    , agra(this->w, this->y, this->x, this->w) \
+    , aggr(this->w, this->y, this->y, this->x) \
+    , aggg(this->w, this->y, this->y, this->y) \
+    , aggb(this->w, this->y, this->y, this->z) \
+    , agga(this->w, this->y, this->y, this->w) \
+    , agbr(this->w, this->y, this->z, this->x) \
+    , agbg(this->w, this->y, this->z, this->y) \
+    , agbb(this->w, this->y, this->z, this->z) \
+    , agba(this->w, this->y, this->z, this->w) \
+    , agar(this->w, this->y, this->w, this->x) \
+    , agag(this->w, this->y, this->w, this->y) \
+    , agab(this->w, this->y, this->w, this->z) \
+    , agaa(this->w, this->y, this->w, this->w) \
+    , abrr(this->w, this->z, this->x, this->x) \
+    , abrg(this->w, this->z, this->x, this->y) \
+    , abrb(this->w, this->z, this->x, this->z) \
+    , abra(this->w, this->z, this->x, this->w) \
+    , abgr(this->w, this->z, this->y, this->x) \
+    , abgg(this->w, this->z, this->y, this->y) \
+    , abgb(this->w, this->z, this->y, this->z) \
+    , abga(this->w, this->z, this->y, this->w) \
+    , abbr(this->w, this->z, this->z, this->x) \
+    , abbg(this->w, this->z, this->z, this->y) \
+    , abbb(this->w, this->z, this->z, this->z) \
+    , abba(this->w, this->z, this->z, this->w) \
+    , abar(this->w, this->z, this->w, this->x) \
+    , abag(this->w, this->z, this->w, this->y) \
+    , abab(this->w, this->z, this->w, this->z) \
+    , abaa(this->w, this->z, this->w, this->w) \
+    , aarr(this->w, this->w, this->x, this->x) \
+    , aarg(this->w, this->w, this->x, this->y) \
+    , aarb(this->w, this->w, this->x, this->z) \
+    , aara(this->w, this->w, this->x, this->w) \
+    , aagr(this->w, this->w, this->y, this->x) \
+    , aagg(this->w, this->w, this->y, this->y) \
+    , aagb(this->w, this->w, this->y, this->z) \
+    , aaga(this->w, this->w, this->y, this->w) \
+    , aabr(this->w, this->w, this->z, this->x) \
+    , aabg(this->w, this->w, this->z, this->y) \
+    , aabb(this->w, this->w, this->z, this->z) \
+    , aaba(this->w, this->w, this->z, this->w) \
+    , aaar(this->w, this->w, this->w, this->x) \
+    , aaag(this->w, this->w, this->w, this->y) \
+    , aaab(this->w, this->w, this->w, this->z) \
+    , aaaa(this->w, this->w, this->w, this->w) \
+    , ssss(this->x, this->x, this->x, this->x) \
+    , ssst(this->x, this->x, this->x, this->y) \
+    , sssp(this->x, this->x, this->x, this->z) \
+    , sssq(this->x, this->x, this->x, this->w) \
+    , ssts(this->x, this->x, this->y, this->x) \
+    , sstt(this->x, this->x, this->y, this->y) \
+    , sstp(this->x, this->x, this->y, this->z) \
+    , sstq(this->x, this->x, this->y, this->w) \
+    , ssps(this->x, this->x, this->z, this->x) \
+    , sspt(this->x, this->x, this->z, this->y) \
+    , sspp(this->x, this->x, this->z, this->z) \
+    , sspq(this->x, this->x, this->z, this->w) \
+    , ssqs(this->x, this->x, this->w, this->x) \
+    , ssqt(this->x, this->x, this->w, this->y) \
+    , ssqp(this->x, this->x, this->w, this->z) \
+    , ssqq(this->x, this->x, this->w, this->w) \
+    , stss(this->x, this->y, this->x, this->x) \
+    , stst(this->x, this->y, this->x, this->y) \
+    , stsp(this->x, this->y, this->x, this->z) \
+    , stsq(this->x, this->y, this->x, this->w) \
+    , stts(this->x, this->y, this->y, this->x) \
+    , sttt(this->x, this->y, this->y, this->y) \
+    , sttp(this->x, this->y, this->y, this->z) \
+    , sttq(this->x, this->y, this->y, this->w) \
+    , stps(this->x, this->y, this->z, this->x) \
+    , stpt(this->x, this->y, this->z, this->y) \
+    , stpp(this->x, this->y, this->z, this->z) \
+    , stpq(this->x, this->y, this->z, this->w) \
+    , stqs(this->x, this->y, this->w, this->x) \
+    , stqt(this->x, this->y, this->w, this->y) \
+    , stqp(this->x, this->y, this->w, this->z) \
+    , stqq(this->x, this->y, this->w, this->w) \
+    , spss(this->x, this->z, this->x, this->x) \
+    , spst(this->x, this->z, this->x, this->y) \
+    , spsp(this->x, this->z, this->x, this->z) \
+    , spsq(this->x, this->z, this->x, this->w) \
+    , spts(this->x, this->z, this->y, this->x) \
+    , sptt(this->x, this->z, this->y, this->y) \
+    , sptp(this->x, this->z, this->y, this->z) \
+    , sptq(this->x, this->z, this->y, this->w) \
+    , spps(this->x, this->z, this->z, this->x) \
+    , sppt(this->x, this->z, this->z, this->y) \
+    , sppp(this->x, this->z, this->z, this->z) \
+    , sppq(this->x, this->z, this->z, this->w) \
+    , spqs(this->x, this->z, this->w, this->x) \
+    , spqt(this->x, this->z, this->w, this->y) \
+    , spqp(this->x, this->z, this->w, this->z) \
+    , spqq(this->x, this->z, this->w, this->w) \
+    , sqss(this->x, this->w, this->x, this->x) \
+    , sqst(this->x, this->w, this->x, this->y) \
+    , sqsp(this->x, this->w, this->x, this->z) \
+    , sqsq(this->x, this->w, this->x, this->w) \
+    , sqts(this->x, this->w, this->y, this->x) \
+    , sqtt(this->x, this->w, this->y, this->y) \
+    , sqtp(this->x, this->w, this->y, this->z) \
+    , sqtq(this->x, this->w, this->y, this->w) \
+    , sqps(this->x, this->w, this->z, this->x) \
+    , sqpt(this->x, this->w, this->z, this->y) \
+    , sqpp(this->x, this->w, this->z, this->z) \
+    , sqpq(this->x, this->w, this->z, this->w) \
+    , sqqs(this->x, this->w, this->w, this->x) \
+    , sqqt(this->x, this->w, this->w, this->y) \
+    , sqqp(this->x, this->w, this->w, this->z) \
+    , sqqq(this->x, this->w, this->w, this->w) \
+    , tsss(this->y, this->x, this->x, this->x) \
+    , tsst(this->y, this->x, this->x, this->y) \
+    , tssp(this->y, this->x, this->x, this->z) \
+    , tssq(this->y, this->x, this->x, this->w) \
+    , tsts(this->y, this->x, this->y, this->x) \
+    , tstt(this->y, this->x, this->y, this->y) \
+    , tstp(this->y, this->x, this->y, this->z) \
+    , tstq(this->y, this->x, this->y, this->w) \
+    , tsps(this->y, this->x, this->z, this->x) \
+    , tspt(this->y, this->x, this->z, this->y) \
+    , tspp(this->y, this->x, this->z, this->z) \
+    , tspq(this->y, this->x, this->z, this->w) \
+    , tsqs(this->y, this->x, this->w, this->x) \
+    , tsqt(this->y, this->x, this->w, this->y) \
+    , tsqp(this->y, this->x, this->w, this->z) \
+    , tsqq(this->y, this->x, this->w, this->w) \
+    , ttss(this->y, this->y, this->x, this->x) \
+    , ttst(this->y, this->y, this->x, this->y) \
+    , ttsp(this->y, this->y, this->x, this->z) \
+    , ttsq(this->y, this->y, this->x, this->w) \
+    , ttts(this->y, this->y, this->y, this->x) \
+    , tttt(this->y, this->y, this->y, this->y) \
+    , tttp(this->y, this->y, this->y, this->z) \
+    , tttq(this->y, this->y, this->y, this->w) \
+    , ttps(this->y, this->y, this->z, this->x) \
+    , ttpt(this->y, this->y, this->z, this->y) \
+    , ttpp(this->y, this->y, this->z, this->z) \
+    , ttpq(this->y, this->y, this->z, this->w) \
+    , ttqs(this->y, this->y, this->w, this->x) \
+    , ttqt(this->y, this->y, this->w, this->y) \
+    , ttqp(this->y, this->y, this->w, this->z) \
+    , ttqq(this->y, this->y, this->w, this->w) \
+    , tpss(this->y, this->z, this->x, this->x) \
+    , tpst(this->y, this->z, this->x, this->y) \
+    , tpsp(this->y, this->z, this->x, this->z) \
+    , tpsq(this->y, this->z, this->x, this->w) \
+    , tpts(this->y, this->z, this->y, this->x) \
+    , tptt(this->y, this->z, this->y, this->y) \
+    , tptp(this->y, this->z, this->y, this->z) \
+    , tptq(this->y, this->z, this->y, this->w) \
+    , tpps(this->y, this->z, this->z, this->x) \
+    , tppt(this->y, this->z, this->z, this->y) \
+    , tppp(this->y, this->z, this->z, this->z) \
+    , tppq(this->y, this->z, this->z, this->w) \
+    , tpqs(this->y, this->z, this->w, this->x) \
+    , tpqt(this->y, this->z, this->w, this->y) \
+    , tpqp(this->y, this->z, this->w, this->z) \
+    , tpqq(this->y, this->z, this->w, this->w) \
+    , tqss(this->y, this->w, this->x, this->x) \
+    , tqst(this->y, this->w, this->x, this->y) \
+    , tqsp(this->y, this->w, this->x, this->z) \
+    , tqsq(this->y, this->w, this->x, this->w) \
+    , tqts(this->y, this->w, this->y, this->x) \
+    , tqtt(this->y, this->w, this->y, this->y) \
+    , tqtp(this->y, this->w, this->y, this->z) \
+    , tqtq(this->y, this->w, this->y, this->w) \
+    , tqps(this->y, this->w, this->z, this->x) \
+    , tqpt(this->y, this->w, this->z, this->y) \
+    , tqpp(this->y, this->w, this->z, this->z) \
+    , tqpq(this->y, this->w, this->z, this->w) \
+    , tqqs(this->y, this->w, this->w, this->x) \
+    , tqqt(this->y, this->w, this->w, this->y) \
+    , tqqp(this->y, this->w, this->w, this->z) \
+    , tqqq(this->y, this->w, this->w, this->w) \
+    , psss(this->z, this->x, this->x, this->x) \
+    , psst(this->z, this->x, this->x, this->y) \
+    , pssp(this->z, this->x, this->x, this->z) \
+    , pssq(this->z, this->x, this->x, this->w) \
+    , psts(this->z, this->x, this->y, this->x) \
+    , pstt(this->z, this->x, this->y, this->y) \
+    , pstp(this->z, this->x, this->y, this->z) \
+    , pstq(this->z, this->x, this->y, this->w) \
+    , psps(this->z, this->x, this->z, this->x) \
+    , pspt(this->z, this->x, this->z, this->y) \
+    , pspp(this->z, this->x, this->z, this->z) \
+    , pspq(this->z, this->x, this->z, this->w) \
+    , psqs(this->z, this->x, this->w, this->x) \
+    , psqt(this->z, this->x, this->w, this->y) \
+    , psqp(this->z, this->x, this->w, this->z) \
+    , psqq(this->z, this->x, this->w, this->w) \
+    , ptss(this->z, this->y, this->x, this->x) \
+    , ptst(this->z, this->y, this->x, this->y) \
+    , ptsp(this->z, this->y, this->x, this->z) \
+    , ptsq(this->z, this->y, this->x, this->w) \
+    , ptts(this->z, this->y, this->y, this->x) \
+    , pttt(this->z, this->y, this->y, this->y) \
+    , pttp(this->z, this->y, this->y, this->z) \
+    , pttq(this->z, this->y, this->y, this->w) \
+    , ptps(this->z, this->y, this->z, this->x) \
+    , ptpt(this->z, this->y, this->z, this->y) \
+    , ptpp(this->z, this->y, this->z, this->z) \
+    , ptpq(this->z, this->y, this->z, this->w) \
+    , ptqs(this->z, this->y, this->w, this->x) \
+    , ptqt(this->z, this->y, this->w, this->y) \
+    , ptqp(this->z, this->y, this->w, this->z) \
+    , ptqq(this->z, this->y, this->w, this->w) \
+    , ppss(this->z, this->z, this->x, this->x) \
+    , ppst(this->z, this->z, this->x, this->y) \
+    , ppsp(this->z, this->z, this->x, this->z) \
+    , ppsq(this->z, this->z, this->x, this->w) \
+    , ppts(this->z, this->z, this->y, this->x) \
+    , pptt(this->z, this->z, this->y, this->y) \
+    , pptp(this->z, this->z, this->y, this->z) \
+    , pptq(this->z, this->z, this->y, this->w) \
+    , ppps(this->z, this->z, this->z, this->x) \
+    , pppt(this->z, this->z, this->z, this->y) \
+    , pppp(this->z, this->z, this->z, this->z) \
+    , pppq(this->z, this->z, this->z, this->w) \
+    , ppqs(this->z, this->z, this->w, this->x) \
+    , ppqt(this->z, this->z, this->w, this->y) \
+    , ppqp(this->z, this->z, this->w, this->z) \
+    , ppqq(this->z, this->z, this->w, this->w) \
+    , pqss(this->z, this->w, this->x, this->x) \
+    , pqst(this->z, this->w, this->x, this->y) \
+    , pqsp(this->z, this->w, this->x, this->z) \
+    , pqsq(this->z, this->w, this->x, this->w) \
+    , pqts(this->z, this->w, this->y, this->x) \
+    , pqtt(this->z, this->w, this->y, this->y) \
+    , pqtp(this->z, this->w, this->y, this->z) \
+    , pqtq(this->z, this->w, this->y, this->w) \
+    , pqps(this->z, this->w, this->z, this->x) \
+    , pqpt(this->z, this->w, this->z, this->y) \
+    , pqpp(this->z, this->w, this->z, this->z) \
+    , pqpq(this->z, this->w, this->z, this->w) \
+    , pqqs(this->z, this->w, this->w, this->x) \
+    , pqqt(this->z, this->w, this->w, this->y) \
+    , pqqp(this->z, this->w, this->w, this->z) \
+    , pqqq(this->z, this->w, this->w, this->w) \
+    , qsss(this->w, this->x, this->x, this->x) \
+    , qsst(this->w, this->x, this->x, this->y) \
+    , qssp(this->w, this->x, this->x, this->z) \
+    , qssq(this->w, this->x, this->x, this->w) \
+    , qsts(this->w, this->x, this->y, this->x) \
+    , qstt(this->w, this->x, this->y, this->y) \
+    , qstp(this->w, this->x, this->y, this->z) \
+    , qstq(this->w, this->x, this->y, this->w) \
+    , qsps(this->w, this->x, this->z, this->x) \
+    , qspt(this->w, this->x, this->z, this->y) \
+    , qspp(this->w, this->x, this->z, this->z) \
+    , qspq(this->w, this->x, this->z, this->w) \
+    , qsqs(this->w, this->x, this->w, this->x) \
+    , qsqt(this->w, this->x, this->w, this->y) \
+    , qsqp(this->w, this->x, this->w, this->z) \
+    , qsqq(this->w, this->x, this->w, this->w) \
+    , qtss(this->w, this->y, this->x, this->x) \
+    , qtst(this->w, this->y, this->x, this->y) \
+    , qtsp(this->w, this->y, this->x, this->z) \
+    , qtsq(this->w, this->y, this->x, this->w) \
+    , qtts(this->w, this->y, this->y, this->x) \
+    , qttt(this->w, this->y, this->y, this->y) \
+    , qttp(this->w, this->y, this->y, this->z) \
+    , qttq(this->w, this->y, this->y, this->w) \
+    , qtps(this->w, this->y, this->z, this->x) \
+    , qtpt(this->w, this->y, this->z, this->y) \
+    , qtpp(this->w, this->y, this->z, this->z) \
+    , qtpq(this->w, this->y, this->z, this->w) \
+    , qtqs(this->w, this->y, this->w, this->x) \
+    , qtqt(this->w, this->y, this->w, this->y) \
+    , qtqp(this->w, this->y, this->w, this->z) \
+    , qtqq(this->w, this->y, this->w, this->w) \
+    , qpss(this->w, this->z, this->x, this->x) \
+    , qpst(this->w, this->z, this->x, this->y) \
+    , qpsp(this->w, this->z, this->x, this->z) \
+    , qpsq(this->w, this->z, this->x, this->w) \
+    , qpts(this->w, this->z, this->y, this->x) \
+    , qptt(this->w, this->z, this->y, this->y) \
+    , qptp(this->w, this->z, this->y, this->z) \
+    , qptq(this->w, this->z, this->y, this->w) \
+    , qpps(this->w, this->z, this->z, this->x) \
+    , qppt(this->w, this->z, this->z, this->y) \
+    , qppp(this->w, this->z, this->z, this->z) \
+    , qppq(this->w, this->z, this->z, this->w) \
+    , qpqs(this->w, this->z, this->w, this->x) \
+    , qpqt(this->w, this->z, this->w, this->y) \
+    , qpqp(this->w, this->z, this->w, this->z) \
+    , qpqq(this->w, this->z, this->w, this->w) \
+    , qqss(this->w, this->w, this->x, this->x) \
+    , qqst(this->w, this->w, this->x, this->y) \
+    , qqsp(this->w, this->w, this->x, this->z) \
+    , qqsq(this->w, this->w, this->x, this->w) \
+    , qqts(this->w, this->w, this->y, this->x) \
+    , qqtt(this->w, this->w, this->y, this->y) \
+    , qqtp(this->w, this->w, this->y, this->z) \
+    , qqtq(this->w, this->w, this->y, this->w) \
+    , qqps(this->w, this->w, this->z, this->x) \
+    , qqpt(this->w, this->w, this->z, this->y) \
+    , qqpp(this->w, this->w, this->z, this->z) \
+    , qqpq(this->w, this->w, this->z, this->w) \
+    , qqqs(this->w, this->w, this->w, this->x) \
+    , qqqt(this->w, this->w, this->w, this->y) \
+    , qqqp(this->w, this->w, this->w, this->z) \
+    , qqqq(this->w, this->w, this->w, this->w)
 #endif  // GLSLIKE_DISABLE_SWIZZLE
 
 
@@ -5387,1377 +5221,1035 @@ public:
     }
 
 public:
-    alias<T, Vector4<T>, &Vector4Core<T>::x> r;
-    alias<T, Vector4<T>, &Vector4Core<T>::y> g;
-    alias<T, Vector4<T>, &Vector4Core<T>::z> b;
-    alias<T, Vector4<T>, &Vector4Core<T>::w> a;
-    alias<T, Vector4<T>, &Vector4Core<T>::x> s;
-    alias<T, Vector4<T>, &Vector4Core<T>::y> t;
-    alias<T, Vector4<T>, &Vector4Core<T>::z> p;
-    alias<T, Vector4<T>, &Vector4Core<T>::w> q;
+    T &r;
+    T &g;
+    T &b;
+    T &a;
+    T &s;
+    T &t;
+    T &p;
+    T &q;
 
 #ifndef GLSLIKE_DISABLE_SWIZZLE
 public:
-    // >>> for v in itertools.product("xyzw", repeat=2): print("".join(v))
-    // ...
-    // xx
-    // xy
-    // xz
-    // xw
-    // yx
-    // yy
-    // yz
-    // yw
-    // zx
-    // zy
-    // zz
-    // zw
-    // wx
-    // wy
-    // wz
-    // ww
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x> xx;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y> xy;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z> xz;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w> xw;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x> yx;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y> yy;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z> yz;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w> yw;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x> zx;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y> zy;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z> zz;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w> zw;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x> wx;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y> wy;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z> wz;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w> ww;
+    Swizzle2<T> xx;
+    Swizzle2<T> xy;
+    Swizzle2<T> xz;
+    Swizzle2<T> xw;
+    Swizzle2<T> yx;
+    Swizzle2<T> yy;
+    Swizzle2<T> yz;
+    Swizzle2<T> yw;
+    Swizzle2<T> zx;
+    Swizzle2<T> zy;
+    Swizzle2<T> zz;
+    Swizzle2<T> zw;
+    Swizzle2<T> wx;
+    Swizzle2<T> wy;
+    Swizzle2<T> wz;
+    Swizzle2<T> ww;
     // alias rgba
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x> rr;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y> rg;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z> rb;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w> ra;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x> gr;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y> gg;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z> gb;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w> ga;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x> br;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y> bg;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z> bb;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w> ba;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x> ar;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y> ag;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z> ab;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w> aa;
+    Swizzle2<T> rr;
+    Swizzle2<T> rg;
+    Swizzle2<T> rb;
+    Swizzle2<T> ra;
+    Swizzle2<T> gr;
+    Swizzle2<T> gg;
+    Swizzle2<T> gb;
+    Swizzle2<T> ga;
+    Swizzle2<T> br;
+    Swizzle2<T> bg;
+    Swizzle2<T> bb;
+    Swizzle2<T> ba;
+    Swizzle2<T> ar;
+    Swizzle2<T> ag;
+    Swizzle2<T> ab;
+    Swizzle2<T> aa;
     // alias stpq
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x> ss;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y> st;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z> sp;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w> sq;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x> ts;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y> tt;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z> tp;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w> tq;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x> ps;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y> pt;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z> pp;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w> pq;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x> qs;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y> qt;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z> qp;
-    Swizzle2<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w> qq;
+    Swizzle2<T> ss;
+    Swizzle2<T> st;
+    Swizzle2<T> sp;
+    Swizzle2<T> sq;
+    Swizzle2<T> ts;
+    Swizzle2<T> tt;
+    Swizzle2<T> tp;
+    Swizzle2<T> tq;
+    Swizzle2<T> ps;
+    Swizzle2<T> pt;
+    Swizzle2<T> pp;
+    Swizzle2<T> pq;
+    Swizzle2<T> qs;
+    Swizzle2<T> qt;
+    Swizzle2<T> qp;
+    Swizzle2<T> qq;
 
 public:
-    // >>> for v in itertools.product("xyzw", repeat=3): print("".join(v))
-    // ...
-    // xxx
-    // xxy
-    // xxz
-    // xxw
-    // xyx
-    // xyy
-    // xyz
-    // xyw
-    // xzx
-    // xzy
-    // xzz
-    // xzw
-    // xwx
-    // xwy
-    // xwz
-    // xww
-    // yxx
-    // yxy
-    // yxz
-    // yxw
-    // yyx
-    // yyy
-    // yyz
-    // yyw
-    // yzx
-    // yzy
-    // yzz
-    // yzw
-    // ywx
-    // ywy
-    // ywz
-    // yww
-    // zxx
-    // zxy
-    // zxz
-    // zxw
-    // zyx
-    // zyy
-    // zyz
-    // zyw
-    // zzx
-    // zzy
-    // zzz
-    // zzw
-    // zwx
-    // zwy
-    // zwz
-    // zww
-    // wxx
-    // wxy
-    // wxz
-    // wxw
-    // wyx
-    // wyy
-    // wyz
-    // wyw
-    // wzx
-    // wzy
-    // wzz
-    // wzw
-    // wwx
-    // wwy
-    // wwz
-    // www
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> xxx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> xxy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> xxz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> xxw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> xyx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> xyy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> xyz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> xyw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> xzx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> xzy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> xzz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> xzw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> xwx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> xwy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> xwz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> xww;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> yxx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> yxy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> yxz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> yxw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> yyx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> yyy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> yyz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> yyw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> yzx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> yzy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> yzz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> yzw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> ywx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> ywy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> ywz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> yww;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> zxx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> zxy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> zxz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> zxw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> zyx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> zyy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> zyz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> zyw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> zzx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> zzy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> zzz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> zzw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> zwx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> zwy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> zwz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> zww;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> wxx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> wxy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> wxz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> wxw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> wyx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> wyy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> wyz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> wyw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> wzx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> wzy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> wzz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> wzw;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> wwx;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> wwy;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> wwz;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> www;
+    Swizzle3<T> xxx;
+    Swizzle3<T> xxy;
+    Swizzle3<T> xxz;
+    Swizzle3<T> xxw;
+    Swizzle3<T> xyx;
+    Swizzle3<T> xyy;
+    Swizzle3<T> xyz;
+    Swizzle3<T> xyw;
+    Swizzle3<T> xzx;
+    Swizzle3<T> xzy;
+    Swizzle3<T> xzz;
+    Swizzle3<T> xzw;
+    Swizzle3<T> xwx;
+    Swizzle3<T> xwy;
+    Swizzle3<T> xwz;
+    Swizzle3<T> xww;
+    Swizzle3<T> yxx;
+    Swizzle3<T> yxy;
+    Swizzle3<T> yxz;
+    Swizzle3<T> yxw;
+    Swizzle3<T> yyx;
+    Swizzle3<T> yyy;
+    Swizzle3<T> yyz;
+    Swizzle3<T> yyw;
+    Swizzle3<T> yzx;
+    Swizzle3<T> yzy;
+    Swizzle3<T> yzz;
+    Swizzle3<T> yzw;
+    Swizzle3<T> ywx;
+    Swizzle3<T> ywy;
+    Swizzle3<T> ywz;
+    Swizzle3<T> yww;
+    Swizzle3<T> zxx;
+    Swizzle3<T> zxy;
+    Swizzle3<T> zxz;
+    Swizzle3<T> zxw;
+    Swizzle3<T> zyx;
+    Swizzle3<T> zyy;
+    Swizzle3<T> zyz;
+    Swizzle3<T> zyw;
+    Swizzle3<T> zzx;
+    Swizzle3<T> zzy;
+    Swizzle3<T> zzz;
+    Swizzle3<T> zzw;
+    Swizzle3<T> zwx;
+    Swizzle3<T> zwy;
+    Swizzle3<T> zwz;
+    Swizzle3<T> zww;
+    Swizzle3<T> wxx;
+    Swizzle3<T> wxy;
+    Swizzle3<T> wxz;
+    Swizzle3<T> wxw;
+    Swizzle3<T> wyx;
+    Swizzle3<T> wyy;
+    Swizzle3<T> wyz;
+    Swizzle3<T> wyw;
+    Swizzle3<T> wzx;
+    Swizzle3<T> wzy;
+    Swizzle3<T> wzz;
+    Swizzle3<T> wzw;
+    Swizzle3<T> wwx;
+    Swizzle3<T> wwy;
+    Swizzle3<T> wwz;
+    Swizzle3<T> www;
     // alias rgba
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> rrr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> rrg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> rrb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> rra;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> rgr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> rgg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> rgb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> rga;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> rbr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> rbg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> rbb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> rba;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> rar;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> rag;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> rab;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> raa;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> grr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> grg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> grb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> gra;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> ggr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> ggg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> ggb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> gga;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> gbr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> gbg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> gbb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> gba;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> gar;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> gag;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> gab;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> gaa;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> brr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> brg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> brb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> bra;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> bgr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> bgg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> bgb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> bga;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> bbr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> bbg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> bbb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> bba;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> bar;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> bag;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> bab;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> baa;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> arr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> arg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> arb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> ara;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> agr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> agg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> agb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> aga;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> abr;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> abg;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> abb;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> aba;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> aar;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> aag;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> aab;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> aaa;
+    Swizzle3<T> rrr;
+    Swizzle3<T> rrg;
+    Swizzle3<T> rrb;
+    Swizzle3<T> rra;
+    Swizzle3<T> rgr;
+    Swizzle3<T> rgg;
+    Swizzle3<T> rgb;
+    Swizzle3<T> rga;
+    Swizzle3<T> rbr;
+    Swizzle3<T> rbg;
+    Swizzle3<T> rbb;
+    Swizzle3<T> rba;
+    Swizzle3<T> rar;
+    Swizzle3<T> rag;
+    Swizzle3<T> rab;
+    Swizzle3<T> raa;
+    Swizzle3<T> grr;
+    Swizzle3<T> grg;
+    Swizzle3<T> grb;
+    Swizzle3<T> gra;
+    Swizzle3<T> ggr;
+    Swizzle3<T> ggg;
+    Swizzle3<T> ggb;
+    Swizzle3<T> gga;
+    Swizzle3<T> gbr;
+    Swizzle3<T> gbg;
+    Swizzle3<T> gbb;
+    Swizzle3<T> gba;
+    Swizzle3<T> gar;
+    Swizzle3<T> gag;
+    Swizzle3<T> gab;
+    Swizzle3<T> gaa;
+    Swizzle3<T> brr;
+    Swizzle3<T> brg;
+    Swizzle3<T> brb;
+    Swizzle3<T> bra;
+    Swizzle3<T> bgr;
+    Swizzle3<T> bgg;
+    Swizzle3<T> bgb;
+    Swizzle3<T> bga;
+    Swizzle3<T> bbr;
+    Swizzle3<T> bbg;
+    Swizzle3<T> bbb;
+    Swizzle3<T> bba;
+    Swizzle3<T> bar;
+    Swizzle3<T> bag;
+    Swizzle3<T> bab;
+    Swizzle3<T> baa;
+    Swizzle3<T> arr;
+    Swizzle3<T> arg;
+    Swizzle3<T> arb;
+    Swizzle3<T> ara;
+    Swizzle3<T> agr;
+    Swizzle3<T> agg;
+    Swizzle3<T> agb;
+    Swizzle3<T> aga;
+    Swizzle3<T> abr;
+    Swizzle3<T> abg;
+    Swizzle3<T> abb;
+    Swizzle3<T> aba;
+    Swizzle3<T> aar;
+    Swizzle3<T> aag;
+    Swizzle3<T> aab;
+    Swizzle3<T> aaa;
     // alias stpq
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> sss;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> sst;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> ssp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> ssq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> sts;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> stt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> stp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> stq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> sps;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> spt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> spp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> spq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> sqs;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> sqt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> sqp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> sqq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> tss;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> tst;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> tsp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> tsq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> tts;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> ttt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> ttp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> ttq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> tps;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> tpt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> tpp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> tpq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> tqs;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> tqt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> tqp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> tqq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> pss;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> pst;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> psp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> psq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> pts;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> ptt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> ptp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> ptq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> pps;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> ppt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> ppp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> ppq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> pqs;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> pqt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> pqp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> pqq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> qss;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> qst;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> qsp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> qsq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> qts;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> qtt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> qtp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> qtq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> qps;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> qpt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> qpp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> qpq;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> qqs;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> qqt;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> qqp;
-    Swizzle3<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> qqq;
+    Swizzle3<T> sss;
+    Swizzle3<T> sst;
+    Swizzle3<T> ssp;
+    Swizzle3<T> ssq;
+    Swizzle3<T> sts;
+    Swizzle3<T> stt;
+    Swizzle3<T> stp;
+    Swizzle3<T> stq;
+    Swizzle3<T> sps;
+    Swizzle3<T> spt;
+    Swizzle3<T> spp;
+    Swizzle3<T> spq;
+    Swizzle3<T> sqs;
+    Swizzle3<T> sqt;
+    Swizzle3<T> sqp;
+    Swizzle3<T> sqq;
+    Swizzle3<T> tss;
+    Swizzle3<T> tst;
+    Swizzle3<T> tsp;
+    Swizzle3<T> tsq;
+    Swizzle3<T> tts;
+    Swizzle3<T> ttt;
+    Swizzle3<T> ttp;
+    Swizzle3<T> ttq;
+    Swizzle3<T> tps;
+    Swizzle3<T> tpt;
+    Swizzle3<T> tpp;
+    Swizzle3<T> tpq;
+    Swizzle3<T> tqs;
+    Swizzle3<T> tqt;
+    Swizzle3<T> tqp;
+    Swizzle3<T> tqq;
+    Swizzle3<T> pss;
+    Swizzle3<T> pst;
+    Swizzle3<T> psp;
+    Swizzle3<T> psq;
+    Swizzle3<T> pts;
+    Swizzle3<T> ptt;
+    Swizzle3<T> ptp;
+    Swizzle3<T> ptq;
+    Swizzle3<T> pps;
+    Swizzle3<T> ppt;
+    Swizzle3<T> ppp;
+    Swizzle3<T> ppq;
+    Swizzle3<T> pqs;
+    Swizzle3<T> pqt;
+    Swizzle3<T> pqp;
+    Swizzle3<T> pqq;
+    Swizzle3<T> qss;
+    Swizzle3<T> qst;
+    Swizzle3<T> qsp;
+    Swizzle3<T> qsq;
+    Swizzle3<T> qts;
+    Swizzle3<T> qtt;
+    Swizzle3<T> qtp;
+    Swizzle3<T> qtq;
+    Swizzle3<T> qps;
+    Swizzle3<T> qpt;
+    Swizzle3<T> qpp;
+    Swizzle3<T> qpq;
+    Swizzle3<T> qqs;
+    Swizzle3<T> qqt;
+    Swizzle3<T> qqp;
+    Swizzle3<T> qqq;
 
 public:
-    // >>> for v in itertools.product("xyzw", repeat=4): print("".join(v))
-    // ...
-    // xxxx
-    // xxxy
-    // xxxz
-    // xxxw
-    // xxyx
-    // xxyy
-    // xxyz
-    // xxyw
-    // xxzx
-    // xxzy
-    // xxzz
-    // xxzw
-    // xxwx
-    // xxwy
-    // xxwz
-    // xxww
-    // xyxx
-    // xyxy
-    // xyxz
-    // xyxw
-    // xyyx
-    // xyyy
-    // xyyz
-    // xyyw
-    // xyzx
-    // xyzy
-    // xyzz
-    // xyzw
-    // xywx
-    // xywy
-    // xywz
-    // xyww
-    // xzxx
-    // xzxy
-    // xzxz
-    // xzxw
-    // xzyx
-    // xzyy
-    // xzyz
-    // xzyw
-    // xzzx
-    // xzzy
-    // xzzz
-    // xzzw
-    // xzwx
-    // xzwy
-    // xzwz
-    // xzww
-    // xwxx
-    // xwxy
-    // xwxz
-    // xwxw
-    // xwyx
-    // xwyy
-    // xwyz
-    // xwyw
-    // xwzx
-    // xwzy
-    // xwzz
-    // xwzw
-    // xwwx
-    // xwwy
-    // xwwz
-    // xwww
-    // yxxx
-    // yxxy
-    // yxxz
-    // yxxw
-    // yxyx
-    // yxyy
-    // yxyz
-    // yxyw
-    // yxzx
-    // yxzy
-    // yxzz
-    // yxzw
-    // yxwx
-    // yxwy
-    // yxwz
-    // yxww
-    // yyxx
-    // yyxy
-    // yyxz
-    // yyxw
-    // yyyx
-    // yyyy
-    // yyyz
-    // yyyw
-    // yyzx
-    // yyzy
-    // yyzz
-    // yyzw
-    // yywx
-    // yywy
-    // yywz
-    // yyww
-    // yzxx
-    // yzxy
-    // yzxz
-    // yzxw
-    // yzyx
-    // yzyy
-    // yzyz
-    // yzyw
-    // yzzx
-    // yzzy
-    // yzzz
-    // yzzw
-    // yzwx
-    // yzwy
-    // yzwz
-    // yzww
-    // ywxx
-    // ywxy
-    // ywxz
-    // ywxw
-    // ywyx
-    // ywyy
-    // ywyz
-    // ywyw
-    // ywzx
-    // ywzy
-    // ywzz
-    // ywzw
-    // ywwx
-    // ywwy
-    // ywwz
-    // ywww
-    // zxxx
-    // zxxy
-    // zxxz
-    // zxxw
-    // zxyx
-    // zxyy
-    // zxyz
-    // zxyw
-    // zxzx
-    // zxzy
-    // zxzz
-    // zxzw
-    // zxwx
-    // zxwy
-    // zxwz
-    // zxww
-    // zyxx
-    // zyxy
-    // zyxz
-    // zyxw
-    // zyyx
-    // zyyy
-    // zyyz
-    // zyyw
-    // zyzx
-    // zyzy
-    // zyzz
-    // zyzw
-    // zywx
-    // zywy
-    // zywz
-    // zyww
-    // zzxx
-    // zzxy
-    // zzxz
-    // zzxw
-    // zzyx
-    // zzyy
-    // zzyz
-    // zzyw
-    // zzzx
-    // zzzy
-    // zzzz
-    // zzzw
-    // zzwx
-    // zzwy
-    // zzwz
-    // zzww
-    // zwxx
-    // zwxy
-    // zwxz
-    // zwxw
-    // zwyx
-    // zwyy
-    // zwyz
-    // zwyw
-    // zwzx
-    // zwzy
-    // zwzz
-    // zwzw
-    // zwwx
-    // zwwy
-    // zwwz
-    // zwww
-    // wxxx
-    // wxxy
-    // wxxz
-    // wxxw
-    // wxyx
-    // wxyy
-    // wxyz
-    // wxyw
-    // wxzx
-    // wxzy
-    // wxzz
-    // wxzw
-    // wxwx
-    // wxwy
-    // wxwz
-    // wxww
-    // wyxx
-    // wyxy
-    // wyxz
-    // wyxw
-    // wyyx
-    // wyyy
-    // wyyz
-    // wyyw
-    // wyzx
-    // wyzy
-    // wyzz
-    // wyzw
-    // wywx
-    // wywy
-    // wywz
-    // wyww
-    // wzxx
-    // wzxy
-    // wzxz
-    // wzxw
-    // wzyx
-    // wzyy
-    // wzyz
-    // wzyw
-    // wzzx
-    // wzzy
-    // wzzz
-    // wzzw
-    // wzwx
-    // wzwy
-    // wzwz
-    // wzww
-    // wwxx
-    // wwxy
-    // wwxz
-    // wwxw
-    // wwyx
-    // wwyy
-    // wwyz
-    // wwyw
-    // wwzx
-    // wwzy
-    // wwzz
-    // wwzw
-    // wwwx
-    // wwwy
-    // wwwz
-    // wwww
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> xxxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> xxxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> xxxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> xxxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> xxyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> xxyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> xxyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> xxyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> xxzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> xxzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> xxzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> xxzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> xxwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> xxwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> xxwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> xxww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> xyxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> xyxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> xyxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> xyxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> xyyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> xyyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> xyyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> xyyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> xyzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> xyzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> xyzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> xyzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> xywx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> xywy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> xywz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> xyww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> xzxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> xzxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> xzxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> xzxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> xzyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> xzyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> xzyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> xzyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> xzzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> xzzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> xzzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> xzzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> xzwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> xzwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> xzwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> xzww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> xwxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> xwxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> xwxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> xwxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> xwyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> xwyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> xwyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> xwyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> xwzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> xwzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> xwzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> xwzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> xwwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> xwwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> xwwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> xwww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> yxxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> yxxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> yxxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> yxxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> yxyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> yxyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> yxyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> yxyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> yxzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> yxzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> yxzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> yxzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> yxwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> yxwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> yxwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> yxww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> yyxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> yyxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> yyxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> yyxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> yyyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> yyyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> yyyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> yyyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> yyzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> yyzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> yyzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> yyzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> yywx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> yywy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> yywz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> yyww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> yzxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> yzxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> yzxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> yzxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> yzyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> yzyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> yzyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> yzyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> yzzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> yzzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> yzzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> yzzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> yzwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> yzwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> yzwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> yzww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> ywxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> ywxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> ywxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> ywxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> ywyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> ywyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> ywyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> ywyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> ywzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> ywzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> ywzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> ywzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> ywwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> ywwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> ywwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> ywww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> zxxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> zxxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> zxxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> zxxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> zxyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> zxyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> zxyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> zxyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> zxzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> zxzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> zxzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> zxzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> zxwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> zxwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> zxwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> zxww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> zyxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> zyxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> zyxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> zyxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> zyyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> zyyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> zyyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> zyyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> zyzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> zyzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> zyzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> zyzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> zywx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> zywy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> zywz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> zyww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> zzxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> zzxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> zzxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> zzxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> zzyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> zzyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> zzyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> zzyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> zzzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> zzzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> zzzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> zzzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> zzwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> zzwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> zzwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> zzww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> zwxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> zwxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> zwxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> zwxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> zwyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> zwyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> zwyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> zwyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> zwzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> zwzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> zwzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> zwzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> zwwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> zwwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> zwwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> zwww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> wxxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> wxxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> wxxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> wxxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> wxyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> wxyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> wxyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> wxyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> wxzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> wxzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> wxzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> wxzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> wxwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> wxwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> wxwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> wxww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> wyxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> wyxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> wyxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> wyxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> wyyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> wyyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> wyyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> wyyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> wyzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> wyzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> wyzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> wyzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> wywx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> wywy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> wywz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> wyww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> wzxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> wzxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> wzxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> wzxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> wzyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> wzyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> wzyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> wzyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> wzzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> wzzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> wzzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> wzzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> wzwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> wzwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> wzwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> wzww;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> wwxx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> wwxy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> wwxz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> wwxw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> wwyx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> wwyy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> wwyz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> wwyw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> wwzx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> wwzy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> wwzz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> wwzw;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> wwwx;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> wwwy;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> wwwz;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> wwww;
+    Swizzle4<T> xxxx;
+    Swizzle4<T> xxxy;
+    Swizzle4<T> xxxz;
+    Swizzle4<T> xxxw;
+    Swizzle4<T> xxyx;
+    Swizzle4<T> xxyy;
+    Swizzle4<T> xxyz;
+    Swizzle4<T> xxyw;
+    Swizzle4<T> xxzx;
+    Swizzle4<T> xxzy;
+    Swizzle4<T> xxzz;
+    Swizzle4<T> xxzw;
+    Swizzle4<T> xxwx;
+    Swizzle4<T> xxwy;
+    Swizzle4<T> xxwz;
+    Swizzle4<T> xxww;
+    Swizzle4<T> xyxx;
+    Swizzle4<T> xyxy;
+    Swizzle4<T> xyxz;
+    Swizzle4<T> xyxw;
+    Swizzle4<T> xyyx;
+    Swizzle4<T> xyyy;
+    Swizzle4<T> xyyz;
+    Swizzle4<T> xyyw;
+    Swizzle4<T> xyzx;
+    Swizzle4<T> xyzy;
+    Swizzle4<T> xyzz;
+    Swizzle4<T> xyzw;
+    Swizzle4<T> xywx;
+    Swizzle4<T> xywy;
+    Swizzle4<T> xywz;
+    Swizzle4<T> xyww;
+    Swizzle4<T> xzxx;
+    Swizzle4<T> xzxy;
+    Swizzle4<T> xzxz;
+    Swizzle4<T> xzxw;
+    Swizzle4<T> xzyx;
+    Swizzle4<T> xzyy;
+    Swizzle4<T> xzyz;
+    Swizzle4<T> xzyw;
+    Swizzle4<T> xzzx;
+    Swizzle4<T> xzzy;
+    Swizzle4<T> xzzz;
+    Swizzle4<T> xzzw;
+    Swizzle4<T> xzwx;
+    Swizzle4<T> xzwy;
+    Swizzle4<T> xzwz;
+    Swizzle4<T> xzww;
+    Swizzle4<T> xwxx;
+    Swizzle4<T> xwxy;
+    Swizzle4<T> xwxz;
+    Swizzle4<T> xwxw;
+    Swizzle4<T> xwyx;
+    Swizzle4<T> xwyy;
+    Swizzle4<T> xwyz;
+    Swizzle4<T> xwyw;
+    Swizzle4<T> xwzx;
+    Swizzle4<T> xwzy;
+    Swizzle4<T> xwzz;
+    Swizzle4<T> xwzw;
+    Swizzle4<T> xwwx;
+    Swizzle4<T> xwwy;
+    Swizzle4<T> xwwz;
+    Swizzle4<T> xwww;
+    Swizzle4<T> yxxx;
+    Swizzle4<T> yxxy;
+    Swizzle4<T> yxxz;
+    Swizzle4<T> yxxw;
+    Swizzle4<T> yxyx;
+    Swizzle4<T> yxyy;
+    Swizzle4<T> yxyz;
+    Swizzle4<T> yxyw;
+    Swizzle4<T> yxzx;
+    Swizzle4<T> yxzy;
+    Swizzle4<T> yxzz;
+    Swizzle4<T> yxzw;
+    Swizzle4<T> yxwx;
+    Swizzle4<T> yxwy;
+    Swizzle4<T> yxwz;
+    Swizzle4<T> yxww;
+    Swizzle4<T> yyxx;
+    Swizzle4<T> yyxy;
+    Swizzle4<T> yyxz;
+    Swizzle4<T> yyxw;
+    Swizzle4<T> yyyx;
+    Swizzle4<T> yyyy;
+    Swizzle4<T> yyyz;
+    Swizzle4<T> yyyw;
+    Swizzle4<T> yyzx;
+    Swizzle4<T> yyzy;
+    Swizzle4<T> yyzz;
+    Swizzle4<T> yyzw;
+    Swizzle4<T> yywx;
+    Swizzle4<T> yywy;
+    Swizzle4<T> yywz;
+    Swizzle4<T> yyww;
+    Swizzle4<T> yzxx;
+    Swizzle4<T> yzxy;
+    Swizzle4<T> yzxz;
+    Swizzle4<T> yzxw;
+    Swizzle4<T> yzyx;
+    Swizzle4<T> yzyy;
+    Swizzle4<T> yzyz;
+    Swizzle4<T> yzyw;
+    Swizzle4<T> yzzx;
+    Swizzle4<T> yzzy;
+    Swizzle4<T> yzzz;
+    Swizzle4<T> yzzw;
+    Swizzle4<T> yzwx;
+    Swizzle4<T> yzwy;
+    Swizzle4<T> yzwz;
+    Swizzle4<T> yzww;
+    Swizzle4<T> ywxx;
+    Swizzle4<T> ywxy;
+    Swizzle4<T> ywxz;
+    Swizzle4<T> ywxw;
+    Swizzle4<T> ywyx;
+    Swizzle4<T> ywyy;
+    Swizzle4<T> ywyz;
+    Swizzle4<T> ywyw;
+    Swizzle4<T> ywzx;
+    Swizzle4<T> ywzy;
+    Swizzle4<T> ywzz;
+    Swizzle4<T> ywzw;
+    Swizzle4<T> ywwx;
+    Swizzle4<T> ywwy;
+    Swizzle4<T> ywwz;
+    Swizzle4<T> ywww;
+    Swizzle4<T> zxxx;
+    Swizzle4<T> zxxy;
+    Swizzle4<T> zxxz;
+    Swizzle4<T> zxxw;
+    Swizzle4<T> zxyx;
+    Swizzle4<T> zxyy;
+    Swizzle4<T> zxyz;
+    Swizzle4<T> zxyw;
+    Swizzle4<T> zxzx;
+    Swizzle4<T> zxzy;
+    Swizzle4<T> zxzz;
+    Swizzle4<T> zxzw;
+    Swizzle4<T> zxwx;
+    Swizzle4<T> zxwy;
+    Swizzle4<T> zxwz;
+    Swizzle4<T> zxww;
+    Swizzle4<T> zyxx;
+    Swizzle4<T> zyxy;
+    Swizzle4<T> zyxz;
+    Swizzle4<T> zyxw;
+    Swizzle4<T> zyyx;
+    Swizzle4<T> zyyy;
+    Swizzle4<T> zyyz;
+    Swizzle4<T> zyyw;
+    Swizzle4<T> zyzx;
+    Swizzle4<T> zyzy;
+    Swizzle4<T> zyzz;
+    Swizzle4<T> zyzw;
+    Swizzle4<T> zywx;
+    Swizzle4<T> zywy;
+    Swizzle4<T> zywz;
+    Swizzle4<T> zyww;
+    Swizzle4<T> zzxx;
+    Swizzle4<T> zzxy;
+    Swizzle4<T> zzxz;
+    Swizzle4<T> zzxw;
+    Swizzle4<T> zzyx;
+    Swizzle4<T> zzyy;
+    Swizzle4<T> zzyz;
+    Swizzle4<T> zzyw;
+    Swizzle4<T> zzzx;
+    Swizzle4<T> zzzy;
+    Swizzle4<T> zzzz;
+    Swizzle4<T> zzzw;
+    Swizzle4<T> zzwx;
+    Swizzle4<T> zzwy;
+    Swizzle4<T> zzwz;
+    Swizzle4<T> zzww;
+    Swizzle4<T> zwxx;
+    Swizzle4<T> zwxy;
+    Swizzle4<T> zwxz;
+    Swizzle4<T> zwxw;
+    Swizzle4<T> zwyx;
+    Swizzle4<T> zwyy;
+    Swizzle4<T> zwyz;
+    Swizzle4<T> zwyw;
+    Swizzle4<T> zwzx;
+    Swizzle4<T> zwzy;
+    Swizzle4<T> zwzz;
+    Swizzle4<T> zwzw;
+    Swizzle4<T> zwwx;
+    Swizzle4<T> zwwy;
+    Swizzle4<T> zwwz;
+    Swizzle4<T> zwww;
+    Swizzle4<T> wxxx;
+    Swizzle4<T> wxxy;
+    Swizzle4<T> wxxz;
+    Swizzle4<T> wxxw;
+    Swizzle4<T> wxyx;
+    Swizzle4<T> wxyy;
+    Swizzle4<T> wxyz;
+    Swizzle4<T> wxyw;
+    Swizzle4<T> wxzx;
+    Swizzle4<T> wxzy;
+    Swizzle4<T> wxzz;
+    Swizzle4<T> wxzw;
+    Swizzle4<T> wxwx;
+    Swizzle4<T> wxwy;
+    Swizzle4<T> wxwz;
+    Swizzle4<T> wxww;
+    Swizzle4<T> wyxx;
+    Swizzle4<T> wyxy;
+    Swizzle4<T> wyxz;
+    Swizzle4<T> wyxw;
+    Swizzle4<T> wyyx;
+    Swizzle4<T> wyyy;
+    Swizzle4<T> wyyz;
+    Swizzle4<T> wyyw;
+    Swizzle4<T> wyzx;
+    Swizzle4<T> wyzy;
+    Swizzle4<T> wyzz;
+    Swizzle4<T> wyzw;
+    Swizzle4<T> wywx;
+    Swizzle4<T> wywy;
+    Swizzle4<T> wywz;
+    Swizzle4<T> wyww;
+    Swizzle4<T> wzxx;
+    Swizzle4<T> wzxy;
+    Swizzle4<T> wzxz;
+    Swizzle4<T> wzxw;
+    Swizzle4<T> wzyx;
+    Swizzle4<T> wzyy;
+    Swizzle4<T> wzyz;
+    Swizzle4<T> wzyw;
+    Swizzle4<T> wzzx;
+    Swizzle4<T> wzzy;
+    Swizzle4<T> wzzz;
+    Swizzle4<T> wzzw;
+    Swizzle4<T> wzwx;
+    Swizzle4<T> wzwy;
+    Swizzle4<T> wzwz;
+    Swizzle4<T> wzww;
+    Swizzle4<T> wwxx;
+    Swizzle4<T> wwxy;
+    Swizzle4<T> wwxz;
+    Swizzle4<T> wwxw;
+    Swizzle4<T> wwyx;
+    Swizzle4<T> wwyy;
+    Swizzle4<T> wwyz;
+    Swizzle4<T> wwyw;
+    Swizzle4<T> wwzx;
+    Swizzle4<T> wwzy;
+    Swizzle4<T> wwzz;
+    Swizzle4<T> wwzw;
+    Swizzle4<T> wwwx;
+    Swizzle4<T> wwwy;
+    Swizzle4<T> wwwz;
+    Swizzle4<T> wwww;
     // alias rgba
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> rrrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> rrrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> rrrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> rrra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> rrgr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> rrgg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> rrgb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> rrga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> rrbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> rrbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> rrbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> rrba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> rrar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> rrag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> rrab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> rraa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> rgrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> rgrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> rgrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> rgra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> rggr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> rggg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> rggb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> rgga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> rgbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> rgbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> rgbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> rgba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> rgar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> rgag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> rgab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> rgaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> rbrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> rbrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> rbrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> rbra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> rbgr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> rbgg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> rbgb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> rbga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> rbbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> rbbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> rbbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> rbba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> rbar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> rbag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> rbab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> rbaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> rarr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> rarg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> rarb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> rara;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> ragr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> ragg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> ragb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> raga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> rabr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> rabg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> rabb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> raba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> raar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> raag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> raab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> raaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> grrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> grrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> grrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> grra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> grgr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> grgg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> grgb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> grga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> grbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> grbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> grbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> grba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> grar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> grag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> grab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> graa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> ggrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> ggrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> ggrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> ggra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> gggr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> gggg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> gggb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> ggga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> ggbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> ggbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> ggbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> ggba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> ggar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> ggag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> ggab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> ggaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> gbrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> gbrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> gbrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> gbra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> gbgr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> gbgg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> gbgb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> gbga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> gbbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> gbbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> gbbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> gbba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> gbar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> gbag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> gbab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> gbaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> garr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> garg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> garb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> gara;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> gagr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> gagg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> gagb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> gaga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> gabr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> gabg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> gabb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> gaba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> gaar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> gaag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> gaab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> gaaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> brrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> brrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> brrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> brra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> brgr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> brgg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> brgb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> brga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> brbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> brbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> brbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> brba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> brar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> brag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> brab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> braa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> bgrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> bgrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> bgrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> bgra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> bggr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> bggg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> bggb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> bgga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> bgbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> bgbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> bgbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> bgba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> bgar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> bgag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> bgab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> bgaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> bbrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> bbrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> bbrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> bbra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> bbgr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> bbgg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> bbgb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> bbga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> bbbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> bbbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> bbbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> bbba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> bbar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> bbag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> bbab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> bbaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> barr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> barg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> barb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> bara;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> bagr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> bagg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> bagb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> baga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> babr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> babg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> babb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> baba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> baar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> baag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> baab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> baaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> arrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> arrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> arrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> arra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> argr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> argg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> argb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> arga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> arbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> arbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> arbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> arba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> arar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> arag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> arab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> araa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> agrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> agrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> agrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> agra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> aggr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> aggg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> aggb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> agga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> agbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> agbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> agbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> agba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> agar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> agag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> agab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> agaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> abrr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> abrg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> abrb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> abra;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> abgr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> abgg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> abgb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> abga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> abbr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> abbg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> abbb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> abba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> abar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> abag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> abab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> abaa;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> aarr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> aarg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> aarb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> aara;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> aagr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> aagg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> aagb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> aaga;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> aabr;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> aabg;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> aabb;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> aaba;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> aaar;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> aaag;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> aaab;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> aaaa;
+    Swizzle4<T> rrrr;
+    Swizzle4<T> rrrg;
+    Swizzle4<T> rrrb;
+    Swizzle4<T> rrra;
+    Swizzle4<T> rrgr;
+    Swizzle4<T> rrgg;
+    Swizzle4<T> rrgb;
+    Swizzle4<T> rrga;
+    Swizzle4<T> rrbr;
+    Swizzle4<T> rrbg;
+    Swizzle4<T> rrbb;
+    Swizzle4<T> rrba;
+    Swizzle4<T> rrar;
+    Swizzle4<T> rrag;
+    Swizzle4<T> rrab;
+    Swizzle4<T> rraa;
+    Swizzle4<T> rgrr;
+    Swizzle4<T> rgrg;
+    Swizzle4<T> rgrb;
+    Swizzle4<T> rgra;
+    Swizzle4<T> rggr;
+    Swizzle4<T> rggg;
+    Swizzle4<T> rggb;
+    Swizzle4<T> rgga;
+    Swizzle4<T> rgbr;
+    Swizzle4<T> rgbg;
+    Swizzle4<T> rgbb;
+    Swizzle4<T> rgba;
+    Swizzle4<T> rgar;
+    Swizzle4<T> rgag;
+    Swizzle4<T> rgab;
+    Swizzle4<T> rgaa;
+    Swizzle4<T> rbrr;
+    Swizzle4<T> rbrg;
+    Swizzle4<T> rbrb;
+    Swizzle4<T> rbra;
+    Swizzle4<T> rbgr;
+    Swizzle4<T> rbgg;
+    Swizzle4<T> rbgb;
+    Swizzle4<T> rbga;
+    Swizzle4<T> rbbr;
+    Swizzle4<T> rbbg;
+    Swizzle4<T> rbbb;
+    Swizzle4<T> rbba;
+    Swizzle4<T> rbar;
+    Swizzle4<T> rbag;
+    Swizzle4<T> rbab;
+    Swizzle4<T> rbaa;
+    Swizzle4<T> rarr;
+    Swizzle4<T> rarg;
+    Swizzle4<T> rarb;
+    Swizzle4<T> rara;
+    Swizzle4<T> ragr;
+    Swizzle4<T> ragg;
+    Swizzle4<T> ragb;
+    Swizzle4<T> raga;
+    Swizzle4<T> rabr;
+    Swizzle4<T> rabg;
+    Swizzle4<T> rabb;
+    Swizzle4<T> raba;
+    Swizzle4<T> raar;
+    Swizzle4<T> raag;
+    Swizzle4<T> raab;
+    Swizzle4<T> raaa;
+    Swizzle4<T> grrr;
+    Swizzle4<T> grrg;
+    Swizzle4<T> grrb;
+    Swizzle4<T> grra;
+    Swizzle4<T> grgr;
+    Swizzle4<T> grgg;
+    Swizzle4<T> grgb;
+    Swizzle4<T> grga;
+    Swizzle4<T> grbr;
+    Swizzle4<T> grbg;
+    Swizzle4<T> grbb;
+    Swizzle4<T> grba;
+    Swizzle4<T> grar;
+    Swizzle4<T> grag;
+    Swizzle4<T> grab;
+    Swizzle4<T> graa;
+    Swizzle4<T> ggrr;
+    Swizzle4<T> ggrg;
+    Swizzle4<T> ggrb;
+    Swizzle4<T> ggra;
+    Swizzle4<T> gggr;
+    Swizzle4<T> gggg;
+    Swizzle4<T> gggb;
+    Swizzle4<T> ggga;
+    Swizzle4<T> ggbr;
+    Swizzle4<T> ggbg;
+    Swizzle4<T> ggbb;
+    Swizzle4<T> ggba;
+    Swizzle4<T> ggar;
+    Swizzle4<T> ggag;
+    Swizzle4<T> ggab;
+    Swizzle4<T> ggaa;
+    Swizzle4<T> gbrr;
+    Swizzle4<T> gbrg;
+    Swizzle4<T> gbrb;
+    Swizzle4<T> gbra;
+    Swizzle4<T> gbgr;
+    Swizzle4<T> gbgg;
+    Swizzle4<T> gbgb;
+    Swizzle4<T> gbga;
+    Swizzle4<T> gbbr;
+    Swizzle4<T> gbbg;
+    Swizzle4<T> gbbb;
+    Swizzle4<T> gbba;
+    Swizzle4<T> gbar;
+    Swizzle4<T> gbag;
+    Swizzle4<T> gbab;
+    Swizzle4<T> gbaa;
+    Swizzle4<T> garr;
+    Swizzle4<T> garg;
+    Swizzle4<T> garb;
+    Swizzle4<T> gara;
+    Swizzle4<T> gagr;
+    Swizzle4<T> gagg;
+    Swizzle4<T> gagb;
+    Swizzle4<T> gaga;
+    Swizzle4<T> gabr;
+    Swizzle4<T> gabg;
+    Swizzle4<T> gabb;
+    Swizzle4<T> gaba;
+    Swizzle4<T> gaar;
+    Swizzle4<T> gaag;
+    Swizzle4<T> gaab;
+    Swizzle4<T> gaaa;
+    Swizzle4<T> brrr;
+    Swizzle4<T> brrg;
+    Swizzle4<T> brrb;
+    Swizzle4<T> brra;
+    Swizzle4<T> brgr;
+    Swizzle4<T> brgg;
+    Swizzle4<T> brgb;
+    Swizzle4<T> brga;
+    Swizzle4<T> brbr;
+    Swizzle4<T> brbg;
+    Swizzle4<T> brbb;
+    Swizzle4<T> brba;
+    Swizzle4<T> brar;
+    Swizzle4<T> brag;
+    Swizzle4<T> brab;
+    Swizzle4<T> braa;
+    Swizzle4<T> bgrr;
+    Swizzle4<T> bgrg;
+    Swizzle4<T> bgrb;
+    Swizzle4<T> bgra;
+    Swizzle4<T> bggr;
+    Swizzle4<T> bggg;
+    Swizzle4<T> bggb;
+    Swizzle4<T> bgga;
+    Swizzle4<T> bgbr;
+    Swizzle4<T> bgbg;
+    Swizzle4<T> bgbb;
+    Swizzle4<T> bgba;
+    Swizzle4<T> bgar;
+    Swizzle4<T> bgag;
+    Swizzle4<T> bgab;
+    Swizzle4<T> bgaa;
+    Swizzle4<T> bbrr;
+    Swizzle4<T> bbrg;
+    Swizzle4<T> bbrb;
+    Swizzle4<T> bbra;
+    Swizzle4<T> bbgr;
+    Swizzle4<T> bbgg;
+    Swizzle4<T> bbgb;
+    Swizzle4<T> bbga;
+    Swizzle4<T> bbbr;
+    Swizzle4<T> bbbg;
+    Swizzle4<T> bbbb;
+    Swizzle4<T> bbba;
+    Swizzle4<T> bbar;
+    Swizzle4<T> bbag;
+    Swizzle4<T> bbab;
+    Swizzle4<T> bbaa;
+    Swizzle4<T> barr;
+    Swizzle4<T> barg;
+    Swizzle4<T> barb;
+    Swizzle4<T> bara;
+    Swizzle4<T> bagr;
+    Swizzle4<T> bagg;
+    Swizzle4<T> bagb;
+    Swizzle4<T> baga;
+    Swizzle4<T> babr;
+    Swizzle4<T> babg;
+    Swizzle4<T> babb;
+    Swizzle4<T> baba;
+    Swizzle4<T> baar;
+    Swizzle4<T> baag;
+    Swizzle4<T> baab;
+    Swizzle4<T> baaa;
+    Swizzle4<T> arrr;
+    Swizzle4<T> arrg;
+    Swizzle4<T> arrb;
+    Swizzle4<T> arra;
+    Swizzle4<T> argr;
+    Swizzle4<T> argg;
+    Swizzle4<T> argb;
+    Swizzle4<T> arga;
+    Swizzle4<T> arbr;
+    Swizzle4<T> arbg;
+    Swizzle4<T> arbb;
+    Swizzle4<T> arba;
+    Swizzle4<T> arar;
+    Swizzle4<T> arag;
+    Swizzle4<T> arab;
+    Swizzle4<T> araa;
+    Swizzle4<T> agrr;
+    Swizzle4<T> agrg;
+    Swizzle4<T> agrb;
+    Swizzle4<T> agra;
+    Swizzle4<T> aggr;
+    Swizzle4<T> aggg;
+    Swizzle4<T> aggb;
+    Swizzle4<T> agga;
+    Swizzle4<T> agbr;
+    Swizzle4<T> agbg;
+    Swizzle4<T> agbb;
+    Swizzle4<T> agba;
+    Swizzle4<T> agar;
+    Swizzle4<T> agag;
+    Swizzle4<T> agab;
+    Swizzle4<T> agaa;
+    Swizzle4<T> abrr;
+    Swizzle4<T> abrg;
+    Swizzle4<T> abrb;
+    Swizzle4<T> abra;
+    Swizzle4<T> abgr;
+    Swizzle4<T> abgg;
+    Swizzle4<T> abgb;
+    Swizzle4<T> abga;
+    Swizzle4<T> abbr;
+    Swizzle4<T> abbg;
+    Swizzle4<T> abbb;
+    Swizzle4<T> abba;
+    Swizzle4<T> abar;
+    Swizzle4<T> abag;
+    Swizzle4<T> abab;
+    Swizzle4<T> abaa;
+    Swizzle4<T> aarr;
+    Swizzle4<T> aarg;
+    Swizzle4<T> aarb;
+    Swizzle4<T> aara;
+    Swizzle4<T> aagr;
+    Swizzle4<T> aagg;
+    Swizzle4<T> aagb;
+    Swizzle4<T> aaga;
+    Swizzle4<T> aabr;
+    Swizzle4<T> aabg;
+    Swizzle4<T> aabb;
+    Swizzle4<T> aaba;
+    Swizzle4<T> aaar;
+    Swizzle4<T> aaag;
+    Swizzle4<T> aaab;
+    Swizzle4<T> aaaa;
     // alias stpq
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> ssss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> ssst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> sssp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> sssq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> ssts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> sstt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> sstp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> sstq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> ssps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> sspt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> sspp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> sspq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> ssqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> ssqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> ssqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> ssqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> stss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> stst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> stsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> stsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> stts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> sttt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> sttp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> sttq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> stps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> stpt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> stpp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> stpq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> stqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> stqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> stqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> stqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> spss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> spst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> spsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> spsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> spts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> sptt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> sptp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> sptq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> spps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> sppt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> sppp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> sppq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> spqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> spqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> spqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> spqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> sqss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> sqst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> sqsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> sqsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> sqts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> sqtt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> sqtp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> sqtq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> sqps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> sqpt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> sqpp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> sqpq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> sqqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> sqqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> sqqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> sqqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> tsss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> tsst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> tssp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> tssq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> tsts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> tstt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> tstp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> tstq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> tsps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> tspt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> tspp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> tspq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> tsqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> tsqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> tsqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> tsqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> ttss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> ttst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> ttsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> ttsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> ttts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> tttt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> tttp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> tttq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> ttps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> ttpt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> ttpp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> ttpq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> ttqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> ttqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> ttqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> ttqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> tpss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> tpst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> tpsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> tpsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> tpts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> tptt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> tptp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> tptq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> tpps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> tppt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> tppp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> tppq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> tpqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> tpqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> tpqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> tpqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> tqss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> tqst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> tqsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> tqsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> tqts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> tqtt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> tqtp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> tqtq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> tqps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> tqpt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> tqpp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> tqpq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> tqqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> tqqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> tqqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> tqqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> psss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> psst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> pssp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> pssq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> psts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> pstt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> pstp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> pstq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> psps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> pspt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> pspp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> pspq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> psqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> psqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> psqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> psqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> ptss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> ptst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> ptsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> ptsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> ptts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> pttt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> pttp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> pttq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> ptps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> ptpt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> ptpp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> ptpq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> ptqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> ptqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> ptqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> ptqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> ppss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> ppst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> ppsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> ppsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> ppts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> pptt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> pptp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> pptq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> ppps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> pppt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> pppp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> pppq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> ppqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> ppqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> ppqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> ppqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> pqss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> pqst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> pqsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> pqsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> pqts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> pqtt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> pqtp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> pqtq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> pqps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> pqpt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> pqpp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> pqpq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> pqqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> pqqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> pqqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> pqqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::x> qsss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::y> qsst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::z> qssp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x, &Vector4Core<T>::w> qssq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::x> qsts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::y> qstt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::z> qstp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y, &Vector4Core<T>::w> qstq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::x> qsps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::y> qspt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::z> qspp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z, &Vector4Core<T>::w> qspq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::x> qsqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::y> qsqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::z> qsqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w, &Vector4Core<T>::w> qsqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::x> qtss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::y> qtst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::z> qtsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x, &Vector4Core<T>::w> qtsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::x> qtts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::y> qttt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::z> qttp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y, &Vector4Core<T>::w> qttq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::x> qtps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::y> qtpt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::z> qtpp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z, &Vector4Core<T>::w> qtpq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::x> qtqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::y> qtqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::z> qtqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w, &Vector4Core<T>::w> qtqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::x> qpss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::y> qpst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::z> qpsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x, &Vector4Core<T>::w> qpsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::x> qpts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::y> qptt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::z> qptp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y, &Vector4Core<T>::w> qptq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::x> qpps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::y> qppt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::z> qppp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z, &Vector4Core<T>::w> qppq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::x> qpqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::y> qpqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::z> qpqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w, &Vector4Core<T>::w> qpqq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::x> qqss;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::y> qqst;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::z> qqsp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x, &Vector4Core<T>::w> qqsq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::x> qqts;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::y> qqtt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::z> qqtp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y, &Vector4Core<T>::w> qqtq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::x> qqps;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::y> qqpt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::z> qqpp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z, &Vector4Core<T>::w> qqpq;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::x> qqqs;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::y> qqqt;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::z> qqqp;
-    Swizzle4<T, Vector4<T>, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w, &Vector4Core<T>::w> qqqq;
+    Swizzle4<T> ssss;
+    Swizzle4<T> ssst;
+    Swizzle4<T> sssp;
+    Swizzle4<T> sssq;
+    Swizzle4<T> ssts;
+    Swizzle4<T> sstt;
+    Swizzle4<T> sstp;
+    Swizzle4<T> sstq;
+    Swizzle4<T> ssps;
+    Swizzle4<T> sspt;
+    Swizzle4<T> sspp;
+    Swizzle4<T> sspq;
+    Swizzle4<T> ssqs;
+    Swizzle4<T> ssqt;
+    Swizzle4<T> ssqp;
+    Swizzle4<T> ssqq;
+    Swizzle4<T> stss;
+    Swizzle4<T> stst;
+    Swizzle4<T> stsp;
+    Swizzle4<T> stsq;
+    Swizzle4<T> stts;
+    Swizzle4<T> sttt;
+    Swizzle4<T> sttp;
+    Swizzle4<T> sttq;
+    Swizzle4<T> stps;
+    Swizzle4<T> stpt;
+    Swizzle4<T> stpp;
+    Swizzle4<T> stpq;
+    Swizzle4<T> stqs;
+    Swizzle4<T> stqt;
+    Swizzle4<T> stqp;
+    Swizzle4<T> stqq;
+    Swizzle4<T> spss;
+    Swizzle4<T> spst;
+    Swizzle4<T> spsp;
+    Swizzle4<T> spsq;
+    Swizzle4<T> spts;
+    Swizzle4<T> sptt;
+    Swizzle4<T> sptp;
+    Swizzle4<T> sptq;
+    Swizzle4<T> spps;
+    Swizzle4<T> sppt;
+    Swizzle4<T> sppp;
+    Swizzle4<T> sppq;
+    Swizzle4<T> spqs;
+    Swizzle4<T> spqt;
+    Swizzle4<T> spqp;
+    Swizzle4<T> spqq;
+    Swizzle4<T> sqss;
+    Swizzle4<T> sqst;
+    Swizzle4<T> sqsp;
+    Swizzle4<T> sqsq;
+    Swizzle4<T> sqts;
+    Swizzle4<T> sqtt;
+    Swizzle4<T> sqtp;
+    Swizzle4<T> sqtq;
+    Swizzle4<T> sqps;
+    Swizzle4<T> sqpt;
+    Swizzle4<T> sqpp;
+    Swizzle4<T> sqpq;
+    Swizzle4<T> sqqs;
+    Swizzle4<T> sqqt;
+    Swizzle4<T> sqqp;
+    Swizzle4<T> sqqq;
+    Swizzle4<T> tsss;
+    Swizzle4<T> tsst;
+    Swizzle4<T> tssp;
+    Swizzle4<T> tssq;
+    Swizzle4<T> tsts;
+    Swizzle4<T> tstt;
+    Swizzle4<T> tstp;
+    Swizzle4<T> tstq;
+    Swizzle4<T> tsps;
+    Swizzle4<T> tspt;
+    Swizzle4<T> tspp;
+    Swizzle4<T> tspq;
+    Swizzle4<T> tsqs;
+    Swizzle4<T> tsqt;
+    Swizzle4<T> tsqp;
+    Swizzle4<T> tsqq;
+    Swizzle4<T> ttss;
+    Swizzle4<T> ttst;
+    Swizzle4<T> ttsp;
+    Swizzle4<T> ttsq;
+    Swizzle4<T> ttts;
+    Swizzle4<T> tttt;
+    Swizzle4<T> tttp;
+    Swizzle4<T> tttq;
+    Swizzle4<T> ttps;
+    Swizzle4<T> ttpt;
+    Swizzle4<T> ttpp;
+    Swizzle4<T> ttpq;
+    Swizzle4<T> ttqs;
+    Swizzle4<T> ttqt;
+    Swizzle4<T> ttqp;
+    Swizzle4<T> ttqq;
+    Swizzle4<T> tpss;
+    Swizzle4<T> tpst;
+    Swizzle4<T> tpsp;
+    Swizzle4<T> tpsq;
+    Swizzle4<T> tpts;
+    Swizzle4<T> tptt;
+    Swizzle4<T> tptp;
+    Swizzle4<T> tptq;
+    Swizzle4<T> tpps;
+    Swizzle4<T> tppt;
+    Swizzle4<T> tppp;
+    Swizzle4<T> tppq;
+    Swizzle4<T> tpqs;
+    Swizzle4<T> tpqt;
+    Swizzle4<T> tpqp;
+    Swizzle4<T> tpqq;
+    Swizzle4<T> tqss;
+    Swizzle4<T> tqst;
+    Swizzle4<T> tqsp;
+    Swizzle4<T> tqsq;
+    Swizzle4<T> tqts;
+    Swizzle4<T> tqtt;
+    Swizzle4<T> tqtp;
+    Swizzle4<T> tqtq;
+    Swizzle4<T> tqps;
+    Swizzle4<T> tqpt;
+    Swizzle4<T> tqpp;
+    Swizzle4<T> tqpq;
+    Swizzle4<T> tqqs;
+    Swizzle4<T> tqqt;
+    Swizzle4<T> tqqp;
+    Swizzle4<T> tqqq;
+    Swizzle4<T> psss;
+    Swizzle4<T> psst;
+    Swizzle4<T> pssp;
+    Swizzle4<T> pssq;
+    Swizzle4<T> psts;
+    Swizzle4<T> pstt;
+    Swizzle4<T> pstp;
+    Swizzle4<T> pstq;
+    Swizzle4<T> psps;
+    Swizzle4<T> pspt;
+    Swizzle4<T> pspp;
+    Swizzle4<T> pspq;
+    Swizzle4<T> psqs;
+    Swizzle4<T> psqt;
+    Swizzle4<T> psqp;
+    Swizzle4<T> psqq;
+    Swizzle4<T> ptss;
+    Swizzle4<T> ptst;
+    Swizzle4<T> ptsp;
+    Swizzle4<T> ptsq;
+    Swizzle4<T> ptts;
+    Swizzle4<T> pttt;
+    Swizzle4<T> pttp;
+    Swizzle4<T> pttq;
+    Swizzle4<T> ptps;
+    Swizzle4<T> ptpt;
+    Swizzle4<T> ptpp;
+    Swizzle4<T> ptpq;
+    Swizzle4<T> ptqs;
+    Swizzle4<T> ptqt;
+    Swizzle4<T> ptqp;
+    Swizzle4<T> ptqq;
+    Swizzle4<T> ppss;
+    Swizzle4<T> ppst;
+    Swizzle4<T> ppsp;
+    Swizzle4<T> ppsq;
+    Swizzle4<T> ppts;
+    Swizzle4<T> pptt;
+    Swizzle4<T> pptp;
+    Swizzle4<T> pptq;
+    Swizzle4<T> ppps;
+    Swizzle4<T> pppt;
+    Swizzle4<T> pppp;
+    Swizzle4<T> pppq;
+    Swizzle4<T> ppqs;
+    Swizzle4<T> ppqt;
+    Swizzle4<T> ppqp;
+    Swizzle4<T> ppqq;
+    Swizzle4<T> pqss;
+    Swizzle4<T> pqst;
+    Swizzle4<T> pqsp;
+    Swizzle4<T> pqsq;
+    Swizzle4<T> pqts;
+    Swizzle4<T> pqtt;
+    Swizzle4<T> pqtp;
+    Swizzle4<T> pqtq;
+    Swizzle4<T> pqps;
+    Swizzle4<T> pqpt;
+    Swizzle4<T> pqpp;
+    Swizzle4<T> pqpq;
+    Swizzle4<T> pqqs;
+    Swizzle4<T> pqqt;
+    Swizzle4<T> pqqp;
+    Swizzle4<T> pqqq;
+    Swizzle4<T> qsss;
+    Swizzle4<T> qsst;
+    Swizzle4<T> qssp;
+    Swizzle4<T> qssq;
+    Swizzle4<T> qsts;
+    Swizzle4<T> qstt;
+    Swizzle4<T> qstp;
+    Swizzle4<T> qstq;
+    Swizzle4<T> qsps;
+    Swizzle4<T> qspt;
+    Swizzle4<T> qspp;
+    Swizzle4<T> qspq;
+    Swizzle4<T> qsqs;
+    Swizzle4<T> qsqt;
+    Swizzle4<T> qsqp;
+    Swizzle4<T> qsqq;
+    Swizzle4<T> qtss;
+    Swizzle4<T> qtst;
+    Swizzle4<T> qtsp;
+    Swizzle4<T> qtsq;
+    Swizzle4<T> qtts;
+    Swizzle4<T> qttt;
+    Swizzle4<T> qttp;
+    Swizzle4<T> qttq;
+    Swizzle4<T> qtps;
+    Swizzle4<T> qtpt;
+    Swizzle4<T> qtpp;
+    Swizzle4<T> qtpq;
+    Swizzle4<T> qtqs;
+    Swizzle4<T> qtqt;
+    Swizzle4<T> qtqp;
+    Swizzle4<T> qtqq;
+    Swizzle4<T> qpss;
+    Swizzle4<T> qpst;
+    Swizzle4<T> qpsp;
+    Swizzle4<T> qpsq;
+    Swizzle4<T> qpts;
+    Swizzle4<T> qptt;
+    Swizzle4<T> qptp;
+    Swizzle4<T> qptq;
+    Swizzle4<T> qpps;
+    Swizzle4<T> qppt;
+    Swizzle4<T> qppp;
+    Swizzle4<T> qppq;
+    Swizzle4<T> qpqs;
+    Swizzle4<T> qpqt;
+    Swizzle4<T> qpqp;
+    Swizzle4<T> qpqq;
+    Swizzle4<T> qqss;
+    Swizzle4<T> qqst;
+    Swizzle4<T> qqsp;
+    Swizzle4<T> qqsq;
+    Swizzle4<T> qqts;
+    Swizzle4<T> qqtt;
+    Swizzle4<T> qqtp;
+    Swizzle4<T> qqtq;
+    Swizzle4<T> qqps;
+    Swizzle4<T> qqpt;
+    Swizzle4<T> qqpp;
+    Swizzle4<T> qqpq;
+    Swizzle4<T> qqqs;
+    Swizzle4<T> qqqt;
+    Swizzle4<T> qqqp;
+    Swizzle4<T> qqqq;
 #endif  // GLSLIKE_DISABLE_SWIZZLE
 
 };
@@ -7348,8 +6840,8 @@ Vector4<T> operator /(T a, const Vector4<T> &b) {
 
 #ifndef GLSLIKE_DISABLE_SWIZZLE
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator +(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, const Vector4<T> &b) {
+template <typename T>
+Vector4<T> operator +(const Swizzle4<T> &a, const Vector4<T> &b) {
     return Vector4<T>(
         a.x + b.x,
         a.y + b.y,
@@ -7358,8 +6850,8 @@ Vector4<T> operator +(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, c
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator -(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, const Vector4<T> &b) {
+template <typename T>
+Vector4<T> operator -(const Swizzle4<T> &a, const Vector4<T> &b) {
     return Vector4<T>(
         a.x - b.x,
         a.y - b.y,
@@ -7368,8 +6860,8 @@ Vector4<T> operator -(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, c
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator *(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, const Vector4<T> &b) {
+template <typename T>
+Vector4<T> operator *(const Swizzle4<T> &a, const Vector4<T> &b) {
     return Vector4<T>(
         a.x * b.x,
         a.y * b.y,
@@ -7378,8 +6870,8 @@ Vector4<T> operator *(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, c
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator /(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, const Vector4<T> &b) {
+template <typename T>
+Vector4<T> operator /(const Swizzle4<T> &a, const Vector4<T> &b) {
     return Vector4<T>(
         a.x / b.x,
         a.y / b.y,
@@ -7388,8 +6880,8 @@ Vector4<T> operator /(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, c
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator +(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+template <typename T>
+Vector4<T> operator +(const Vector4<T> & a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a.x + b.x,
         a.y + b.y,
@@ -7398,8 +6890,8 @@ Vector4<T> operator +(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator -(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+template <typename T>
+Vector4<T> operator -(const Vector4<T> & a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a.x - b.x,
         a.y - b.y,
@@ -7408,8 +6900,8 @@ Vector4<T> operator -(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator *(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+template <typename T>
+Vector4<T> operator *(const Vector4<T> & a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a.x * b.x,
         a.y * b.y,
@@ -7418,8 +6910,8 @@ Vector4<T> operator *(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator /(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+template <typename T>
+Vector4<T> operator /(const Vector4<T> & a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a.x / b.x,
         a.y / b.y,
@@ -7428,8 +6920,8 @@ Vector4<T> operator /(const Vector4<T> & a, const Swizzle4<T, SelfT, attr1, attr
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, T ASelfT::Base_t::* Aattr4, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3, T BSelfT::Base_t::* Battr4>
-Vector4<T> operator +(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> &a, const Swizzle4<T, BSelfT, Battr1, Battr2, Battr3, Battr4> &b) {
+template <typename T>
+Vector4<T> operator +(const Swizzle4<T> &a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a.x + b.x,
         a.y + b.y,
@@ -7438,8 +6930,8 @@ Vector4<T> operator +(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> 
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, T ASelfT::Base_t::* Aattr4, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3, T BSelfT::Base_t::* Battr4>
-Vector4<T> operator -(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> &a, const Swizzle4<T, BSelfT, Battr1, Battr2, Battr3, Battr4> &b) {
+template <typename T>
+Vector4<T> operator -(const Swizzle4<T> &a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a.x - b.x,
         a.y - b.y,
@@ -7448,8 +6940,8 @@ Vector4<T> operator -(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> 
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, T ASelfT::Base_t::* Aattr4, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3, T BSelfT::Base_t::* Battr4>
-Vector4<T> operator *(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> &a, const Swizzle4<T, BSelfT, Battr1, Battr2, Battr3, Battr4> &b) {
+template <typename T>
+Vector4<T> operator *(const Swizzle4<T> &a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a.x * b.x,
         a.y * b.y,
@@ -7458,8 +6950,8 @@ Vector4<T> operator *(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> 
     );
 }
 
-template <typename T, typename ASelfT, T ASelfT::Base_t::* Aattr1, T ASelfT::Base_t::* Aattr2, T ASelfT::Base_t::* Aattr3, T ASelfT::Base_t::* Aattr4, typename BSelfT, T BSelfT::Base_t::* Battr1, T BSelfT::Base_t::* Battr2, T BSelfT::Base_t::* Battr3, T BSelfT::Base_t::* Battr4>
-Vector4<T> operator /(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> &a, const Swizzle4<T, BSelfT, Battr1, Battr2, Battr3, Battr4> &b) {
+template <typename T>
+Vector4<T> operator /(const Swizzle4<T> &a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a.x / b.x,
         a.y / b.y,
@@ -7468,8 +6960,8 @@ Vector4<T> operator /(const Swizzle4<T, ASelfT, Aattr1, Aattr2, Aattr3, Aattr4> 
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator +(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T b) {
+template <typename T>
+Vector4<T> operator +(const Swizzle4<T> &a, T b) {
     return Vector4<T>(
         a.x + b,
         a.y + b,
@@ -7478,8 +6970,8 @@ Vector4<T> operator +(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator -(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T b) {
+template <typename T>
+Vector4<T> operator -(const Swizzle4<T> &a, T b) {
     return Vector4<T>(
         a.x - b,
         a.y - b,
@@ -7488,8 +6980,8 @@ Vector4<T> operator -(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator *(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T b) {
+template <typename T>
+Vector4<T> operator *(const Swizzle4<T> &a, T b) {
     return Vector4<T>(
         a.x * b,
         a.y * b,
@@ -7498,8 +6990,8 @@ Vector4<T> operator *(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator /(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T b) {
+template <typename T>
+Vector4<T> operator /(const Swizzle4<T> &a, T b) {
     return Vector4<T>(
         a.x / b,
         a.y / b,
@@ -7508,8 +7000,8 @@ Vector4<T> operator /(const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &a, T
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator +(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+template <typename T>
+Vector4<T> operator +(T a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a + b.x,
         a + b.y,
@@ -7518,8 +7010,8 @@ Vector4<T> operator +(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> 
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator -(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+template <typename T>
+Vector4<T> operator -(T a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a - b.x,
         a - b.y,
@@ -7528,8 +7020,8 @@ Vector4<T> operator -(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> 
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator *(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+template <typename T>
+Vector4<T> operator *(T a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a * b.x,
         a * b.y,
@@ -7538,8 +7030,8 @@ Vector4<T> operator *(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> 
     );
 }
 
-template <typename T, typename SelfT, T SelfT::Base_t::* attr1, T SelfT::Base_t::* attr2, T SelfT::Base_t::* attr3, T SelfT::Base_t::* attr4>
-Vector4<T> operator /(T a, const Swizzle4<T, SelfT, attr1, attr2, attr3, attr4> &b) {
+template <typename T>
+Vector4<T> operator /(T a, const Swizzle4<T> &b) {
     return Vector4<T>(
         a / b.x,
         a / b.y,
