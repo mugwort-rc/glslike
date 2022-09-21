@@ -50,7 +50,7 @@ private:
     math(math &&);
 
 public:
-    static constexpr C pi = M_PI;
+    static constexpr C pi = static_cast<C>(M_PI);
 
 public:
     // 8.1 Angle and Trigonometry Functions
@@ -215,7 +215,7 @@ public:
     static C smoothstep(C edge0, C edge1, C x) {
         //assert(edge0 < edge1)
         C t = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
-        return t * t * (3.0 - 2.0 * t);
+        return t * t * (3.0f - 2.0f * t);
     }
 
     static bool isnan(C x) {

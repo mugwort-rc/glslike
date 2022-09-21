@@ -4,8 +4,9 @@
 
 ## Supported compilers
 
-* gcc 9.4.0
-* clang 10.0.0
+* gcc 9.4.0+
+* clang 10.0.0+
+* msvc 2019 (19.28+)
 
 ## Getting started
 

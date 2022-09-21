@@ -3,6 +3,7 @@
 
 import os
 from setuptools import Extension, setup, find_packages
+from setuptools.command.build_ext import build_ext
 
 try:
     import pybind11
@@ -30,9 +31,37 @@ for dirname, dirs, filenames in os.walk("./src/"):
             continue
         sources.append(os.path.join(dirname, filename))
 
-extras = [
-    "-std=c++17",
-]
+
+# https://stackoverflow.com/a/5192738
+class build_ext2(build_ext):
+
+    cflags = {
+        "msvc": [
+            "/std:c++17",
+            "/D_USE_MATH_DEFINES",
+        ],
+        "*": [
+            "-std=c++17",
+        ],
+    }
+    ldflags = {
+        "msvc": [],
+        "*": [],
+    }
+
+    def build_extensions(self):
+        c = self.compiler.compiler_type
+        # CFLAGS
+        cflags = self.cflags[c if c in self.cflags else "*"]
+        for ext in self.extensions:
+           ext.extra_compile_args = cflags
+        # LDFLAGS
+        ldflags = self.ldflags[c if c in self.ldflags else "*"]
+        for ext in self.extensions:
+            ext.extra_link_args = ldflags
+        # super
+        build_ext.build_extensions(self)
+
 
 ext = Extension(
     name="glslike.__glslike",
@@ -40,7 +69,6 @@ ext = Extension(
     libraries=libraries,
     library_dirs=library_dirs,
     sources=sources,
-    extra_compile_args=extras,
 )
 
 
@@ -70,5 +98,6 @@ setup(name="glslike",
     zip_safe=False,
     packages=find_packages(),
     ext_modules=[ext],
+    cmdclass={"build_ext": build_ext2},
     install_requires=install_requires,
 )

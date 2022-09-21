@@ -69,7 +69,7 @@ PYBIND11_MODULE(__glslike, module) {
         //
         // 8.2 Exponential Functions
         //
-        .def("pow", static_cast<float(*)(float, float)>(&pow<float>))
+        .def("pow", static_cast<float(*)(float, float)>(&glslike::pow<float>))
         .def("exp", static_cast<float(*)(float)>(&exp<float>))
         .def("log", static_cast<float(*)(float)>(&log<float>))
         .def("exp2", static_cast<float(*)(float)>(&exp2<float>))
@@ -100,8 +100,8 @@ PYBIND11_MODULE(__glslike, module) {
         .def("mix", static_cast<float(*)(float, float, float)>(&mix<float>))
         .def("step", static_cast<float(*)(float, float)>(&step<float>))
         .def("smoothstep", static_cast<float(*)(float, float, float)>(&smoothstep<float>))
-        .def("isnan", static_cast<bool(*)(float)>(&isnan<float>))
-        .def("isinf", static_cast<bool(*)(float)>(&isinf<float>))
+        .def("isnan", static_cast<bool(*)(float)>(&glslike::isnan<float>))
+        .def("isinf", static_cast<bool(*)(float)>(&glslike::isinf<float>))
         //
         // TODO:
         // * floatBitToInt
