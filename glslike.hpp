@@ -50,7 +50,7 @@ private:
     math(math &&);
 
 public:
-    static constexpr C pi = static_cast<C>(M_PI);
+    static constexpr C pi = static_cast<C>(3.1415926535897932384626433832795029);
 
 public:
     // 8.1 Angle and Trigonometry Functions

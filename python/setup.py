@@ -38,7 +38,6 @@ class build_ext2(build_ext):
     cflags = {
         "msvc": [
             "/std:c++17",
-            "/D_USE_MATH_DEFINES",
         ],
         "*": [
             "-std=c++17",
