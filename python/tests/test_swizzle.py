@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-from ..__glslike import *
+from glslike import *
 
 
 def test_vec2_swizzle2_xy():

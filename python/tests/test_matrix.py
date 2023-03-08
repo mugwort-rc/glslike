@@ -17,7 +17,7 @@
 
 import pytest
 
-from ..__glslike import *
+from glslike import *
 
 
 def test_mat2_identity():
