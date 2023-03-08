@@ -50,7 +50,7 @@ private:
     math(math &&);
 
 public:
-    static constexpr C pi = static_cast<C>(3.1415926535897932384626433832795029);
+    static constexpr C pi = M_PI;
 
 public:
     // 8.1 Angle and Trigonometry Functions
@@ -76,11 +76,11 @@ public:
     }
 
     static C asin(C x) {
-        return std::sin(x);
+        return std::asin(x);
     }
 
     static C acos(C x) {
-        return std::cos(x);
+        return std::acos(x);
     }
 
     static C atan(C y, C x) {
@@ -215,7 +215,7 @@ public:
     static C smoothstep(C edge0, C edge1, C x) {
         //assert(edge0 < edge1)
         C t = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
-        return t * t * (3.0f - 2.0f * t);
+        return t * t * (3.0 - 2.0 * t);
     }
 
     static bool isnan(C x) {
@@ -603,9 +603,9 @@ T atanh(T x) {
 // 8.2 Exponential Functions
 //
 
-template <typename T, typename ScalarT>
+template <typename T, typename ScalarT, typename = typename std::enable_if<std::is_arithmetic<T>::value>::type>
 T pow(T scalar, ScalarT n) {
-    return math<T>::pow(scalar, n);
+    return math<ScalarT>::pow(scalar, n);
 }
 
 template <typename T>
@@ -852,7 +852,7 @@ public:
 template <typename T>
 class Vector2Core {
 public:
-    Vector2Core(T x)
+    explicit Vector2Core(T x)
         : x(x)
         , y(x)
     {}
@@ -890,7 +890,7 @@ public:
 template <typename T>
 class Vector3Core {
 public:
-    Vector3Core(T x)
+    explicit Vector3Core(T x)
         : x(x)
         , y(x)
         , z(x)
@@ -934,7 +934,7 @@ public:
 template <typename T>
 class Vector4Core {
 public:
-    Vector4Core(T x)
+    explicit Vector4Core(T x)
         : x(x)
         , y(x)
         , z(x)
@@ -1162,6 +1162,9 @@ public:
     using Vector2Core<T>::y;
 
 public:
+    Vector2()
+        : Vector2(static_cast<T>(0))
+    {}
     explicit Vector2(T x)
         : Vector2Core<T>::Vector2Core(x)
         , GLSLIKE_VECTOR2_SWIZZLE()
@@ -1624,10 +1627,10 @@ Vector2<T> atanh(const Vector2<T> &x) {
 //
 
 template <typename T>
-Vector2<T> pow(const Vector2<T> &vec, T n) {
+Vector2<T> pow(const Vector2<T> &vec, const Vector2<T> &n) {
     return Vector2<T>(
-        math<T>::pow(vec.x, n),
-        math<T>::pow(vec.y, n)
+        math<T>::pow(vec.x, n.x),
+        math<T>::pow(vec.y, n.y)
     );
 }
 
@@ -2519,6 +2522,9 @@ public:
     using Vector3Core<T>::z;
 
 public:
+    Vector3()
+        : Vector3(static_cast<T>(0))
+    {}
     explicit Vector3(T x)
         : Vector3Core<T>::Vector3Core(x)
         , GLSLIKE_VECTOR3_SWIZZLE()
@@ -3304,11 +3310,11 @@ Vector3<T> atanh(const Vector3<T> &x) {
 //
 
 template <typename T>
-Vector3<T> pow(const Vector3<T> &vec, T n) {
+Vector3<T> pow(const Vector3<T> &vec, const Vector3<T> &n) {
     return Vector3<T>(
-        math<T>::pow(vec.x, n),
-        math<T>::pow(vec.y, n),
-        math<T>::pow(vec.z, n)
+        math<T>::pow(vec.x, n.x),
+        math<T>::pow(vec.y, n.y),
+        math<T>::pow(vec.z, n.z)
     );
 }
 
@@ -4926,6 +4932,9 @@ public:
     using Vector4Core<T>::w;
 
 public:
+    Vector4()
+        : Vector4(static_cast<T>(0))
+    {}
     explicit Vector4(T x)
         : Vector4Core<T>::Vector4Core(x)
         , GLSLIKE_VECTOR4_SWIZZLE()
@@ -6415,12 +6424,12 @@ Vector4<T> atanh(const Vector4<T> &x) {
 //
 
 template <typename T>
-Vector4<T> pow(const Vector4<T> &vec, T n) {
+Vector4<T> pow(const Vector4<T> &vec, const Vector4<T> &n) {
     return Vector4<T>(
-        math<T>::pow(vec.x, n),
-        math<T>::pow(vec.y, n),
-        math<T>::pow(vec.z, n),
-        math<T>::pow(vec.w, n)
+        math<T>::pow(vec.x, n.x),
+        math<T>::pow(vec.y, n.y),
+        math<T>::pow(vec.z, n.z),
+        math<T>::pow(vec.w, n.w)
     );
 }
 
@@ -7091,7 +7100,7 @@ typename VectorT::Type_t dot(const VectorT &a, const VectorT &b) {
     return a.dot(b);
 }
 
-template <typename VectorT>
+template <typename VectorT, typename = typename std::enable_if<std::negation<std::is_arithmetic<VectorT>>::value>::type>
 VectorT normalize(const VectorT &vec) {
     return vec.clone().normalize();
 }

@@ -18,19 +18,913 @@
 
 
 #include <gtest/gtest.h>
+#include <limits>
 
 #include "glslike.hpp"
 
 using namespace glslike;
 
+//
+// ULP Function
+// https://ushiostarfish.hatenablog.com/entry/2019/08/12/210023
+//
 
-TEST(BuiltinFunctions, RoundEven) {
+inline uint32_t as_uint32(float f) {
+    return *reinterpret_cast<uint32_t *>(&f);
+}
+
+inline float as_float(uint32_t u) {
+    return *reinterpret_cast<float *>(&u);
+}
+
+inline uint8_t get_exponent(float f) {
+    uint32_t e = as_uint32(f) & 0x7F800000;
+    return e >> 23;
+}
+
+const uint32_t MAX_FRACTION = 0x7FFFFF;
+const bool PLUS_SIGN_BIT  = false;
+const bool MINUS_SIGN_BIT = true;
+
+inline float encode(bool signbit, uint8_t expornent, uint32_t significand) {
+    //FT_ASSERT(significand < 0x800000);
+    return as_float((signbit ? 0x80000000 : 0) | (static_cast<uint32_t>(expornent) << 23) | significand);
+}
+
+inline float ulp(float f) {
+    int32_t e = get_exponent(f);
+    if (24 <= e) {
+        return encode(PLUS_SIGN_BIT, e - 23, 0);
+    }
+    return encode(PLUS_SIGN_BIT, 0, 1 << std::max(e - 1, 0));
+}
+
+
+TEST(BuiltinFunctionsScalar, Radians) {
+    EXPECT_EQ(radians(0.0f), 0.0f);
+    EXPECT_EQ(radians(90.0f), math<float>::pi / 2.0f);
+    EXPECT_EQ(radians(180.0f), math<float>::pi);
+}
+
+
+TEST(BuiltinFunctionsScalar, Degrees) {
+    EXPECT_EQ(degrees(0.0f), 0.0f);
+    EXPECT_EQ(degrees(math<float>::pi / 2.0f), 90.0f);
+    EXPECT_EQ(degrees(math<float>::pi), 180.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Sin) {
+    EXPECT_EQ(sin(0.0f), std::sin(0.0f));
+    EXPECT_EQ(sin(math<float>::pi / 2.0f), std::sin(math<float>::pi / 2.0f));
+    EXPECT_EQ(sin(math<float>::pi), std::sin(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsScalar, Cos) {
+    EXPECT_EQ(cos(0.0f), std::cos(0.0f));
+    EXPECT_EQ(cos(math<float>::pi / 2.0f), std::cos(math<float>::pi / 2.0f));
+    EXPECT_EQ(cos(math<float>::pi), std::cos(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsScalar, Tan) {
+    EXPECT_EQ(tan(0.0f), std::tan(0.0f));
+    EXPECT_EQ(tan(math<float>::pi / 2.0f), std::tan(math<float>::pi / 2.0f));
+    EXPECT_EQ(tan(math<float>::pi), std::tan(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsScalar, ASin) {
+    EXPECT_EQ(asin(0.0f), std::asin(0.0f));
+    EXPECT_EQ(asin(0.5f), std::asin(0.5f));
+    EXPECT_EQ(asin(1.0f), std::asin(1.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, ACos) {
+    EXPECT_EQ(acos(0.0f), std::acos(0.0f));
+    EXPECT_EQ(acos(0.5f), std::acos(0.5f));
+    EXPECT_EQ(acos(1.0f), std::acos(1.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, ATan) {
+    EXPECT_EQ(atan(0.0f), std::atan(0.0f));
+    EXPECT_EQ(atan(0.5f), std::atan(0.5f));
+    EXPECT_EQ(atan(1.0f), std::atan(1.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, Sinh) {
+    EXPECT_EQ(sinh(0.0f), std::sinh(0.0f));
+    EXPECT_EQ(sinh(math<float>::pi / 2.0f), std::sinh(math<float>::pi / 2.0f));
+    EXPECT_EQ(sinh(math<float>::pi), std::sinh(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsScalar, Cosh) {
+    EXPECT_EQ(cosh(0.0f), std::cosh(0.0f));
+    EXPECT_EQ(cosh(math<float>::pi / 2.0f), std::cosh(math<float>::pi / 2.0f));
+    EXPECT_EQ(cosh(math<float>::pi), std::cosh(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsScalar, Tanh) {
+    EXPECT_EQ(tanh(0.0f), std::tanh(0.0f));
+    EXPECT_EQ(tanh(math<float>::pi / 2.0f), std::tanh(math<float>::pi / 2.0f));
+    EXPECT_EQ(tanh(math<float>::pi), std::tanh(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsScalar, ASinh) {
+    EXPECT_EQ(asinh(0.0f), std::asinh(0.0f));
+    EXPECT_EQ(asinh(0.5f), std::asinh(0.5f));
+    EXPECT_EQ(asinh(1.0f), std::asinh(1.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, ACosh) {
+    EXPECT_EQ(acosh(1.0f), std::acosh(1.0f));
+    EXPECT_EQ(acosh(1.5f), std::acosh(1.5f));
+    EXPECT_EQ(acosh(2.0f), std::acosh(2.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, ATanh) {
+    EXPECT_EQ(atanh(0.0f), std::atanh(0.0f));
+    EXPECT_EQ(atanh(0.5f), std::atanh(0.5f));
+    EXPECT_EQ(atanh(1.0f), std::atanh(1.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, Pow) {
+    EXPECT_EQ(pow(2.0f, 2.0f), std::pow(2.0f, 2.0f));
+    EXPECT_EQ(pow(3.0f, 2.0f), std::pow(3.0f, 2.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, Exp) {
+    EXPECT_EQ(exp(2.0f), std::exp(2.0f));
+    EXPECT_EQ(exp(3.0f), std::exp(3.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, Log) {
+    EXPECT_EQ(log(2.0f), std::log(2.0f));
+    EXPECT_EQ(log(3.0f), std::log(3.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, Exp2) {
+    EXPECT_EQ(exp2(2.0f), std::exp2(2.0f));
+    EXPECT_EQ(exp2(3.0f), std::exp2(3.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, Log2) {
+    EXPECT_EQ(log2(2.0f), std::log2(2.0f));
+    EXPECT_EQ(log2(3.0f), std::log2(3.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, Sqrt) {
+    EXPECT_EQ(sqrt(2.0f), std::sqrt(2.0f));
+    EXPECT_EQ(sqrt(3.0f), std::sqrt(3.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, InverseSqrt) {
+    EXPECT_EQ(inversesqrt(2.0f), 1.0f / std::sqrt(2.0f));
+    EXPECT_EQ(inversesqrt(3.0f), 1.0f / std::sqrt(3.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, Abs) {
+    EXPECT_EQ(abs(2.0f), std::abs(2.0f));
+    EXPECT_EQ(abs(-3.0f), std::abs(-3.0f));
+}
+
+
+TEST(BuiltinFunctionsScalar, Sign) {
+    EXPECT_EQ(sign(2.0f), 1.0f);
+    EXPECT_EQ(sign(0.0f), 0.0f);
+    EXPECT_EQ(sign(-3.0f), -1.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Floor) {
+    EXPECT_EQ(floor(2.1f), 2.0f);
+    EXPECT_EQ(floor(2.5f), 2.0f);
+    EXPECT_EQ(floor(-3.1f), -4.0f);
+    EXPECT_EQ(floor(-3.5f), -4.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Trunc) {
+    EXPECT_EQ(trunc(2.1f), 2.0f);
+    EXPECT_EQ(trunc(2.5f), 2.0f);
+    EXPECT_EQ(trunc(-3.1f), -3.0f);
+    EXPECT_EQ(trunc(-3.5f), -3.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Round) {
+    EXPECT_EQ(round(2.1f), 2.0f);
+    EXPECT_EQ(round(2.5f), 3.0f);
+    EXPECT_EQ(round(-3.1f), -3.0f);
+    EXPECT_EQ(round(-3.5f), -4.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, RoundEven) {
     EXPECT_EQ(roundEven(1.4f), 2.0f);
     EXPECT_EQ(roundEven(1.5f), 2.0f);
     EXPECT_EQ(roundEven(2.5f), 2.0f);
     // For example, both 3.5 and 4.5 will round to 4.0.
     EXPECT_EQ(roundEven(3.5f), 4.0f);
     EXPECT_EQ(roundEven(4.5f), 4.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Ceil) {
+    EXPECT_EQ(ceil(2.1f), 3.0f);
+    EXPECT_EQ(ceil(2.5f), 3.0f);
+    EXPECT_EQ(ceil(-3.1f), -3.0f);
+    EXPECT_EQ(ceil(-3.5f), -3.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Fract) {
+    EXPECT_EQ(fract(2.1f), 2.1f - 2.0f);
+    EXPECT_EQ(fract(2.5f), 2.5f - 2.0f);
+    EXPECT_EQ(fract(-3.1f), -3.1f - -4.0f);
+    EXPECT_EQ(fract(-3.5f), -3.5f - -4.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Mod) {
+    EXPECT_NEAR(mod(2.1f, 1.0f), 0.1f, ulp(1));
+    EXPECT_EQ(mod(2.5f, 2.0f), 0.5f);
+    EXPECT_NEAR(mod(-3.1f, 1.0f), 0.9f, ulp(1));
+    EXPECT_EQ(mod(-3.5f, 2.0f), 0.5f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Modf) {
+    {
+        float t = 0.0f;
+        EXPECT_NEAR(modf(2.1f, &t), 0.1f, ulp(1));
+        EXPECT_EQ(t, 2.0f);
+    }
+    {
+        float t = 0.0f;
+        EXPECT_EQ(modf(2.5f, &t), 0.5f);
+        EXPECT_EQ(t, 2.0f);
+    }
+    {
+        float t = 0.0f;
+        EXPECT_NEAR(modf(-3.1f, &t), -0.1f, ulp(1));
+        EXPECT_EQ(t, -3.0f);
+    }
+    {
+        float t = 0.0f;
+        EXPECT_EQ(modf(-3.5f, &t), -0.5f);
+        EXPECT_EQ(t, -3.0f);
+    }
+}
+
+
+TEST(BuiltinFunctionsScalar, Min) {
+    EXPECT_EQ(min(1.0f, 2.0f), 1.0f);
+    EXPECT_EQ(min(3.0f, 2.0f), 2.0f);
+    EXPECT_EQ(min(-1.0f, -2.0f), -2.0f);
+    EXPECT_EQ(min(-3.0f, -2.0f), -3.0f);
+    EXPECT_EQ(min(1.0f, -2.0f), -2.0f);
+    EXPECT_EQ(min(-3.0f, 2.0f), -3.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Max) {
+    EXPECT_EQ(max(1.0f, 2.0f), 2.0f);
+    EXPECT_EQ(max(3.0f, 2.0f), 3.0f);
+    EXPECT_EQ(max(-1.0f, -2.0f), -1.0f);
+    EXPECT_EQ(max(-3.0f, -2.0f), -2.0f);
+    EXPECT_EQ(max(1.0f, -2.0f), 1.0f);
+    EXPECT_EQ(max(-3.0f, 2.0f), 2.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Clamp) {
+    EXPECT_EQ(clamp(0.5f, 1.0f, 2.0f), 1.0f);
+    EXPECT_EQ(clamp(1.0f, 1.0f, 2.0f), 1.0f);
+    EXPECT_EQ(clamp(1.5f, 1.0f, 2.0f), 1.5f);
+    EXPECT_EQ(clamp(2.0f, 1.0f, 2.0f), 2.0f);
+    EXPECT_EQ(clamp(2.5f, 1.0f, 2.0f), 2.0f);
+
+    EXPECT_EQ(clamp(-0.5f, -2.0f, -1.0f), -1.0f);
+    EXPECT_EQ(clamp(-1.0f, -2.0f, -1.0f), -1.0f);
+    EXPECT_EQ(clamp(-1.5f, -2.0f, -1.0f), -1.5f);
+    EXPECT_EQ(clamp(-2.0f, -2.0f, -1.0f), -2.0f);
+    EXPECT_EQ(clamp(-2.5f, -2.0f, -1.0f), -2.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Mix) {
+    EXPECT_EQ(mix(0.5f, 2.0f, 0.25f), 0.5f * (1.0f - 0.25f) + 2.0f * 0.25f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Step) {
+    EXPECT_EQ(step(0.5f, 0.0f), 0.0f);
+    EXPECT_EQ(step(0.5f, 0.2f), 0.0f);
+    EXPECT_EQ(step(0.5f, 0.5f), 1.0f);
+    EXPECT_EQ(step(0.5f, 1.0f), 1.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, SmoothStep) {
+    EXPECT_EQ(smoothstep(0.5f, 0.7f, 0.0f), 0.0f);
+    EXPECT_EQ(smoothstep(0.5f, 0.7f, 0.2f), 0.0f);
+    EXPECT_EQ(smoothstep(0.5f, 0.7f, 0.5f), 0.0f);
+    // TODO: (0.5, 0.7) cases
+    EXPECT_EQ(smoothstep(0.5f, 0.7f, 0.7f), 1.0f);
+    EXPECT_EQ(smoothstep(0.5f, 0.7f, 1.0f), 1.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, IsNaN) {
+    EXPECT_EQ(isnan(0.0f), false);
+    EXPECT_EQ(isnan(std::numeric_limits<float>::quiet_NaN()), true);
+    EXPECT_EQ(isnan(std::numeric_limits<float>::signaling_NaN()), true);
+    EXPECT_EQ(isnan(std::numeric_limits<float>::infinity()), false);
+}
+
+
+TEST(BuiltinFunctionsScalar, IsInf) {
+    EXPECT_EQ(isinf(0.0f), false);
+    EXPECT_EQ(isinf(std::numeric_limits<float>::quiet_NaN()), false);
+    EXPECT_EQ(isinf(std::numeric_limits<float>::signaling_NaN()), false);
+    EXPECT_EQ(isinf(std::numeric_limits<float>::infinity()), true);
+}
+
+
+TEST(BuiltinFunctionsScalar, Fma) {
+    EXPECT_NEAR(fma(0.1f, 0.2f, 0.3f), 0.1f * 0.2f + 0.3f, ulp(1));
+}
+
+
+TEST(BuiltinFunctionsScalar, Length) {
+    EXPECT_EQ(length(0.1f), 0.1f);
+    EXPECT_EQ(length(-0.1f), 0.1f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Distance) {
+    EXPECT_EQ(distance(0.25f, 0.75f), 0.5f);
+    EXPECT_EQ(distance(0.75f, 0.25f), 0.5f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Dot) {
+    EXPECT_EQ(dot(2.0f, 3.0f), 6.0f);
+}
+
+
+TEST(BuiltinFunctionsScalar, Normalize) {
+    EXPECT_EQ(normalize(0.0f), 1.0f);
+    EXPECT_EQ(normalize(0.5f), 1.0f);
+    EXPECT_EQ(normalize(1.0f), 1.0f);
+    EXPECT_EQ(normalize(1.5f), 1.0f);
+}
+
+
+//
+// Vector2
+//
+
+TEST(BuiltinFunctionsVector2, Radians) {
+    vec2 v = radians(vec2(
+        90.0f,
+        180.0f
+    ));
+    EXPECT_EQ(v.x, math<float>::pi / 2.0f);
+    EXPECT_EQ(v.y, math<float>::pi);
+}
+
+
+TEST(BuiltinFunctionsVector2, Degrees) {
+    vec2 v = degrees(vec2(
+        math<float>::pi / 2.0f,
+        math<float>::pi
+    ));
+    EXPECT_EQ(v.x, 90.0f);
+    EXPECT_EQ(v.y, 180.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, Sin) {
+    vec2 v = sin(vec2(
+        math<float>::pi / 2.0f,
+        math<float>::pi
+    ));
+    EXPECT_EQ(v.x, std::sin(math<float>::pi / 2.0f));
+    EXPECT_EQ(v.y, std::sin(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsVector2, Cos) {
+    vec2 v = cos(vec2(
+        math<float>::pi / 2.0f,
+        math<float>::pi
+    ));
+    EXPECT_EQ(v.x, std::cos(math<float>::pi / 2.0f));
+    EXPECT_EQ(v.y, std::cos(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsVector2, Tan) {
+    vec2 v = tan(vec2(
+        math<float>::pi / 2.0f,
+        math<float>::pi
+    ));
+    EXPECT_EQ(v.x, std::tan(math<float>::pi / 2.0f));
+    EXPECT_EQ(v.y, std::tan(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsVector2, ASin) {
+    vec2 v = asin(vec2(
+        0.5f,
+        1.0f
+    ));
+    EXPECT_EQ(v.x, std::asin(0.5f));
+    EXPECT_EQ(v.y, std::asin(1.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, ACos) {
+    vec2 v = acos(vec2(
+        0.5f,
+        1.0f
+    ));
+    EXPECT_EQ(v.x, std::acos(0.5f));
+    EXPECT_EQ(v.y, std::acos(1.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, ATan) {
+    vec2 v = atan(vec2(
+        0.5f,
+        1.0f
+    ));
+    EXPECT_EQ(v.x, std::atan(0.5f));
+    EXPECT_EQ(v.y, std::atan(1.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Sinh) {
+    vec2 v = sinh(vec2(
+        math<float>::pi / 2.0f,
+        math<float>::pi
+    ));
+    EXPECT_EQ(v.x, std::sinh(math<float>::pi / 2.0f));
+    EXPECT_EQ(v.y, std::sinh(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsVector2, Cosh) {
+    vec2 v = cosh(vec2(
+        math<float>::pi / 2.0f,
+        math<float>::pi
+    ));
+    EXPECT_EQ(v.x, std::cosh(math<float>::pi / 2.0f));
+    EXPECT_EQ(v.y, std::cosh(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsVector2, Tanh) {
+    vec2 v = tanh(vec2(
+        math<float>::pi / 2.0f,
+        math<float>::pi
+    ));
+    EXPECT_EQ(v.x, std::tanh(math<float>::pi / 2.0f));
+    EXPECT_EQ(v.y, std::tanh(math<float>::pi));
+}
+
+
+TEST(BuiltinFunctionsVector2, ASinh) {
+    vec2 v = asinh(vec2(
+        0.5f,
+        1.0f
+    ));
+    EXPECT_EQ(v.x, std::asinh(0.5f));
+    EXPECT_EQ(v.y, std::asinh(1.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, ACosh) {
+    vec2 v = acosh(vec2(
+        1.0f,
+        1.5f
+    ));
+    EXPECT_EQ(v.x, std::acosh(1.0f));
+    EXPECT_EQ(v.y, std::acosh(1.5f));
+}
+
+
+TEST(BuiltinFunctionsVector2, ATanh) {
+    vec2 v = atanh(vec2(
+        0.5f,
+        1.0f
+    ));
+    EXPECT_EQ(v.x, std::atanh(0.5f));
+    EXPECT_EQ(v.y, std::atanh(1.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Pow) {
+    vec2 v = pow(vec2(
+        2.0f,
+        3.0f
+    ), vec2(
+        2.0f,
+        2.0f
+    ));
+    EXPECT_EQ(v.x, std::pow(2.0f, 2.0f));
+    EXPECT_EQ(v.y, std::pow(3.0f, 2.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Exp) {
+    vec2 v = exp(vec2(
+        2.0f,
+        3.0f
+    ));
+    EXPECT_EQ(v.x, std::exp(2.0f));
+    EXPECT_EQ(v.y, std::exp(3.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Log) {
+    vec2 v = log(vec2(
+        2.0f,
+        3.0f
+    ));
+    EXPECT_EQ(v.x, std::log(2.0f));
+    EXPECT_EQ(v.y, std::log(3.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Exp2) {
+    vec2 v = exp2(vec2(
+        2.0f,
+        3.0f
+    ));
+    EXPECT_EQ(v.x, std::exp2(2.0f));
+    EXPECT_EQ(v.y, std::exp2(3.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Log2) {
+    vec2 v = log2(vec2(
+        2.0f,
+        3.0f
+    ));
+    EXPECT_EQ(v.x, std::log2(2.0f));
+    EXPECT_EQ(v.y, std::log2(3.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Sqrt) {
+    vec2 v = sqrt(vec2(
+        2.0f,
+        3.0f
+    ));
+    EXPECT_EQ(v.x, std::sqrt(2.0f));
+    EXPECT_EQ(v.y, std::sqrt(3.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, InverseSqrt) {
+    vec2 v = inversesqrt(vec2(
+        2.0f,
+        3.0f
+    ));
+    EXPECT_EQ(v.x, 1.0f / std::sqrt(2.0f));
+    EXPECT_EQ(v.y, 1.0f / std::sqrt(3.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Abs) {
+    vec2 v = abs(vec2(
+        2.0f,
+        -3.0f
+    ));
+    EXPECT_EQ(v.x, std::abs(2.0f));
+    EXPECT_EQ(v.y, std::abs(-3.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Sign) {
+    vec2 v = sign(vec2(
+        2.0f,
+        -3.0f
+    ));
+    EXPECT_EQ(v.x, 1.0f);
+    EXPECT_EQ(v.y, -1.0f);
+
+    vec2 v2 = sign(vec2(
+        0.0f,
+        -1.0f
+    ));
+    EXPECT_EQ(v2.x, 0.0f);
+    EXPECT_EQ(v2.y, -1.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, Floor) {
+    vec2 v = floor(vec2(
+        2.1f,
+        -3.1f
+    ));
+    EXPECT_EQ(v.x, 2.0f);
+    EXPECT_EQ(v.y, -4.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, Trunc) {
+    vec2 v = trunc(vec2(
+        2.1f,
+        -3.5f
+    ));
+    EXPECT_EQ(v.x, 2.0f);
+    EXPECT_EQ(v.y, -3.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, Round) {
+    vec2 v = round(vec2(
+        2.1f,
+        -3.5f
+    ));
+    EXPECT_EQ(v.x, 2.0f);
+    EXPECT_EQ(v.y, -4.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, RoundEven) {
+    vec2 v = roundEven(vec2(
+        1.4f,
+        2.5f
+    ));
+    EXPECT_EQ(v.x, 2.0f);
+    EXPECT_EQ(v.y, 2.0f);
+    // For example, both 3.5 and 4.5 will round to 4.0.
+    vec2 v2 = roundEven(vec2(
+        3.5f,
+        4.5f
+    ));
+    EXPECT_EQ(v2.x, 4.0f);
+    EXPECT_EQ(v2.y, 4.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, Ceil) {
+    vec2 v = ceil(vec2(
+        2.1f,
+        -3.5f
+    ));
+    EXPECT_EQ(v.x, 3.0f);
+    EXPECT_EQ(v.y, -3.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, Fract) {
+    vec2 v = fract(vec2(
+        2.1f,
+        -3.5f
+    ));
+    EXPECT_EQ(v.x, 2.1f - 2.0f);
+    EXPECT_EQ(v.y, -3.5f - -4.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, Mod) {
+    vec2 v = mod(vec2(
+        2.1f,
+        -3.1f
+    ), 1.0f);
+    EXPECT_NEAR(v.x, 0.1f, ulp(1));
+    EXPECT_NEAR(v.y, 0.9f, ulp(1));
+
+    vec2 v2 = mod(vec2(
+        2.5f,
+        -3.5f
+    ), vec2(
+        2.0f,
+        2.0f
+    ));
+    EXPECT_EQ(v2.x, 0.5f);
+    EXPECT_EQ(v2.y, 0.5f);
+}
+
+
+TEST(BuiltinFunctionsVector2, Modf) {
+    {
+        vec2 t;
+        vec2 v = modf(vec2(
+            2.1f,
+            2.5f
+        ), &t);
+        EXPECT_NEAR(v.x, 0.1f, ulp(1));
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(v.y, 0.5f);
+        EXPECT_EQ(t.y, 2.0f);
+    }
+    {
+        vec2 t;
+        vec2 v = modf(vec2(
+            -3.1f,
+            -3.5f
+        ), &t);
+        EXPECT_NEAR(v.x, -0.1f, ulp(1));
+        EXPECT_EQ(t.x, -3.0f);
+        EXPECT_EQ(v.y, -0.5f);
+        EXPECT_EQ(t.y, -3.0f);
+    }
+}
+
+
+TEST(BuiltinFunctionsVector2, Min) {
+    {
+        vec2 v = min(vec2(1.0f, 2.0f), 1.5f);
+        EXPECT_EQ(v.x, 1.0f);
+        EXPECT_EQ(v.y, 1.5f);
+    }
+    {
+        vec2 v = min(
+            vec2(-1.0f, 1.0f),
+            vec2(-2.0f, -2.0f)
+        );
+        EXPECT_EQ(v.x, -2.0f);
+        EXPECT_EQ(v.y, -2.0f);
+    }
+}
+
+
+TEST(BuiltinFunctionsVector2, Max) {
+    {
+        vec2 v = max(vec2(1.0f, 2.0f), 1.5f);
+        EXPECT_EQ(v.x, 1.5f);
+        EXPECT_EQ(v.y, 2.0f);
+    }
+    {
+        vec2 v = max(
+            vec2(-1.0f, 1.0f),
+            vec2(-2.0f, -2.0f)
+        );
+        EXPECT_EQ(v.x, -1.0f);
+        EXPECT_EQ(v.y, 1.0f);
+    }
+}
+
+
+TEST(BuiltinFunctionsVector2, Clamp) {
+    {
+        vec2 v = clamp(vec2(0.5f, 1.0f), 1.0f, 2.0f);
+        EXPECT_EQ(v.x, 1.0f);
+        EXPECT_EQ(v.y, 1.0f);
+    }
+    {
+        vec2 v = clamp(
+            vec2(1.5f, 0.5f),
+            vec2(1.0f, 1.75f),
+            vec2(1.25f, 2.0f)
+        );
+        EXPECT_EQ(v.x, 1.25f);
+        EXPECT_EQ(v.y, 1.75f);
+    }
+}
+
+
+TEST(BuiltinFunctionsVector2, Mix) {
+    {
+        float a = 0.25f;
+        float b = 1.0f - 0.25f;
+        vec2 v = mix(
+            vec2(0.5f, 1.0f),
+            vec2(2.0f, 3.0f),
+            a
+        );
+        EXPECT_EQ(v.x, 0.5f * b + 2.0f * a);
+        EXPECT_EQ(v.y, 1.0f * b + 3.0f * a);
+    }
+    {
+        vec2 a = vec2(0.25f, 0.75f);
+        vec2 b = 1.0f - a;
+        vec2 v = mix(
+            vec2(0.5f, 1.0f),
+            vec2(2.0f, 3.0f),
+            a
+        );
+        EXPECT_EQ(v.x, 0.5f * b.x + 2.0f * a.x);
+        EXPECT_EQ(v.y, 1.0f * b.y + 3.0f * a.y);
+    }
+}
+
+
+TEST(BuiltinFunctionsVector2, Step) {
+    vec2 v = step(vec2(0.5f, 0.5f), vec2(0.2f, 0.5f));
+    EXPECT_EQ(v.x, 0.0f);
+    EXPECT_EQ(v.y, 1.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, SmoothStep) {
+    vec2 v = smoothstep(vec2(0.5f, 0.5f), vec2(0.7f, 0.7f), vec2(0.5f, 0.7f));
+    EXPECT_EQ(v.x, 0.0f);
+    // TODO: (0.5, 0.7) cases
+    EXPECT_EQ(v.y, 1.0f);
+}
+
+
+TEST(BuiltinFunctionsVector2, IsNaN) {
+    {
+        bvec2 v = isnan(
+            vec2(
+                0.0f,
+                std::numeric_limits<float>::quiet_NaN()
+            )
+        );
+        EXPECT_EQ(v.x, false);
+        EXPECT_EQ(v.y, true);
+    }
+    {
+        bvec2 v = isnan(
+            vec2(
+                std::numeric_limits<float>::signaling_NaN(),
+                std::numeric_limits<float>::infinity()
+            )
+        );
+        EXPECT_EQ(v.x, true);
+        EXPECT_EQ(v.y, false);
+    }
+}
+
+
+TEST(BuiltinFunctionsVector2, IsInf) {
+    {
+        bvec2 v = isinf(
+            vec2(
+                0.0f,
+                std::numeric_limits<float>::quiet_NaN()
+            )
+        );
+        EXPECT_EQ(v.x, false);
+        EXPECT_EQ(v.y, false);
+    }
+    {
+        bvec2 v = isinf(
+            vec2(
+                std::numeric_limits<float>::signaling_NaN(),
+                std::numeric_limits<float>::infinity()
+            )
+        );
+        EXPECT_EQ(v.x, false);
+        EXPECT_EQ(v.y, true);
+    }
+}
+
+
+TEST(BuiltinFunctionsVector2, Length) {
+    EXPECT_EQ(length(vec2(0.0f, 0.0f)), 0.0f);
+    EXPECT_EQ(length(vec2(1.0f, 1.0f)), std::sqrt(2.0f));
+    EXPECT_EQ(length(vec2(2.0f, -1.0f)), std::sqrt(5.0f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Distance) {
+    EXPECT_EQ(distance(vec2(0.25, 0.75), vec2(0.75, 0.25)), std::sqrt(0.5f));
+}
+
+
+TEST(BuiltinFunctionsVector2, Dot) {
+    EXPECT_EQ(dot(vec2(0.25f, 0.75f), vec2(0.1f, 2.0f)), 1.525f);
+}
+
+
+TEST(BuiltinFunctionsVector2, Normalize) {
+    {
+        vec2 v = normalize(vec2(1.0f, 0.0f));
+        EXPECT_EQ(v.x, 1.0f);
+        EXPECT_EQ(v.y, 0.0f);
+    }
+    {
+        vec2 v = normalize(vec2(0.0f, 0.1f));
+        EXPECT_EQ(v.x, 0.0f);
+        EXPECT_EQ(v.y, 1.0f);
+    }
 }
 
 
@@ -1129,6 +2023,77 @@ TEST(GlslikeVector2, Swizzle4Stpq) {
         EXPECT_EQ(v2.y, 2.0f);
         EXPECT_EQ(v2.z, 2.0f);
         EXPECT_EQ(v2.w, 2.0f);
+    }
+}
+
+
+TEST(GlslikeVector2, Operators) {
+    vec2 vec(1.0f, 2.0f);
+
+    // vector + float
+    {
+        auto t = vec + 1.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+    }
+    {
+        auto t = vec - 1.0f;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 1.0f);
+    }
+    {
+        auto t = vec * 2.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = vec / 2.0f;
+        EXPECT_EQ(t.x, 0.5f);
+        EXPECT_EQ(t.y, 1.0f);
+    }
+
+    // float + vector
+    {
+        auto t = 1.0f + vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+    }
+    {
+        auto t = 2.0f - vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 0.0f);
+    }
+    {
+        auto t = 2.0f * vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = 2.0f / vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 1.0f);
+    }
+
+    // vector + vector
+    {
+        auto t = vec + vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = vec - vec;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 0.0f);
+    }
+    {
+        auto t = vec * vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 4.0f);
+    }
+    {
+        auto t = vec / vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 1.0f);
     }
 }
 
@@ -3880,6 +4845,89 @@ TEST(GlslikeVector3, Swizzle4Stpq) {
 }
 
 
+TEST(GlslikeVector3, Operators) {
+    vec3 vec(1.0f, 2.0f, 3.0f);
+
+    // vector + float
+    {
+        auto t = vec + 1.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+        EXPECT_EQ(t.z, 4.0f);
+    }
+    {
+        auto t = vec - 1.0f;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 2.0f);
+    }
+    {
+        auto t = vec * 2.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+    }
+    {
+        auto t = vec / 2.0f;
+        EXPECT_EQ(t.x, 0.5f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.5f);
+    }
+
+    // float + vector
+    {
+        auto t = 1.0f + vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+        EXPECT_EQ(t.z, 4.0f);
+    }
+    {
+        auto t = 2.0f - vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, -1.0f);
+    }
+    {
+        auto t = 2.0f * vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+    }
+    {
+        auto t = 3.0f / vec;
+        EXPECT_EQ(t.x, 3.0f);
+        EXPECT_EQ(t.y, 1.5f);
+        EXPECT_EQ(t.z, 1.0f);
+    }
+
+    // vector + vector
+    {
+        auto t = vec + vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+    }
+    {
+        auto t = vec - vec;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, 0.0f);
+    }
+    {
+        auto t = vec * vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 9.0f);
+    }
+    {
+        auto t = vec / vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.0f);
+    }
+}
+
+
 TEST(GlslikeVector4, Attributes) {
     vec4 v(1.0f, 2.0f, 3.0f, 4.0f);
     EXPECT_EQ(v.x, 1.0f);
@@ -3896,7 +4944,7 @@ TEST(GlslikeVector4, AliasRgba) {
     EXPECT_EQ(v.a, 4.0f);
 }
 
-TEST(GlslikeVector3, AliasStpq) {
+TEST(GlslikeVector4, AliasStpq) {
     vec4 v(1.0f, 2.0f, 3.0f, 4.0f);
     EXPECT_EQ(v.s, 1.0f);
     EXPECT_EQ(v.t, 2.0f);
@@ -11730,6 +12778,101 @@ TEST(GlslikeVector4, Swizzle4Stpq) {
         EXPECT_EQ(v2.y, 4.0f);
         EXPECT_EQ(v2.z, 4.0f);
         EXPECT_EQ(v2.w, 4.0f);
+    }
+}
+
+
+TEST(GlslikeVector4, Operators) {
+    vec4 vec(1.0f, 2.0f, 3.0f, 4.0f);
+
+    // vector + float
+    {
+        auto t = vec + 1.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+        EXPECT_EQ(t.z, 4.0f);
+        EXPECT_EQ(t.w, 5.0f);
+    }
+    {
+        auto t = vec - 1.0f;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 2.0f);
+        EXPECT_EQ(t.w, 3.0f);
+    }
+    {
+        auto t = vec * 2.0f;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+        EXPECT_EQ(t.w, 8.0f);
+    }
+    {
+        auto t = vec / 2.0f;
+        EXPECT_EQ(t.x, 0.5f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.5f);
+        EXPECT_EQ(t.w, 2.0f);
+    }
+
+    // float + vector
+    {
+        auto t = 1.0f + vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 3.0f);
+        EXPECT_EQ(t.z, 4.0f);
+        EXPECT_EQ(t.w, 5.0f);
+    }
+    {
+        auto t = 2.0f - vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, -1.0f);
+        EXPECT_EQ(t.w, -2.0f);
+    }
+    {
+        auto t = 2.0f * vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+        EXPECT_EQ(t.w, 8.0f);
+    }
+    {
+        auto t = 3.0f / vec;
+        EXPECT_EQ(t.x, 3.0f);
+        EXPECT_EQ(t.y, 1.5f);
+        EXPECT_EQ(t.z, 1.0f);
+        EXPECT_EQ(t.w, 0.75f);
+    }
+
+    // vector + vector
+    {
+        auto t = vec + vec;
+        EXPECT_EQ(t.x, 2.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 6.0f);
+        EXPECT_EQ(t.w, 8.0f);
+    }
+    {
+        auto t = vec - vec;
+        EXPECT_EQ(t.x, 0.0f);
+        EXPECT_EQ(t.y, 0.0f);
+        EXPECT_EQ(t.z, 0.0f);
+        EXPECT_EQ(t.w, 0.0f);
+    }
+    {
+        auto t = vec * vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 4.0f);
+        EXPECT_EQ(t.z, 9.0f);
+        EXPECT_EQ(t.w, 16.0f);
+    }
+    {
+        auto t = vec / vec;
+        EXPECT_EQ(t.x, 1.0f);
+        EXPECT_EQ(t.y, 1.0f);
+        EXPECT_EQ(t.z, 1.0f);
+        EXPECT_EQ(t.w, 1.0f);
     }
 }
 
