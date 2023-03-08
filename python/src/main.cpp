@@ -193,7 +193,7 @@ PYBIND11_MODULE(__glslike, module) {
         //
         // 8.2 Exponential Functions
         //
-        .def("pow", static_cast<vec2(*)(const vec2 &, float)>(&pow<float>))
+        .def("pow", static_cast<vec2(*)(const vec2 &, const vec2 &)>(&pow<float>))
         .def("exp", static_cast<vec2(*)(const vec2 &)>(&exp<float>))
         .def("log", static_cast<vec2(*)(const vec2 &)>(&log<float>))
         .def("exp2", static_cast<vec2(*)(const vec2 &)>(&exp2<float>))
@@ -323,7 +323,7 @@ PYBIND11_MODULE(__glslike, module) {
         //
         // 8.2 Exponential Functions
         //
-        .def("pow", static_cast<vec3(*)(const vec3 &, float)>(&pow<float>))
+        .def("pow", static_cast<vec3(*)(const vec3 &, const vec3 &)>(&pow<float>))
         .def("exp", static_cast<vec3(*)(const vec3 &)>(&exp<float>))
         .def("log", static_cast<vec3(*)(const vec3 &)>(&log<float>))
         .def("exp2", static_cast<vec3(*)(const vec3 &)>(&exp2<float>))
@@ -454,7 +454,7 @@ PYBIND11_MODULE(__glslike, module) {
         //
         // 8.2 Exponential Functions
         //
-        .def("pow", static_cast<vec4(*)(const vec4 &, float)>(&pow<float>))
+        .def("pow", static_cast<vec4(*)(const vec4 &, const vec4 &)>(&pow<float>))
         .def("exp", static_cast<vec4(*)(const vec4 &)>(&exp<float>))
         .def("log", static_cast<vec4(*)(const vec4 &)>(&log<float>))
         .def("exp2", static_cast<vec4(*)(const vec4 &)>(&exp2<float>))
