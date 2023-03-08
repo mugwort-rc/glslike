@@ -18,6 +18,5 @@ jobs:
           source .venv/bin/activate
           pip install -r requirements-dev.txt
           python setup.py install
-          cd glslike/tests/
           pytest
 
